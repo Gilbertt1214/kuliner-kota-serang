@@ -73,19 +73,23 @@
                 <div class="mb-8">
                     <h2 class="text-xl font-semibold text-gray-700 mb-3">Menu</h2>
                     <div class="bg-gray-50 p-4 rounded-lg">
-                        <img src="{{$foodPlace->menu }}" alt="Menu" class="w-full rounded-lg shadow-sm"/>
+                        <img src="{{ $foodPlace->menu }}" alt="Menu" class="w-full rounded-lg shadow-sm"/>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Map Section -->
-        <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
+        @if (isset($foodPlace->source_location)) {
+            <div class="mt-8 bg-white rounded-xl shadow-lg p-6">
             <h2 class="text-xl font-semibold text-gray-700 mb-4">Peta Lokasi</h2>
             <div class="rounded-lg overflow-hidden">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.109966341545!2d106.15535497461251!3d-6.115896093870708!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e418b68185750fb%3A0x4d3e2dfae1423ce8!2s527%20coffee!5e0!3m2!1sid!2sid!4v1744725269835!5m2!1sid!2sid" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="{{ $foodPlace->source_location }}" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
+        }
+
+        @endif
     </div>
 </div>
 @endsection

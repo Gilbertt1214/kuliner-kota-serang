@@ -53,7 +53,7 @@ class LoginController extends Controller
         } elseif ($user->role === 'pengusaha') {
             return redirect()->route('pengusaha.dashboard');
         } else {
-            return redirect()->route('user.dashboard');
+            return redirect('/');
         }
     }
 }

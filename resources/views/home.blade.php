@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Kuliner Nusantara - Temukan Rekomendasi Kuliner Terbaik')
+@section('title', 'Kuliner  - Temukan Rekomendasi Kuliner Terbaik')
 
 @section('content')
     <!-- Hero Section -->
@@ -8,7 +8,7 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row items-center">
                 <div class="md:w-1/2 mb-8 md:mb-0">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Temukan Kuliner Terbaik di Indonesia</h1>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Temukan Kuliner Terbaik di Kota Serang</h1>
                     <p class="text-xl mb-6">Jelajahi kekayaan kuliner nusantara dari Sabang sampai Merauke. Temukan rekomendasi kuliner terbaik untuk semua selera.</p>
                     <div class="flex space-x-4">
                         <a href="#" class="px-6 py-3 bg-white text-orange-500 font-medium rounded-lg hover:bg-gray-100 transition duration-300">Jelajahi Sekarang</a>
@@ -55,7 +55,7 @@
         <div class="container mx-auto px-4">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4">Kategori Kuliner</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Jelajahi berbagai kategori kuliner nusantara yang menawarkan cita rasa autentik dari seluruh penjuru Indonesia.</p>
+                <p class="text-gray-600 max-w-2xl mx-auto">Jelajahi berbagai kategori kuliner di kota serang yang menawarkan cita rasa autentik.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">

@@ -13,7 +13,7 @@
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen bg-gray-50">
+<body class="flex flex-col min-h-screen bg-gray-100">
     <!-- Navbar -->
     @include('components.navbar')
 

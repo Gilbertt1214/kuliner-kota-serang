@@ -1,87 +1,87 @@
 <x-guest-layout>
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-50">
-        <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-white shadow-md overflow-hidden sm:rounded-lg">
-            <!-- Logo -->
-            <div class="flex justify-center mb-6">
+        <!-- Animasi background floating bubbles -->
+        <div class="fixed inset-0 overflow-hidden z-0">
+            <div class="absolute top-1/4 left-1/4 w-16 h-16 bg-orange-100 rounded-full opacity-30 animate-float1"></div>
+            <div class="absolute top-1/3 right-1/4 w-20 h-20 bg-orange-200 rounded-full opacity-20 animate-float2"></div>
+            <div class="absolute bottom-1/4 left-1/3 w-24 h-24 bg-orange-100 rounded-full opacity-25 animate-float3"></div>
+            <div class="absolute bottom-1/3 right-1/3 w-12 h-12 bg-orange-200 rounded-full opacity-30 animate-float4"></div>
+        </div>
+
+        <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-white shadow-md overflow-hidden sm:rounded-lg relative z-10 transform transition-all duration-500 ease-in-out hover:shadow-xl">
+            <!-- Logo dengan animasi bounce -->
+            <div class="flex justify-center mb-6 animate-bounce">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span class="text-2xl font-bold text-gray-800 ml-2">Kuliner Nusantara</span>
+                   <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-500 group-hover:text-orange-600 transition-all duration-300 transform group-hover:rotate-12" viewBox="0 0 24 24" fill="currentColor">
+    <!-- Utensil Set Icon -->
+    <path d="M8 1a2 2 0 0 1 2 2v2h4V3a2 2 0 1 1 4 0v2a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3V3a2 2 0 0 1 2-2z"/>
+    <!-- Plate/Bowl -->
+    <path d="M4 10a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1 1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" fill="#fff"/>
+    <!-- Food (noodles or garnish) -->
+    <path d="M5 12h14v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1z" fill="#f59e0b" opacity="0.8"/>
+</svg>
+                    <span class="text-2xl font-bold text-gray-800 ml-2">Santara</span>
                 </a>
             </div>
 
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Buat Akun Baru</h2>
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6 animate-fade-in-down">REGISTER</h2>
 
             <form method="POST" action="{{ route('register') }}">
                 @csrf
 
                 <!-- Name -->
-                <div>
+                <div class="animate-fade-in-up" style="animation-delay: 0.1s">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
-                    <input id="name" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-150 ease-in-out" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" />
+                    <input id="name" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out transform hover:scale-105" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" />
                     @error('name')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-2 text-sm text-red-600 animate-shake">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Email Address -->
-                <div class="mt-4">
+                <div class="mt-4 animate-fade-in-up" style="animation-delay: 0.2s">
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input id="email" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-150 ease-in-out" type="email" name="email" value="{{ old('email') }}" required autocomplete="username" />
+                    <input id="email" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out transform hover:scale-105" type="email" name="email" value="{{ old('email') }}" required autocomplete="username" />
                     @error('email')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Role Selection -->
-                <div class="mt-4">
-                    <label for="role" class="block text-sm font-medium text-gray-700">Daftar Sebagai</label>
-                    <select id="role" name="role" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-150 ease-in-out" required>
-                        <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>Pengguna</option>
-                        <option value="pengusaha" {{ old('role') == 'pengusaha' ? 'selected' : '' }}>Pengusaha Kuliner</option>
-                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                    </select>
-                    @error('role')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-2 text-sm text-red-600 animate-shake">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Password -->
-                <div class="mt-4">
+                <div class="mt-4 animate-fade-in-up" style="animation-delay: 0.3s">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input id="password" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-150 ease-in-out" type="password" name="password" required autocomplete="new-password" />
+                    <input id="password" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out transform hover:scale-105" type="password" name="password" required autocomplete="new-password" />
                     @error('password')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-2 text-sm text-red-600 animate-shake">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <!-- Confirm Password -->
-                <div class="mt-4">
+                <div class="mt-4 animate-fade-in-up" style="animation-delay: 0.4s">
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
-                    <input id="password_confirmation" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-150 ease-in-out" type="password" name="password_confirmation" required autocomplete="new-password" />
+                    <input id="password_confirmation" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out transform hover:scale-105" type="password" name="password_confirmation" required autocomplete="new-password" />
                     @error('password_confirmation')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-2 text-sm text-red-600 animate-shake">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div class="mt-6">
-                    <button type="submit" class="px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-150 ease-in-out w-full">
+                <div class="mt-6 animate-fade-in-up" style="animation-delay: 0.5s">
+                    <button type="submit" class="px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md w-full">
                         Daftar
                     </button>
                 </div>
             </form>
 
-            <div class="mt-6 text-center">
+            <div class="mt-6 text-center animate-fade-in-up" style="animation-delay: 0.6s">
                 <p class="text-sm text-gray-600">
                     Sudah punya akun?
-                    <a href="{{ route('login') }}" class="text-orange-500 hover:text-orange-700 font-medium transition duration-150 ease-in-out">
+                    <a href="{{ route('login') }}" class="text-orange-500 hover:text-orange-700 font-medium transition duration-150 ease-in-out hover:underline">
                         Masuk Sekarang
                     </a>
                 </p>
             </div>
 
-            {{-- <div class="mt-6">
+            <div class="mt-6 animate-fade-in-up" style="animation-delay: 0.7s">
                 <div class="relative">
                     <div class="absolute inset-0 flex items-center">
                         <div class="w-full border-t border-gray-300"></div>
@@ -94,19 +94,69 @@
                 </div>
 
                 <div class="mt-6 grid grid-cols-2 gap-3">
-                    <a href="#" class="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-150 ease-in-out">
+                    <a href="#" class="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300 ease-in-out transform hover:scale-105">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            <path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                         </svg>
                     </a>
 
-                    <a href="#" class="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-150 ease-in-out">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 0C5.372 0 0 5.373 0 12s5.372 12 12 12 12-5.373 12-12S18.628 0 12 0zm6.804 16.864c-.242.52-.566.934-.984 1.244-.468.344-1.033.652-1.691.916-.658.264-1.433.394-2.322.394-.958 0-1.802-.17-2.536-.508-.732-.34-1.354-.786-1.863-1.34-.51-.552-.888-1.178-1.14-1.884-.248-.704-.374-1.432-.374-2.18 0-.788.128-1.534.386-2.238.258-.704.64-1.326 1.142-1.86.502-.536 1.132-.962 1.89-1.272.76-.31 1.632-.466 2.616-.466.968 0 1.812.17 2.536.508.722.338 1.332.782 1.83 1.328.498.546.864 1.16 1.102 1.84.236.68.354 1.384.354 2.108 0 .782-.12 1.53-.364 2.244-.242.716-.604 1.348-1.08 1.896-.478.55-1.09.982-1.834 1.3-.746.316-1.63.476-2.654.476-1.124 0-2.128-.244-3.012-.734-.884-.488-1.566-1.178-2.04-2.066h.216c.144 0 .278-.034.404-.102.126-.068.264-.198.416-.39.152-.192.3-.472.446-.84.144-.37.29-.858.434-1.47l.93.322c.2.694.48 1.232.84 1.616.358.384.838.576 1.44.576.544 0 .982-.168 1.316-.506.332-.336.498-.768.498-1.296 0-.152-.022-.314-.062-.486-.042-.172-.12-.35-.236-.536-.116-.186-.29-.37-.518-.56-.23-.19-.528-.37-.9-.546-.662-.308-1.208-.59-1.638-.852-.43-.26-.764-.534-1.004-.82-.24-.286-.406-.588-.498-.908-.092-.32-.138-.688-.138-1.098 0-.588.12-1.128.356-1.618.238-.492.566-.91.982-1.256.416-.344.912-.612 1.482-.804.572-.19 1.186-.284 1.846-.284.58 0 1.108.078 1.58.232.474.154.88.362 1.222.622.34.262.61.564.81.906.196.342.338.702.426 1.078l-.712.322c-.096-.328-.224-.608-.38-.844-.158-.234-.346-.424-.57-.57-.222-.146-.474-.254-.754-.322-.282-.068-.588-.102-.92-.102-.6 0-1.074.162-1.424.484-.35.324-.524.738-.524 1.244 0 .328.088.61.264.844.176.236.42.456.732.66.314.202.68.398 1.102.59.42.19.874.394 1.36.614.76.352 1.368.68 1.828.984.46.304.816.616 1.068.932.25.318.42.65.508 1 .088.35.134.73.134 1.138 0 .8-.204 1.498-.61 2.096z"/>
+                    <a href="{{ route('auth.google') }}" class="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-300 ease-in-out transform hover:scale-105">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#EA4335" d="M5.266 9.765A7.077 7.077 0 0 1 12 4.909c1.69 0 3.218.6 4.418 1.582L19.91 3C17.782 1.145 15.055 0 12 0 7.27 0 3.198 2.698 1.24 6.65l4.026 3.115Z" />
+                            <path fill="#34A853" d="M16.04 18.013c-1.09.703-2.474 1.078-4.04 1.078a7.077 7.077 0 0 1-6.723-4.823l-4.04 3.067A11.965 11.965 0 0 0 12 24c2.933 0 5.735-1.043 7.834-3l-3.793-2.987Z" />
+                            <path fill="#4A90E2" d="M19.834 21c2.195-2.048 3.62-5.096 3.62-9 0-.71-.109-1.473-.272-2.182H12v4.637h6.436c-.317 1.559-1.17 2.766-2.395 3.558L19.834 21Z" />
+                            <path fill="#FBBC05" d="M5.277 14.268A7.12 7.12 0 0 1 4.909 12c0-.782.125-1.533.357-2.235L1.24 6.65A11.934 11.934 0 0 0 0 12c0 1.92.445 3.73 1.237 5.335l4.04-3.067Z" />
                         </svg>
                     </a>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
+
+    <!-- Tambahkan style untuk animasi -->
+    <style>
+        @keyframes float1 {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(15px) translateX(-15px); }
+        }
+        @keyframes float3 {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-15px) translateX(-10px); }
+        }
+        @keyframes float4 {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(10px) translateX(15px); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .animate-float1 { animation: float1 8s ease-in-out infinite; }
+        .animate-float2 { animation: float2 10s ease-in-out infinite; }
+        .animate-float3 { animation: float3 12s ease-in-out infinite; }
+        .animate-float4 { animation: float4 9s ease-in-out infinite; }
+        .animate-fade-in-down { animation: fadeInDown 0.6s ease-out forwards; }
+        .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+        .animate-shake { animation: shake 0.5s ease-in-out; }
+        .animate-bounce { animation: bounce 2s infinite; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
 </x-guest-layout>
