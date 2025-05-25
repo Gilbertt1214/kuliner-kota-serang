@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\FoodPlace;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use App\Models\FoodCategories;
+use Illuminate\Validation\Rules;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Auth\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
     public function create()
     {
-
-        return view('auth.register');
+        $foodCategories = FoodCategories::all();
+        return view('auth.register', compact('foodCategories'));
     }
 
     public function store(Request $request)
@@ -42,7 +43,7 @@ class RegisteredUserController extends Controller
             $rules = array_merge($rules, [
                 'pengusaha_title' => ['required', 'string', 'max:255'],
                 'pengusaha_description' => ['required', 'string'],
-                'pengusaha_category' => ['required', 'exists:food_categories,name'],
+                'pengusaha_category' => ['required', 'exists:food_categories,id'],
                 'min_price' => ['required', 'numeric', 'min:0'],
                 'max_price' => ['required', 'numeric', 'min:0', 'gte:min_price'],
                 'pengusaha_location' => ['required', 'string', 'max:255'],
@@ -53,8 +54,6 @@ class RegisteredUserController extends Controller
 
 
         $validated = $request->validate($rules);
-        $category = \App\Models\FoodCategory::where('name', $validated['pengusaha_category'])->firstOrFail();
-        dd($category->id);
         // Simpan user
         $user = User::create([
             'name' => $validated['name'],
@@ -69,14 +68,14 @@ class RegisteredUserController extends Controller
             FoodPlace::create([
                 'title'            => $validated['pengusaha_title'],
                 'description'      => $validated['pengusaha_description'],
-                'food_category_id' => $category->id,
+                'food_category_id' => $validated['pengusaha_category'],
                 'min_price'        => $validated['min_price'],
                 'max_price'        => $validated['max_price'],
                 'location'         => $validated['pengusaha_location'],
                 'source_location'  => $validated['source_location'] ?? null,
                 'image'            => $imagePath,
                 'user_id'          => $user->id,
-                'status'           => 'pending',
+                // 'status'           => 'pending',
 
             ]);
         }
