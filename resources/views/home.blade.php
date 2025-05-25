@@ -5,9 +5,9 @@
 @section('content')
     <!-- Hero Section -->
     <section class="bg-gradient-to-r from-orange-600 to-orange-400 text-white py-16">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-8 md:mb-0">
+        <div class=" mx-auto px-4 ">
+            <div class="flex flex-col md:flex-row items-center h-screen">
+                <div class="md:w-[45%] mb-8 md:mb-0 pl-10">
                     <h1 class="text-4xl md:text-5xl font-bold mb-4">Temukan Kuliner Terbaik di Kota Serang</h1>
                     <p class="text-xl mb-6">Jelajahi kekayaan kuliner nusantara dari Sabang sampai Merauke. Temukan rekomendasi kuliner terbaik untuk semua selera.</p>
                     <div class="flex space-x-4">
@@ -15,8 +15,8 @@
                         <a href="#" class="px-6 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-orange-500 transition duration-300">Lihat Kategori</a>
                     </div>
                 </div>
-                <div class="md:w-1/2">
-                    <img src="https://nibble-images.b-cdn.net/nibble/original_images/tempat_makan_di_jakarta_03_3abdaaac44.jpg" alt="Kuliner Indonesia" class="rounded-lg shadow-lg">
+                <div class="md:w-[55%]">
+                    <img src="{{ asset('images/kotaserang.jpg') }}" class="rounded-lg shadow-lg w-full h-[900px] " alt="Kuliner Kota Serang">
                 </div>
             </div>
         </div>

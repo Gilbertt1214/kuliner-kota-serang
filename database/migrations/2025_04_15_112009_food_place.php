@@ -11,6 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Create the food_categories table
+        Schema::create('food_categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
         Schema::create('food_places', function (Blueprint $table) {
             $table->id();
             $table->string('title');
@@ -22,15 +28,10 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('menu')->nullable();
             $table->timestamps();
-            $table->unsignedBigInteger('food_category_id')->nullable();
             $table->foreignId('food_category_id')->references('id')->on('food_categories')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
-        // Create the food_categories table
-        Schema::create('food_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->timestamps();
-        });
+
         // Create the food_items table
         Schema::create('food_items', function (Blueprint $table) {
             $table->id();

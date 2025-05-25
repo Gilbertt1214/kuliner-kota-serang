@@ -8,7 +8,7 @@
             <div class="absolute bottom-1/3 right-1/3 w-12 h-12 bg-orange-200 rounded-full opacity-30 animate-float4"></div>
         </div>
 
-        <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-white shadow-md overflow-hidden sm:rounded-lg relative z-10 transform transition-all duration-500 ease-in-out hover:shadow-xl">
+        <div class="w-full sm:max-w-2xl mt-6 px-6 py-8 bg-white shadow-md overflow-hidden sm:rounded-lg relative z-10 transform transition-all duration-500 ease-in-out hover:shadow-xl">
             <!-- Logo dengan animasi bounce -->
             <div class="flex justify-center mb-6 animate-bounce">
                 <a href="{{ route('home') }}" class="flex items-center">
@@ -26,7 +26,7 @@
 
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6 animate-fade-in-down">REGISTER</h2>
 
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Name -->
@@ -47,6 +47,9 @@
                     @enderror
                 </div>
 
+                <!-- Role Selection -->
+
+
                 <!-- Password -->
                 <div class="mt-4 animate-fade-in-up" style="animation-delay: 0.3s">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
@@ -64,10 +67,139 @@
                         <p class="mt-2 text-sm text-red-600 animate-shake">{{ $message }}</p>
                     @enderror
                 </div>
+                <div class="mt-4 animate-fade-in-up" style="animation-delay: 0.25s">
+                    <label for="role" class="block text-sm font-medium text-gray-700 mb-3">Daftar Sebagai</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="border border-gray-300 rounded-lg p-3 hover:border-orange-500 transition-colors duration-200">
+                            <div class="flex items-start">
+                                <input id="role_user" name="role" type="radio" value="user" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 mt-1" {{ old('role') == 'user' ? 'checked' : '' }} required>
+<label for="role_user" class="ml-3 block text-sm font-medium text-gray-700 cursor-pointer">
+                                    <div class="flex items-center mb-1">
+                                        <svg class="w-5 h-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
+                                        <span>Pelanggan</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Saya ingin mencari tempat</p>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="border border-gray-300 rounded-lg p-3 hover:border-orange-500 transition-colors duration-200">
+                            <div class="flex items-start">
+                                <input id="role_pengusaha" name="role" type="radio" value="pengusaha" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 mt-1" {{ old('role') == 'pengusaha' ? 'checked' : '' }} required>
+                                <label for="role_pengusaha" class="ml-3 block text-sm font-medium text-gray-700 cursor-pointer">
+                                    <div class="flex items-center mb-1">
+                                        <svg class="w-5 h-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m5 0v-4a1 1 0 011-1h2a1 1 0 011 1v4M7 7h10M7 11h4"></path>
+                                        </svg>
+                                        <span>Pengusaha</span>
+                                    </div>
+                                    <p class="text-xs text-gray-500">saya ingin mendaftarkan usaha </p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    @error('role')
+                        <p class="mt-2 text-sm text-red-600 animate-shake">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- pengusaha Fields (Hidden by default, shown when role = pengusaha) -->
+                <div id="pengusaha-fields" class="space-y-4 mt-4" style="display: none;">
+                    <div class="p-4 bg-orange-50 rounded-lg border border-orange-200">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <svg class="w-5 h-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m5 0v-4a1 1 0 011-1h2a1 1 0 011 1v4M7 7h10M7 11h4"></path>
+                            </svg>
+                            Informasi Usaha
+                        </h3>
+
+                        <!-- pengusaha Title -->
+                        <div class="space-y-2">
+                            <label for="pengusaha_title" class="block text-sm font-medium text-gray-700">Nama Usaha <span class="text-red-500">*</span></label>
+                            <input type="text" name="pengusaha_title" id="pengusaha_title" value="{{ old('pengusaha_title') }}" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
+                        </div>
+
+                        <!-- pengusaha Description -->
+                        <div class="space-y-2 mt-4">
+                            <label for="pengusaha_description" class="block text-sm font-medium text-gray-700">Deskripsi Usaha <span class="text-red-500">*</span></label>
+                            <textarea name="pengusaha_description" id="pengusaha_description" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">{{ old('pengusaha_description') }}</textarea>
+                            <p class="text-sm text-gray-500">Jelaskan tentang usaha kuliner Anda, menu spesial, jam operasional, dll.</p>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="space-y-2 mt-4">
+                            <label for="pengusaha_category" class="block text-sm font-medium text-gray-700">Kategori <span class="text-red-500">*</span></label>
+                            <select name="pengusaha_category" id="pengusaha_category" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
+                                <option value="">Pilih Kategori</option>
+                                <option value="Makanan Berat" {{ old('pengusaha_category') == 'Makanan Berat' ? 'selected' : '' }}>Makanan Berat</option>
+                                <option value="Jajanan Pasar" {{ old('pengusaha_category') == 'Jajanan Pasar' ? 'selected' : '' }}>Jajanan Pasar</option>
+                                <option value="Minuman" {{ old('pengusaha_category') == 'Minuman' ? 'selected' : '' }}>Minuman</option>
+                                <option value="Desert" {{ old('pengusaha_category') == 'Desert' ? 'selected' : '' }}>Desert</option>
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <!-- Min Price -->
+                            <div class="space-y-2">
+                                <label for="min_price" class="block text-sm font-medium text-gray-700">Harga Minimum (Rp) <span class="text-red-500">*</span></label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500 sm:text-sm">Rp</span>
+                                    </div>
+                                    <input type="number" name="min_price" id="min_price" value="{{ old('min_price') }}" min="0" class="block w-full pl-12 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
+                                </div>
+                            </div>
+
+                            <!-- Max Price -->
+                            <div class="space-y-2">
+                                <label for="max_price" class="block text-sm font-medium text-gray-700">Harga Maksimum (Rp) <span class="text-red-500">*</span></label>
+                                <div class="mt-1 relative rounded-md shadow-sm">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="text-gray-500 sm:text-sm">Rp</span>
+                                    </div>
+                                    <input type="number" name="max_price" id="max_price" value="{{ old('max_price') }}" min="0" class="block w-full pl-12 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="space-y-2 mt-4">
+                            <label for="pengusaha_location" class="block text-sm font-medium text-gray-700">Alamat Usaha <span class="text-red-500">*</span></label>
+                            <input type="text" name="pengusaha_location" id="pengusaha_location" value="{{ old('pengusaha_location') }}" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
+                            <p class="text-sm text-gray-500">Masukkan alamat lengkap usaha Anda.</p>
+                        </div>
+
+                        <!-- Google Maps Link -->
+                        <div class="space-y-2 mt-4">
+                            <label for="source_location" class="block text-sm font-medium text-gray-700">Link Google Maps</label>
+                            <input type="url" name="source_location" id="source_location" value="{{ old('source_location') }}" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out" placeholder="https://maps.google.com/...">
+                            <p class="text-sm text-gray-500">Tambahkan link Google Maps untuk lokasi usaha Anda (opsional).</p>
+                        </div>
+
+                        <!-- Image Upload -->
+                        <div class="space-y-2 mt-4">
+                            <label for="pengusaha_image" class="block text-sm font-medium text-gray-700">Foto Usaha <span class="text-red-500">*</span></label>
+                            <div class="mt-1 flex items-center">
+                                <div class="w-full">
+                                    <label class="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">
+                                        <span id="file-name">Pilih Foto</span>
+                                        <input type="file" name="pengusaha_image" id="pengusaha_image" accept="image/*" class="sr-only">
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="image-preview" class="mt-2 hidden">
+                                <img src="#" alt="Preview" class="h-40 w-auto object-cover rounded-lg">
+                            </div>
+                            <p class="text-sm text-gray-500">Unggah foto usaha Anda (Max: 2MB, Format: JPG, PNG).</p>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="mt-6 animate-fade-in-up" style="animation-delay: 0.5s">
                     <button type="submit" class="px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md w-full">
-                        Daftar
+                        <span id="submit-text">Daftar</span>
                     </button>
                 </div>
             </form>
@@ -112,6 +244,86 @@
             </div>
         </div>
     </div>
+
+    <!-- JavaScript untuk functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleRadios = document.querySelectorAll('input[name="role"]');
+            const pengusahaFields = document.getElementById('pengusaha-fields');
+            const submitText = document.getElementById('submit-text');
+            const pengusahaImage = document.getElementById('pengusaha_image');
+            const fileName = document.getElementById('file-name');
+            const imagePreview = document.getElementById('image-preview');
+
+            // Toggle pengusaha fields based on role selection
+            function togglepengusahaFields() {
+                const selectedRole = document.querySelector('input[name="role"]:checked');
+                if (selectedRole && selectedRole.value === 'pengusaha') {
+                    pengusahaFields.style.display = 'block';
+                    pengusahaFields.classList.add('animate-fade-in-up');
+                    submitText.textContent = 'Daftarkan Usaha';
+
+                    // Make pengusaha fields required
+                    setpengusahaFieldsRequired(true);
+                } else {
+                    pengusahaFields.style.display = 'none';
+                    submitText.textContent = 'Daftar';
+
+                    // Remove required from pengusaha fields
+                    setpengusahaFieldsRequired(false);
+                }
+            }
+
+            // Set required attribute for pengusaha fields
+            function setpengusahaFieldsRequired(required) {
+                const requiredFields = [
+                    'pengusaha_title',
+                    'pengusaha_description',
+                    'pengusaha_category',
+                    'min_price',
+                    'max_price',
+                    'pengusaha_location',
+                    'pengusaha_image'
+                ];
+
+                requiredFields.forEach(fieldName => {
+                    const field = document.getElementById(fieldName);
+                    if (field) {
+                        if (required) {
+                            field.setAttribute('required', 'required');
+                        } else {
+                            field.removeAttribute('required');
+                        }
+                    }
+                });
+            }
+
+            // Add event listeners to role radios
+            roleRadios.forEach(radio => {
+                radio.addEventListener('change', togglepengusahaFields);
+            });
+
+            // Image preview functionality
+            if (pengusahaImage) {
+                pengusahaImage.addEventListener('change', function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        const file = e.target.files[0];
+                        fileName.textContent = file.name;
+
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imagePreview.classList.remove('hidden');
+                            imagePreview.querySelector('img').src = e.target.result;
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Initialize on page load
+            toggleBusinessFields();
+        });
+    </script>
 
     <!-- Tambahkan style untuk animasi -->
     <style>

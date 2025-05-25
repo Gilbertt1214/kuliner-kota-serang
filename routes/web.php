@@ -5,7 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FoodPlaceController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\DashboardController;
-
+use App\Http\Controllers\BusinessController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +29,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//form-pendafraran-usaha
+Route::get('/form-pendaftaran-usaha', [BusinessController::class, 'create'])->name('business.create');
+Route::post('/form-pendaftaran-usaha', [BusinessController::class, 'store'])
+    ->name('business.store');
 
 // Food Place Routes
 Route::get('/food-places', [FoodPlaceController::class, 'index'])

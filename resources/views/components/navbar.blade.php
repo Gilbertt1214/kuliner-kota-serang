@@ -21,8 +21,6 @@
                 <a href="/" class="px-4 py-2 text-gray-700 hover:text-orange-500 hover:bg-gray-50 rounded-md transition-all duration-300 hover:scale-105">Beranda</a>
                 <a href="/food-places" class="px-4 py-2 text-gray-700 hover:text-orange-500 hover:bg-gray-50 rounded-md transition-all duration-300 hover:scale-105">Kategori</a>
                 <a href="#" class="px-4 py-2 text-gray-700 hover:text-orange-500 hover:bg-gray-50 rounded-md transition-all duration-300 hover:scale-105">Rekomendasi</a>
-
-                <a href="/register-business" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-600 transition-all duration-300 transform hover:scale-105 hover:shadow-md">Daftar Usaha</a>
             </div>
 
             <!-- Secondary Navbar items -->
@@ -92,10 +90,10 @@
             <a href="/" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-orange-500 rounded-md transition-all duration-300 hover:pl-6">Beranda</a>
             <a href="/food-places" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-orange-500 rounded-md transition-all duration-300 hover:pl-6">Kategori</a>
             <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-orange-500 rounded-md transition-all duration-300 hover:pl-6">Rekomendasi</a>
-            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-orange-500 rounded-md transition-all duration-300 hover:pl-6">Tentang Kami</a>
-            <a href="/register-business" class="block px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md transition-all duration-300 hover:pl-6 hover:shadow-md">Daftar Usaha</a>
 
             @auth
+                <a href="/form-pendaftaran-usaha" class="block px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md transition-all duration-300 hover:pl-6 hover:shadow-md">Daftar Usaha</a>
+
                 <div class="pt-2 mt-2 border-t border-gray-100">
                     <a href="{{ route('profile.edit') }}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-orange-500 rounded-md transition-all duration-300 hover:pl-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
