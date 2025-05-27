@@ -132,10 +132,9 @@
                             <label for="pengusaha_category" class="block text-sm font-medium text-gray-700">Kategori <span class="text-red-500">*</span></label>
                             <select name="pengusaha_category" id="pengusaha_category" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
                                 <option value="">Pilih Kategori</option>
-                                <option value="Makanan Berat" {{ old('pengusaha_category') == 'Makanan Berat' ? 'selected' : '' }}>Makanan Berat</option>
-                                <option value="Jajanan Pasar" {{ old('pengusaha_category') == 'Jajanan Pasar' ? 'selected' : '' }}>Jajanan Pasar</option>
-                                <option value="Minuman" {{ old('pengusaha_category') == 'Minuman' ? 'selected' : '' }}>Minuman</option>
-                                <option value="Desert" {{ old('pengusaha_category') == 'Desert' ? 'selected' : '' }}>Desert</option>
+                                @foreach ($foodCategories as $foodCategory)
+                                    <option value="{{ $foodCategory->id }}" {{ old('pengusaha_category') == $foodCategory->id ? 'selected' : '' }}>{{ $foodCategory->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
