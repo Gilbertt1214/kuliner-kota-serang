@@ -149,6 +149,9 @@
                                     </div>
                                     <input type="number" name="min_price" id="min_price" value="{{ old('min_price') }}" min="0" class="block w-full pl-12 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
                                 </div>
+                                @error('min_price')
+                                    <p class="text-red-500 text-sm mt-1">with error: {{ $message }}</p>
+                                @enderror
                             </div>
 
                             <!-- Max Price -->
@@ -160,6 +163,9 @@
                                     </div>
                                     <input type="number" name="max_price" id="max_price" value="{{ old('max_price') }}" min="0" class="block w-full pl-12 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
                                 </div>
+                                @error('max_price')
+                                    <p class="text-red-500 text-sm mt-1">with error: {{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
 
