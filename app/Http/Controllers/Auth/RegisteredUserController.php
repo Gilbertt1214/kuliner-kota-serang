@@ -50,10 +50,19 @@ class RegisteredUserController extends Controller
                 'source_location' => ['nullable', 'url', 'max:255'],
                 'pengusaha_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ]);
+
         }
 
+        $messages = [
+            'max_price.gte' => 'Harga maksimum harus lebih besar dari harga minimum.',
+            'pengusaha_category.exists' => 'Kategori tidak ditemukan.',
+            'pengusaha_image.image' => 'File harus berupa gambar.',
+            'pengusaha_image.mimes' => 'Gambar harus bertipe jpeg, png, jpg, atau gif.',
+            'pengusaha_image.max' => 'Ukuran gambar maksimal 2MB.',
+        ];
 
-        $validated = $request->validate($rules);
+
+        $validated = $request->validate($rules, $messages);
         // Simpan user
         $user = User::create([
             'name' => $validated['name'],
