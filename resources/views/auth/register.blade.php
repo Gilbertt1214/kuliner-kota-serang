@@ -185,19 +185,31 @@
 
                         <!-- Image Upload -->
                         <div class="space-y-2 mt-4">
-                            <label for="pengusaha_image" class="block text-sm font-medium text-gray-700">Foto Usaha <span class="text-red-500">*</span></label>
+                            <label for="pengusaha_image" class="block text-sm font-medium text-gray-700">
+                                Foto Usaha <span class="text-red-500">*</span>
+                            </label>
                             <div class="mt-1 flex items-center">
                                 <div class="w-full">
-                                    <label class="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">
-                                        <span id="file-name">Pilih Foto</span>
-                                        <input type="file" name="pengusaha_image" id="pengusaha_image" accept="image/*" class="sr-only">
+                                    <label
+                                        class="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
+                                    >
+                                        <span id="file-name">Pilih Foto kuliner</span>
+                                        <input
+                                            type="file"
+                                            name="pengusaha_image[]"
+                                            id="pengusaha_image"
+                                            accept="image/*"
+                                            multiple
+                                            class="sr-only"
+                                            onchange="previewImages(this)"
+                                        >
                                     </label>
                                 </div>
                             </div>
-                            <div id="image-preview" class="mt-2 hidden">
-                                <img src="#" alt="Preview" class="h-40 w-auto object-cover rounded-lg">
-                            </div>
-                            <p class="text-sm text-gray-500">Unggah foto usaha Anda (Max: 2MB, Format: JPG, PNG).</p>
+                            <div id="image-preview" class="mt-2 flex flex-wrap gap-2"></div>
+                            <p class="text-sm text-gray-500">
+                                Unggah foto usaha Anda (Max: 2MB per file, Format: JPG, PNG, maksimal 5 foto).
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -264,15 +276,17 @@
             function togglepengusahaFields() {
                 const selectedRole = document.querySelector('input[name="role"]:checked');
                 if (selectedRole && selectedRole.value === 'pengusaha') {
-                    pengusahaFields.style.display = 'block';
-                    pengusahaFields.classList.add('animate-fade-in-up');
-                    submitText.textContent = 'Daftarkan Usaha';
+                    if (pengusahaFields) {
+                        pengusahaFields.style.display = 'block';
+                        pengusahaFields.classList.add('animate-fade-in-up');
+                    }
+                    if (submitText) submitText.textContent = 'Daftarkan Usaha';
 
                     // Make pengusaha fields required
                     setpengusahaFieldsRequired(true);
                 } else {
-                    pengusahaFields.style.display = 'none';
-                    submitText.textContent = 'Daftar';
+                    if (pengusahaFields) pengusahaFields.style.display = 'none';
+                    if (submitText) submitText.textContent = 'Daftar';
 
                     // Remove required from pengusaha fields
                     setpengusahaFieldsRequired(false);
@@ -308,25 +322,61 @@
                 radio.addEventListener('change', togglepengusahaFields);
             });
 
-            // Image preview functionality
+            // Image preview functionality for multiple files
             if (pengusahaImage) {
                 pengusahaImage.addEventListener('change', function(e) {
-                    if (e.target.files && e.target.files[0]) {
-                        const file = e.target.files[0];
-                        fileName.textContent = file.name;
+                    const files = e.target.files;
+                    imagePreview.innerHTML = '';
+                    if(files.length === 0){
+                        fileName.textContent = 'Pilih Foto (max 5)';
+                        imagePreview.classList.add('hidden');
+                        return;
+                    }
+
+                    if(files.length > 5){
+                        alert('Anda hanya boleh memilih maksimal 5 foto.');
+                        pengusahaImage.value = '';
+                        fileName.textContent = 'Pilih Foto (max 5)';
+                        imagePreview.classList.add('hidden');
+                        return;
+                    }
+
+                    fileName.textContent = `${files.length} file dipilih`;
+
+                    let invalidFile = false;
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+
+                        if(file.size > 2 * 1024 * 1024){
+                            alert(`File ${file.name} terlalu besar. Maksimal 2MB.`);
+                            invalidFile = true;
+                            break;
+                        }
 
                         const reader = new FileReader();
                         reader.onload = function(e) {
-                            imagePreview.classList.remove('hidden');
-                            imagePreview.querySelector('img').src = e.target.result;
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.alt = `Preview Foto ${i + 1}`;
+                            img.className = 'h-40 w-auto object-cover rounded-lg';
+                            imagePreview.appendChild(img);
                         }
                         reader.readAsDataURL(file);
                     }
+
+                    if(invalidFile){
+                        pengusahaImage.value = '';
+                        fileName.textContent = 'Pilih Foto (max 5)';
+                        imagePreview.innerHTML = '';
+                        imagePreview.classList.add('hidden');
+                        return;
+                    }
+
+                    imagePreview.classList.remove('hidden');
                 });
             }
-
             // Initialize on page load
-            toggleBusinessFields();
+            togglepengusahaFields();
         });
     </script>
 

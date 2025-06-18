@@ -8,6 +8,11 @@ use Illuminate\Support\Str;
 
 class FoodPlaceController extends Controller
 {
+
+    public function index() {
+        $foodPlaces = FoodPlace::all();
+        return view('food-places', ['foodPlaces' => $foodPlaces]);
+    }
     /**
      * Show the food place registration form.
      *

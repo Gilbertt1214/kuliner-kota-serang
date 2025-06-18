@@ -94,7 +94,7 @@ class RegisteredUserController extends Controller
 
         // Redirect sesuai role
         if ($role === 'pengusaha') {
-            return redirect('/admin/dashboard');
+            return redirect('/pengusaha/dashboard-pengusaha');
         }
         return redirect('/');
     }

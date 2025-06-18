@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Fahrian',
             'email' => 'fahri@gmail.com',
+            'password' => Hash::make('Pa$$w0rd!')
         ]);
 
           $data = [
@@ -81,6 +82,6 @@ class DatabaseSeeder extends Seeder
 
         FoodPlace::insert($data);
 
-        
+
     }
 }
