@@ -6,7 +6,7 @@
     <h1 class="text-3xl font-bold text-center mb-8">Daftar Tempat Makanan</h1>
 
     {{-- Grid Card untuk setiap Food Place --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid min-h-screen  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         @forelse($foodPlaces as $place)
             {{-- DUmmy --}}
              <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300">
@@ -49,8 +49,11 @@
                     </div>
                 </div>
         @empty
-            <p class="col-span-full text-center text-gray-600">Tidak ada data food place tersedia.</p>
-        @endforelse
+        <div  class="col-span-full flex items-center flex-col gap-2 justify-center " >
+            <img src="assets/place-icon.svg" width="200" alt="">
+            <p class="col-span-full text-xl  text-center text-gray-600">Tidak ada data tempat makan tersedia.</p>
+        </div>
+            @endforelse
     </div>
 </div>
 @endsection

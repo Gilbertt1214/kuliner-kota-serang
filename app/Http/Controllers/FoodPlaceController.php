@@ -11,7 +11,7 @@ class FoodPlaceController extends Controller
 
     public function index() {
         $foodPlaces = FoodPlace::all();
-        return view('food-places', ['foodPlaces' => $foodPlaces]);
+        return view('layouts.food-places', ['foodPlaces' => $foodPlaces]);
     }
     /**
      * Show the food place registration form.
@@ -40,20 +40,22 @@ class FoodPlaceController extends Controller
             'max_price'        => 'required|numeric|min:0|gte:min_price',
             'location'         => 'required|string|max:255',
             'source_location'  => 'nullable|url|max:255',
-            'image'            => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'image'            => 'required|array|max:5',
+            'image.*'          => 'image|mimes:jpeg,png,jpg|max:2048',
         ], [
             'max_price.gte' => 'Harga maksimum harus lebih besar atau sama dengan harga minimum.',
         ]);
 
         // Handle upload gambar
         if ($request->hasFile('image')) {
-            $image      = $request->file('image');
-            $imageName  = Str::slug($validated['title']) . '-' . time() . '.' . $image->getClientOriginalExtension();
-            $imagePath  = 'images/food-places/' . $imageName;
-            $image->move(public_path('images/food-places'), $imageName);
-
-            $validated['image'] = $imagePath;
-        }
+            if ($request->hasFile('image')) {
+                foreach ($request->file('image') as $image) {
+                    $imageName = Str::slug($validated['title']) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $imagePath = 'images/food-places/' . $imageName;
+                    $image->move(public_path('images/food-places'), $imageName);
+                    $imagePaths[] = $imagePath;
+                }
+            }
 
         // Simpan data tempat makan ke database
         FoodPlace::create([
@@ -72,4 +74,5 @@ class FoodPlaceController extends Controller
             ->route('food-places.index')
             ->with('success', 'Tempat makan berhasil didaftarkan dan menunggu persetujuan admin!');
     }
+ }
 }

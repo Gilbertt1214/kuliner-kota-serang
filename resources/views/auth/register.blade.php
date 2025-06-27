@@ -117,13 +117,13 @@
                         <!-- pengusaha Title -->
                         <div class="space-y-2">
                             <label for="pengusaha_title" class="block text-sm font-medium text-gray-700">Nama Usaha <span class="text-red-500">*</span></label>
-                            <input type="text" name="pengusaha_title" id="pengusaha_title" value="{{ old('pengusaha_title') }}" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
+                            <input type="text" name="title" id="title" value="{{ old('pengusaha_title') }}" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
                         </div>
 
                         <!-- pengusaha Description -->
                         <div class="space-y-2 mt-4">
                             <label for="pengusaha_description" class="block text-sm font-medium text-gray-700">Deskripsi Usaha <span class="text-red-500">*</span></label>
-                            <textarea name="pengusaha_description" id="pengusaha_description" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">{{ old('pengusaha_description') }}</textarea>
+                            <textarea name="description" id="description" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">{{ old('pengusaha_description') }}</textarea>
                             <p class="text-sm text-gray-500">Jelaskan tentang usaha kuliner Anda, menu spesial, jam operasional, dll.</p>
                         </div>
 
@@ -194,15 +194,8 @@
                                         class="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
                                     >
                                         <span id="file-name">Pilih Foto kuliner</span>
-                                        <input
-                                            type="file"
-                                            name="pengusaha_image[]"
-                                            id="pengusaha_image"
-                                            accept="image/*"
-                                            multiple
-                                            class="sr-only"
-                                            onchange="previewImages(this)"
-                                        >
+                                        <input type="file" name="pengusaha_image[]" id="pengusaha_image" multiple ...>
+
                                     </label>
                                 </div>
                             </div>
@@ -264,7 +257,7 @@
 
     <!-- JavaScript untuk functionality -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const roleRadios = document.querySelectorAll('input[name="role"]');
             const pengusahaFields = document.getElementById('pengusaha-fields');
             const submitText = document.getElementById('submit-text');
@@ -272,28 +265,20 @@
             const fileName = document.getElementById('file-name');
             const imagePreview = document.getElementById('image-preview');
 
-            // Toggle pengusaha fields based on role selection
             function togglepengusahaFields() {
                 const selectedRole = document.querySelector('input[name="role"]:checked');
                 if (selectedRole && selectedRole.value === 'pengusaha') {
-                    if (pengusahaFields) {
-                        pengusahaFields.style.display = 'block';
-                        pengusahaFields.classList.add('animate-fade-in-up');
-                    }
+                    pengusahaFields.style.display = 'block';
+                    pengusahaFields.classList.add('animate-fade-in-up');
                     if (submitText) submitText.textContent = 'Daftarkan Usaha';
-
-                    // Make pengusaha fields required
                     setpengusahaFieldsRequired(true);
                 } else {
-                    if (pengusahaFields) pengusahaFields.style.display = 'none';
+                    pengusahaFields.style.display = 'none';
                     if (submitText) submitText.textContent = 'Daftar';
-
-                    // Remove required from pengusaha fields
                     setpengusahaFieldsRequired(false);
                 }
             }
 
-            // Set required attribute for pengusaha fields
             function setpengusahaFieldsRequired(required) {
                 const requiredFields = [
                     'pengusaha_title',
@@ -304,36 +289,26 @@
                     'pengusaha_location',
                     'pengusaha_image'
                 ];
-
                 requiredFields.forEach(fieldName => {
                     const field = document.getElementById(fieldName);
-                    if (field) {
-                        if (required) {
-                            field.setAttribute('required', 'required');
-                        } else {
-                            field.removeAttribute('required');
-                        }
+                    if (field != null) {
+                        if (required) field.setAttribute('required', 'required');
+                        else field.removeAttribute('required');
                     }
                 });
             }
 
-            // Add event listeners to role radios
-            roleRadios.forEach(radio => {
-                radio.addEventListener('change', togglepengusahaFields);
-            });
-
-            // Image preview functionality for multiple files
             if (pengusahaImage) {
-                pengusahaImage.addEventListener('change', function(e) {
+                pengusahaImage.addEventListener('change', function (e) {
                     const files = e.target.files;
                     imagePreview.innerHTML = '';
-                    if(files.length === 0){
+                    if (files.length === 0) {
                         fileName.textContent = 'Pilih Foto (max 5)';
                         imagePreview.classList.add('hidden');
                         return;
                     }
 
-                    if(files.length > 5){
+                    if (files.length > 5) {
                         alert('Anda hanya boleh memilih maksimal 5 foto.');
                         pengusahaImage.value = '';
                         fileName.textContent = 'Pilih Foto (max 5)';
@@ -346,15 +321,13 @@
                     let invalidFile = false;
                     for (let i = 0; i < files.length; i++) {
                         const file = files[i];
-
-                        if(file.size > 2 * 1024 * 1024){
+                        if (file.size > 2 * 1024 * 1024) {
                             alert(`File ${file.name} terlalu besar. Maksimal 2MB.`);
                             invalidFile = true;
                             break;
                         }
-
                         const reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
                             const img = document.createElement('img');
                             img.src = e.target.result;
                             img.alt = `Preview Foto ${i + 1}`;
@@ -364,7 +337,7 @@
                         reader.readAsDataURL(file);
                     }
 
-                    if(invalidFile){
+                    if (invalidFile) {
                         pengusahaImage.value = '';
                         fileName.textContent = 'Pilih Foto (max 5)';
                         imagePreview.innerHTML = '';
@@ -375,7 +348,11 @@
                     imagePreview.classList.remove('hidden');
                 });
             }
-            // Initialize on page load
+
+            roleRadios.forEach(radio => {
+                radio.addEventListener('change', togglepengusahaFields);
+            });
+
             togglepengusahaFields();
         });
     </script>

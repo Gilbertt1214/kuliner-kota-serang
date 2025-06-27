@@ -16,7 +16,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 
 // Halaman utama
 Route::get('/', function () {
-    return view('home');
+    return view('layouts.home');
 })->name('home');
 
 
@@ -41,6 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//----------------- Review ----------------
+Route::post('/food-place/{id}/review', [ReviewController::class, 'store'])->middleware('auth')->name('review.store');
+
 
 
 // ---------------- Form Pendaftaran Usaha ----------------

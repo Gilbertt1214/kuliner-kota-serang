@@ -37,6 +37,10 @@ public function isUser()
 {
     return $this->role === 'user';
 }
+public function reviews() {
+    return $this->hasMany(Review::class);
+}
+
 
     /**
      * The attributes that should be hidden for serialization.
