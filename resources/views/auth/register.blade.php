@@ -25,6 +25,15 @@
             </div>
 
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6 animate-fade-in-down">REGISTER</h2>
+            @if ($errors->any())
+    <div style="color:red;">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
             <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                 @csrf
