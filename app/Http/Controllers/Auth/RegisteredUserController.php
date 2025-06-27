@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\FoodPlace;
 use Illuminate\Http\Request;
 use App\Models\FoodCategories;
+use App\Models\FoodPlaceImage;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,6 @@ class RegisteredUserController extends Controller
         }
 
 
-
         // Validasi umum
         $rules = [
             'name' => ['required', 'string', 'max:255'],
@@ -48,22 +48,25 @@ class RegisteredUserController extends Controller
                 'max_price' => ['required', 'numeric', 'min:0', 'gte:min_price'],
                 'pengusaha_location' => ['required', 'string', 'max:255'],
                 'source_location' => ['nullable', 'url', 'max:255'],
-                'pengusaha_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                'pengusaha_image' => ['required', 'array', 'min:1', 'max:5'],
+                'pengusaha_image.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ]);
 
         }
 
         $messages = [
             'max_price.gte' => 'Harga maksimum harus lebih besar dari harga minimum.',
-            'pengusaha_category.exists' => 'Kategori tidak ditemukan.',
-            'pengusaha_image.image' => 'File harus berupa gambar.',
-            'pengusaha_image.mimes' => 'Gambar harus bertipe jpeg, png, jpg, atau gif.',
-            'pengusaha_image.max' => 'Ukuran gambar maksimal 2MB.',
+            'pengusaha_image.required' => 'Minimal satu gambar harus diunggah.',
+            'pengusaha_image.max' => 'Maksimal 5 gambar diperbolehkan.',
+            'pengusaha_image.*.image' => 'Setiap file harus berupa gambar.',
+            'pengusaha_image.*.mimes' => 'Format gambar hanya jpeg, png, jpg, atau gif.',
+            'pengusaha_image.*.max' => 'Ukuran gambar maksimal 2MB.',
         ];
 
 
-        $validated = $request->validate($rules, $messages);
-        // Simpan user
+         $validated = $request->validate($rules, $messages);
+
+        // Buat user
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -71,10 +74,15 @@ class RegisteredUserController extends Controller
             'role' => $role,
         ]);
 
-        // Jika pengusaha, simpan food place
+        // Jika pengusaha, buat FoodPlace dan simpan gambar-gambarnya
         if ($role === 'pengusaha') {
-            $imagePath = $request->file('pengusaha_image')->store('images/businesses', 'public');
-            FoodPlace::create([
+            $imagePaths = [];
+            foreach ($request->file('pengusaha_image') as $image) {
+                $imagePaths[] = $image->store('images/businesses', 'public');
+            }
+
+            // Simpan data FoodPlace, gambar pertama sebagai thumbnail
+            $foodPlace = FoodPlace::create([
                 'title'            => $validated['pengusaha_title'],
                 'description'      => $validated['pengusaha_description'],
                 'food_category_id' => $validated['pengusaha_category'],
@@ -82,11 +90,17 @@ class RegisteredUserController extends Controller
                 'max_price'        => $validated['max_price'],
                 'location'         => $validated['pengusaha_location'],
                 'source_location'  => $validated['source_location'] ?? null,
-                'image'            => $imagePath,
+                'image'            => $imagePaths[0], // thumbnail
                 'user_id'          => $user->id,
-                // 'status'           => 'pending',
-
             ]);
+
+            // Simpan semua gambar ke tabel food_place_images
+            foreach ($imagePaths as $path) {
+                FoodPlaceImage::create([
+                    'food_place_id' => $foodPlace->id,
+                    'image_path'    => $path,
+                ]);
+            }
         }
 
         event(new Registered($user));
