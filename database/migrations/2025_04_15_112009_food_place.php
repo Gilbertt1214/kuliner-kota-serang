@@ -25,7 +25,6 @@ return new class extends Migration
             $table->decimal('max_price', 8, 2);
             $table->string('location');
             $table->decimal('rating', 2, 1) ->default(0.0);
-            $table->string('image')->nullable();
             $table->string('menu')->nullable();
             $table->timestamps();
             $table->foreignId('food_category_id')->references('id')->on('food_categories')->onDelete('cascade');

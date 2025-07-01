@@ -24,6 +24,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $role = $request->input('role');
+
         if (!in_array($role, ['user', 'pengusaha'])) {
             return back()->withErrors(['role' => 'Role harus diisi.']);
 
@@ -41,8 +42,8 @@ class RegisteredUserController extends Controller
         // Jika pengusaha, tambah validasi food place
         if ($role === 'pengusaha') {
             $rules = array_merge($rules, [
-                'pengusaha_title' => ['required', 'string', 'max:255'],
-                'pengusaha_description' => ['required', 'string'],
+                'title' => ['required', 'string', 'max:255'],
+                'description' => ['required', 'string'],
                 'pengusaha_category' => ['required', 'exists:food_categories,id'],
                 'min_price' => ['required', 'numeric', 'min:0'],
                 'max_price' => ['required', 'numeric', 'min:0', 'gte:min_price'],
@@ -83,14 +84,13 @@ class RegisteredUserController extends Controller
 
             // Simpan data FoodPlace, gambar pertama sebagai thumbnail
             $foodPlace = FoodPlace::create([
-                'title'            => $validated['pengusaha_title'],
-                'description'      => $validated['pengusaha_description'],
+                'title'            => $validated['title'],
+                'description'      => $validated['description'],
                 'food_category_id' => $validated['pengusaha_category'],
                 'min_price'        => $validated['min_price'],
                 'max_price'        => $validated['max_price'],
                 'location'         => $validated['pengusaha_location'],
                 'source_location'  => $validated['source_location'] ?? null,
-                'image'            => $imagePaths[0], // thumbnail
                 'user_id'          => $user->id,
             ]);
 
