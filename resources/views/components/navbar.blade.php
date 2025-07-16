@@ -1,32 +1,31 @@
 <nav class="bg-white shadow-lg z-50 fixed w-full top-0 left-0">
     <div class="container mx-auto px-6">
         <div class="flex justify-between items-center py-4">
-            <!-- Logo with animation -->
-            <div class=" flex items-center">
-                <a href="{{ route('home') }}" class=" flex items-center group">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-500 group-hover:text-orange-600 transition-all duration-300 transform group-hover:rotate-12" viewBox="0 0 24 24" fill="currentColor">
-    <!-- Utensil Set Icon -->
-    <path d="M8 1a2 2 0 0 1 2 2v2h4V3a2 2 0 1 1 4 0v2a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3V3a2 2 0 0 1 2-2z"/>
-    <!-- Plate/Bowl -->
-    <path d="M4 10a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1 1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" fill="#fff"/>
-    <!-- Food (noodles or garnish) -->
-    <path d="M5 12h14v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1z" fill="#f59e0b" opacity="0.8"/>
-</svg>
+            <!-- Logo dengan animasi looping -->
+            <div class="flex items-center">
+                <a href="{{ route('home') }}" class="flex items-center group">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-500 group-hover:text-orange-600 transition-all duration-300 transform group-hover:rotate-12 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
+                        <!-- Ikon peralatan makan -->
+                        <path d="M8 1a2 2 0 0 1 2 2v2h4V3a2 2 0 1 1 4 0v2a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3V3a2 2 0 0 1 2-2z"/>
+                        <!-- Piring/Mangkuk -->
+                        <path d="M4 10a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1 1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" fill="#fff"/>
+                        <!-- Makanan (mie atau hiasan) -->
+                        <path d="M5 12h14v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1z" fill="#f59e0b" opacity="0.8"/>
+                    </svg>
                     <span class="text-xl font-bold text-gray-800 ml-1 group-hover:text-orange-500 transition-all duration-300 transform group-hover:translate-x-1">Santara</span>
                 </a>
             </div>
 
-            <!-- Primary Navbar items with hover animations -->
+            <!-- Menu utama untuk desktop -->
             <div class="hidden md:flex items-center space-x-1 md:space-x-4">
                 <a href="/" class="px-4 py-2 text-gray-700 hover:text-orange-500 hover:bg-gray-50 rounded-md transition-all duration-300 hover:scale-105">Beranda</a>
                 <a href="/food-places" class="px-4 py-2 text-gray-700 hover:text-orange-500 hover:bg-gray-50 rounded-md transition-all duration-300 hover:scale-105">Kategori</a>
-                <a href="#" class="px-4 py-2 text-gray-700 hover:text-orange-500 hover:bg-gray-50 rounded-md transition-all duration-300 hover:scale-105">Rekomendasi</a>
             </div>
 
-            <!-- Secondary Navbar items -->
+            <!-- Menu untuk pengguna yang login/logout -->
             <div class="hidden md:flex items-center space-x-3">
                 @auth
-                    <!-- Animated Dropdown with Alpine.js -->
+                    <!-- Dropdown dengan Alpine.js -->
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open" class="flex items-center space-x-2 font-medium transition-all duration-300 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md hover:shadow-md">
                             <span>{{ Auth::user()->name }}</span>
@@ -73,7 +72,7 @@
                 @endauth
             </div>
 
-            <!-- Animated Mobile menu button -->
+            <!-- Tombol menu mobile -->
             <div class="md:hidden flex items-center">
                 <button class="mobile-menu-button focus:outline-none transition-transform duration-300 hover:scale-110">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700 hover:text-orange-500 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -84,16 +83,13 @@
         </div>
     </div>
 
-    <!-- Animated Mobile menu -->
+    <!-- Menu mobile -->
     <div class="mobile-menu hidden md:hidden">
         <div class="px-4 py-3 space-y-1 bg-white border-t border-gray-100">
             <a href="/" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-orange-500 rounded-md transition-all duration-300 hover:pl-6">Beranda</a>
             <a href="/food-places" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-orange-500 rounded-md transition-all duration-300 hover:pl-6">Kategori</a>
-            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-orange-500 rounded-md transition-all duration-300 hover:pl-6">Rekomendasi</a>
 
             @auth
-                <a href="/form-pendaftaran-usaha" class="block px-4 py-2 text-white bg-green-500 hover:bg-green-600 rounded-md transition-all duration-300 hover:pl-6 hover:shadow-md">Daftar Usaha</a>
-
                 <div class="pt-2 mt-2 border-t border-gray-100">
                     <a href="{{ route('profile.edit') }}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-orange-500 rounded-md transition-all duration-300 hover:pl-6">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -122,40 +118,26 @@
 </nav>
 
 <script>
-    // Grab HTML Elements
+    // Fungsi untuk menu mobile
     const btn = document.querySelector(".mobile-menu-button");
     const menu = document.querySelector(".mobile-menu");
 
-    // Add Event Listeners with animation
     btn.addEventListener("click", () => {
-        // Toggle menu with animation
         if (menu.classList.contains("hidden")) {
-            // Show menu with animation
             menu.classList.remove("hidden");
             menu.style.maxHeight = "0px";
             menu.style.opacity = "0";
             menu.style.overflow = "hidden";
             menu.style.transition = "max-height 0.5s ease, opacity 0.3s ease";
-
-            // Force a reflow to ensure the transition works
             menu.offsetHeight;
-
-            // Set the new height and opacity
             menu.style.maxHeight = menu.scrollHeight + "px";
             menu.style.opacity = "1";
-
-            // Rotate the button icon
             btn.querySelector("svg").style.transform = "rotate(90deg)";
             btn.querySelector("svg").style.transition = "transform 0.3s ease";
         } else {
-            // Hide menu with animation
             menu.style.maxHeight = "0px";
             menu.style.opacity = "0";
-
-            // Reset the button icon
             btn.querySelector("svg").style.transform = "rotate(0deg)";
-
-            // Add the hidden class after the animation
             setTimeout(() => {
                 menu.classList.add("hidden");
                 menu.style.maxHeight = "";
@@ -165,10 +147,23 @@
         }
     });
 
-    // Add smooth scroll for navigation links
+    // Animasi looping untuk logo
+    const logo = document.querySelector('nav a[href="{{ route('home') }}"] svg');
+
+    function pulseLogo() {
+        logo.classList.remove('animate-pulse');
+        void logo.offsetWidth; // Trigger reflow
+        setTimeout(() => {
+            logo.classList.add('animate-pulse');
+        }, 50);
+    }
+
+    // Jalankan animasi setiap 5 detik
+    setInterval(pulseLogo, 5000);
+
+    // Efek ripple untuk link navigasi
     document.querySelectorAll('nav a[href^="/"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            // Add a click ripple effect
             const ripple = document.createElement('span');
             ripple.classList.add('ripple');
             this.appendChild(ripple);
@@ -198,7 +193,7 @@
 </script>
 
 <style>
-    /* Add ripple effect animation */
+    /* Animasi ripple effect */
     @keyframes rippleEffect {
         to {
             transform: scale(4);
@@ -206,12 +201,26 @@
         }
     }
 
-    /* Add a global style for smoother transitions */
+    /* Animasi pulse untuk logo */
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+    }
+
+    .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    /* Transisi global */
     * {
         transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
     }
 
-    /* Make the navbar links relative for the ripple effect */
+    /* Style untuk efek ripple */
     nav a {
         position: relative;
         overflow: hidden;

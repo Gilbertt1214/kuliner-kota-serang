@@ -47,8 +47,8 @@ class RegisteredUserController extends Controller
                 'pengusaha_category' => ['required', 'exists:food_categories,id'],
                 'min_price' => ['required', 'numeric', 'min:0'],
                 'max_price' => ['required', 'numeric', 'min:0', 'gte:min_price'],
-                'pengusaha_location' => ['required', 'string', 'max:255'],
-                'source_location' => ['nullable', 'url', 'max:255'],
+                'pengusaha_location' => ['required', 'string', ],
+                'source_location' => ['nullable', 'url', ],
                 'pengusaha_image' => ['required', 'array', 'min:1', 'max:5'],
                 'pengusaha_image.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ]);

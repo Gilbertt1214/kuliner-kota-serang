@@ -14,6 +14,20 @@ class FoodPlaceController extends Controller
         return view('layouts.food-places', ['foodPlaces' => $foodPlaces]);
     }
     /**
+     * Display the specified food place.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function show($id)
+    {
+        $foodPlace = FoodPlace::with(['category', 'reviews.user', 'image_path'])
+            ->findOrFail($id);
+
+        return view('layouts.food-place-detail', ['foodPlace' => $foodPlace]);
+    }
+
+    /**
      * Show the food place registration form.
      *
      * @return \Illuminate\View\View

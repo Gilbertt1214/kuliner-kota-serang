@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\FoodCategories;
+use App\Models\Review;
+use App\Models\FoodPlaceImage;
 
 class FoodPlace extends Model
 {
@@ -26,5 +30,14 @@ public function reviews() {
     return $this->hasMany(Review::class);
 }
 
+public function category()
+{
+    return $this->belongsTo(FoodCategories::class, 'food_category_id');
+}
+
+public function images()
+{
+    return $this->hasMany(FoodPlaceImage::class);
+}
 
 }

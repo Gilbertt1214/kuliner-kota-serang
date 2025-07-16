@@ -18,7 +18,7 @@
     @include('components.navbar')
 
     <!-- Main Content -->
-    <main class=" mx-auto px-10 py-6">
+    <main class=" py-6">
         @yield('content')
     </main>
 
