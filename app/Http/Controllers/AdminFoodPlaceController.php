@@ -6,12 +6,16 @@ use App\Models\FoodPlace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class FoodPlaceController extends Controller
+class AdminFoodPlaceController extends Controller
 {
 
     public function index() {
-        $foodPlaces = FoodPlace::all();
-        return view('layouts.food-places', ['foodPlaces' => $foodPlaces]);
+        $foodPlaces = FoodPlace::with(['category', 'reviews.user', 'images'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return view('admin.food-places.index', [
+            'foodPlaces' => $foodPlaces,
+        ]);
     }
     /**
      * Display the specified food place.

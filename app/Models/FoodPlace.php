@@ -21,9 +21,10 @@ protected $fillable = [
     'max_price',
     'location',
     'source_location',
-    'image',
+    'images',
     'user_id',
     'status',
+
 ];
 
 public function reviews() {

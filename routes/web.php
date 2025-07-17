@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FoodPlaceController;
+use App\Http\Controllers\AdminFoodPlaceController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BusinessController;
@@ -10,6 +11,8 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\AdminUserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,13 +51,23 @@ Route::post('/food-place/{id}/review', [ReviewController::class, 'store'])->midd
 Route::get('/food-place/{id}/reviews', [ReviewController::class, 'index'])->name('review.index');
 
 
-// ---------------- Admin Routes ----------------
-Route::middleware(['auth', 'is_admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/food-places', [FoodPlaceController::class, 'adminIndex'])->name('admin.food-places.index');
-    Route::get('/admin/food-place/{id}', [FoodPlaceController::class, 'adminShow'])->name('admin.food-place.show');
-    Route::post('/admin/food-place/{id}/approve', [FoodPlaceController::class, 'approve'])->name('admin.food-place.approve');
-    Route::post('/admin/food-place/{id}/reject', [FoodPlaceController::class, 'reject'])->name('admin.food-place.reject');
+
+Route::prefix('admin')->name('admin.')->group(function() {
+    // ---------------- Admin Routes ----------------
+// Route::middleware(['auth', 'is_admin'])->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/food-places', [AdminFoodPlaceController::class, 'index'])->name('food-places.index');
+    Route::get('/food-place/{id}', [FoodPlaceController::class, 'index'])->name('food-place.show');
+
+    // ADMIN CATEGORY ROUTES
+    Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
+
+    // ADMIN USER ROUTES
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+
+    // Logout route
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    // });
 });
 
 
