@@ -13,27 +13,36 @@
             <div class="flex justify-center mb-6 animate-bounce">
                 <a href="{{ route('home') }}" class="flex items-center">
                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-orange-500 group-hover:text-orange-600 transition-all duration-300 transform group-hover:rotate-12" viewBox="0 0 24 24" fill="currentColor">
-    <!-- Utensil Set Icon -->
-    <path d="M8 1a2 2 0 0 1 2 2v2h4V3a2 2 0 1 1 4 0v2a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3V3a2 2 0 0 1 2-2z"/>
-    <!-- Plate/Bowl -->
-    <path d="M4 10a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1 1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" fill="#fff"/>
-    <!-- Food (noodles or garnish) -->
-    <path d="M5 12h14v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1z" fill="#f59e0b" opacity="0.8"/>
-</svg>
+                    <!-- Utensil Set Icon -->
+                    <path d="M8 1a2 2 0 0 1 2 2v2h4V3a2 2 0 1 1 4 0v2a3 3 0 0 1 3 3v1a3 3 0 0 1-3 3v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3V3a2 2 0 0 1 2-2z"/>
+                    <!-- Plate/Bowl -->
+                    <path d="M4 10a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1 1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" fill="#fff"/>
+                    <!-- Food (noodles or garnish) -->
+                    <path d="M5 12h14v1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1z" fill="#f59e0b" opacity="0.8"/>
+                </svg>
                     <span class="text-2xl font-bold text-gray-800 ml-2">Santara</span>
                 </a>
             </div>
 
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6 animate-fade-in-down">REGISTER</h2>
+
             @if ($errors->any())
-    <div style="color:red;">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+                <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div class="flex">
+                        <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                        </svg>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">Ada beberapa error:</h3>
+                            <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                 @csrf
@@ -56,9 +65,6 @@
                     @enderror
                 </div>
 
-                <!-- Role Selection -->
-
-
                 <!-- Password -->
                 <div class="mt-4 animate-fade-in-up" style="animation-delay: 0.3s">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
@@ -76,13 +82,15 @@
                         <p class="mt-2 text-sm text-red-600 animate-shake">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <!-- Role Selection -->
                 <div class="mt-4 animate-fade-in-up" style="animation-delay: 0.25s">
                     <label for="role" class="block text-sm font-medium text-gray-700 mb-3">Daftar Sebagai</label>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="border border-gray-300 rounded-lg p-3 hover:border-orange-500 transition-colors duration-200">
                             <div class="flex items-start">
                                 <input id="role_user" name="role" type="radio" value="user" class="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 mt-1" {{ old('role') == 'user' ? 'checked' : '' }} required>
-<label for="role_user" class="ml-3 block text-sm font-medium text-gray-700 cursor-pointer">
+                                <label for="role_user" class="ml-3 block text-sm font-medium text-gray-700 cursor-pointer">
                                     <div class="flex items-center mb-1">
                                         <svg class="w-5 h-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -103,7 +111,7 @@
                                         </svg>
                                         <span>Pengusaha</span>
                                     </div>
-                                    <p class="text-xs text-gray-500">saya ingin mendaftarkan usaha </p>
+                                    <p class="text-xs text-gray-500">saya ingin mendaftarkan usaha</p>
                                 </label>
                             </div>
                         </div>
@@ -113,7 +121,7 @@
                     @enderror
                 </div>
 
-                <!-- pengusaha Fields (Hidden by default, shown when role = pengusaha) -->
+                <!-- Pengusaha Fields -->
                 <div id="pengusaha-fields" class="space-y-4 mt-4" style="display: none;">
                     <div class="p-4 bg-orange-50 rounded-lg border border-orange-200">
                         <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
@@ -123,17 +131,23 @@
                             Informasi Usaha
                         </h3>
 
-                        <!-- pengusaha Title -->
+                        <!-- Nama Usaha -->
                         <div class="space-y-2">
-                            <label for="pengusaha_title" class="block text-sm font-medium text-gray-700">Nama Usaha <span class="text-red-500">*</span></label>
-                            <input type="text" name="title" id="title" value="{{ old('pengusaha_title') }}" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
+                            <label for="title" class="block text-sm font-medium text-gray-700">Nama Usaha <span class="text-red-500">*</span></label>
+                            <input type="text" name="title" id="title" value="{{ old('title') }}" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
+                            @error('title')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
-                        <!-- pengusaha Description -->
+                        <!-- Deskripsi Usaha -->
                         <div class="space-y-2 mt-4">
-                            <label for="pengusaha_description" class="block text-sm font-medium text-gray-700">Deskripsi Usaha <span class="text-red-500">*</span></label>
-                            <textarea name="description" id="description" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">{{ old('pengusaha_description') }}</textarea>
+                            <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi Usaha <span class="text-red-500">*</span></label>
+                            <textarea name="description" id="description" rows="3" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">{{ old('description') }}</textarea>
                             <p class="text-sm text-gray-500">Jelaskan tentang usaha kuliner Anda, menu spesial, jam operasional, dll.</p>
+                            @error('description')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Category -->
@@ -145,6 +159,9 @@
                                     <option value="{{ $foodCategory->id }}" {{ old('pengusaha_category') == $foodCategory->id ? 'selected' : '' }}>{{ $foodCategory->name }}</option>
                                 @endforeach
                             </select>
+                            @error('pengusaha_category')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Price Range -->
@@ -159,7 +176,7 @@
                                     <input type="number" name="min_price" id="min_price" value="{{ old('min_price') }}" min="0" class="block w-full pl-12 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
                                 </div>
                                 @error('min_price')
-                                    <p class="text-red-500 text-sm mt-1">with error: {{ $message }}</p>
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -173,7 +190,7 @@
                                     <input type="number" name="max_price" id="max_price" value="{{ old('max_price') }}" min="0" class="block w-full pl-12 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
                                 </div>
                                 @error('max_price')
-                                    <p class="text-red-500 text-sm mt-1">with error: {{ $message }}</p>
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -183,6 +200,9 @@
                             <label for="pengusaha_location" class="block text-sm font-medium text-gray-700">Alamat Usaha <span class="text-red-500">*</span></label>
                             <input type="text" name="pengusaha_location" id="pengusaha_location" value="{{ old('pengusaha_location') }}" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out">
                             <p class="text-sm text-gray-500">Masukkan alamat lengkap usaha Anda.</p>
+                            @error('pengusaha_location')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Google Maps Link -->
@@ -190,32 +210,81 @@
                             <label for="source_location" class="block text-sm font-medium text-gray-700">Link Google Maps</label>
                             <input type="url" name="source_location" id="source_location" value="{{ old('source_location') }}" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition duration-300 ease-in-out" placeholder="https://maps.google.com/...">
                             <p class="text-sm text-gray-500">Tambahkan link Google Maps untuk lokasi usaha Anda (opsional).</p>
+                            @error('source_location')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
 
-                        <!-- Image Upload -->
+                        <!-- Foto Usaha -->
                         <div class="space-y-2 mt-4">
                             <label for="pengusaha_image" class="block text-sm font-medium text-gray-700">
                                 Foto Usaha <span class="text-red-500">*</span>
                             </label>
-                            <div class="mt-1 flex items-center">
-                                <div class="w-full">
-                                    <label
-                                        class="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none cursor-pointer transition duration-300 ease-in-out transform hover:scale-105"
-                                    >
-                                        <span id="file-name">Pilih Foto kuliner</span>
-                                        <input type="file" name="pengusaha_image[]" id="pengusaha_image" multiple ...>
-
-                                    </label>
-                                </div>
+                            <div class="mt-1">
+                                <label class="block w-full px-4 py-3 bg-white border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none cursor-pointer transition duration-300 ease-in-out transform hover:scale-105">
+                                    <div class="flex items-center justify-center">
+                                        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        </svg>
+                                        <span id="business-file-name">Pilih Foto Usaha (Maksimal 5 foto)</span>
+                                    </div>
+                                    <input type="file" name="pengusaha_image[]" id="pengusaha_image" multiple accept="image/*" class="hidden">
+                                </label>
                             </div>
-                            <div id="image-preview" class="mt-2 flex flex-wrap gap-2"></div>
+                            <div id="business-image-preview" class="mt-2 grid
+                            grid-cols-2 md:grid-cols-3 gap-2">
+                        </div>
                             <p class="text-sm text-gray-500">
                                 Unggah foto usaha Anda (Max: 2MB per file, Format: JPG, PNG, maksimal 5 foto).
                             </p>
+                            @error('pengusaha_image')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
+
+                        <!-- Foto Menu -->
+                        {{-- <div class="space-y-2 mt-6">
+    <label class="block text-sm font-medium text-gray-700">
+        <div class="flex items-center">
+            <svg class="w-5 h-5 text-orange-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            Menu Makanan/Minuman <span class="text-red-500">*</span>
+        </div>
+    </label>
+
+    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+        <div class="flex justify-between items-center mb-4">
+            <h4 class="text-md font-semibold text-gray-800">Daftar Menu</h4>
+            <button type="button" id="add-menu-item" class="px-3 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition duration-200 flex items-center">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                Tambah Menu
+            </button>
+        </div>
+
+        <div id="menu-items-container" class="space-y-4">
+            <!-- Menu item template akan ditambahkan di sini via JavaScript -->
+        </div>
+
+        <div id="no-menu-message" class="text-center py-8 text-gray-500">
+            <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <p>Belum ada menu yang ditambahkan</p>
+            <p class="text-sm">Klik "Tambah Menu" untuk menambahkan item menu</p>
+        </div>
+    </div>
+
+    @error('menu_items')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div> --}}
                     </div>
                 </div>
 
+                <!-- Submit Button -->
                 <div class="mt-6 animate-fade-in-up" style="animation-delay: 0.5s">
                     <button type="submit" class="px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md w-full">
                         <span id="submit-text">Daftar</span>
@@ -223,6 +292,7 @@
                 </div>
             </form>
 
+            <!-- Login Link -->
             <div class="mt-6 text-center animate-fade-in-up" style="animation-delay: 0.6s">
                 <p class="text-sm text-gray-600">
                     Sudah punya akun?
@@ -232,15 +302,14 @@
                 </p>
             </div>
 
+            <!-- Social Login -->
             <div class="mt-6 animate-fade-in-up" style="animation-delay: 0.7s">
                 <div class="relative">
                     <div class="absolute inset-0 flex items-center">
                         <div class="w-full border-t border-gray-300"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-white text-gray-500">
-                            Atau daftar dengan
-                        </span>
+                        <span class="px-2 bg-white text-gray-500">Atau daftar dengan</span>
                     </div>
                 </div>
 
@@ -270,103 +339,185 @@
             const roleRadios = document.querySelectorAll('input[name="role"]');
             const pengusahaFields = document.getElementById('pengusaha-fields');
             const submitText = document.getElementById('submit-text');
-            const pengusahaImage = document.getElementById('pengusaha_image');
-            const fileName = document.getElementById('file-name');
-            const imagePreview = document.getElementById('image-preview');
 
-            function togglepengusahaFields() {
+            // Image upload elements
+            const pengusahaImage = document.getElementById('pengusaha_image');
+            const businessFileName = document.getElementById('business-file-name');
+            const businessImagePreview = document.getElementById('business-image-preview');
+
+            const menuImages = document.getElementById('menu_images');
+            const menuFileName = document.getElementById('menu-file-name');
+            const menuImagePreview = document.getElementById('menu-image-preview');
+
+            function togglePengusahaFields() {
                 const selectedRole = document.querySelector('input[name="role"]:checked');
                 if (selectedRole && selectedRole.value === 'pengusaha') {
                     pengusahaFields.style.display = 'block';
                     pengusahaFields.classList.add('animate-fade-in-up');
                     if (submitText) submitText.textContent = 'Daftarkan Usaha';
-                    setpengusahaFieldsRequired(true);
+                    setPengusahaFieldsRequired(true);
                 } else {
                     pengusahaFields.style.display = 'none';
                     if (submitText) submitText.textContent = 'Daftar';
-                    setpengusahaFieldsRequired(false);
+                    setPengusahaFieldsRequired(false);
                 }
             }
 
-            function setpengusahaFieldsRequired(required) {
+            function setPengusahaFieldsRequired(required) {
                 const requiredFields = [
-                    'pengusaha_title',
-                    'pengusaha_description',
+                    'title',
+                    'description',
                     'pengusaha_category',
                     'min_price',
                     'max_price',
                     'pengusaha_location',
-                    'pengusaha_image'
+                    'pengusaha_image',
+                    'menu_images'
                 ];
                 requiredFields.forEach(fieldName => {
                     const field = document.getElementById(fieldName);
                     if (field != null) {
-                        if (required) field.setAttribute('required', 'required');
-                        else field.removeAttribute('required');
+                        if (required) {
+                            field.setAttribute('required', 'required');
+                        } else {
+                            field.removeAttribute('required');
+                        }
                     }
                 });
             }
 
+            function validateFileSize(file, maxSize = 2 * 1024 * 1024) {
+                return file.size <= maxSize;
+            }
+
+            function validateFileType(file) {
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                return allowedTypes.includes(file.type);
+            }
+
+            function createImagePreview(file, container) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'relative group';
+                    previewDiv.innerHTML = `
+                        <img src="${e.target.result}"
+                             alt="Preview"
+                             class="w-full h-24 object-cover rounded-lg border border-gray-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
+                            <span class="text-white text-xs font-medium">${file.name}</span>
+                        </div>
+                    `;
+                    container.appendChild(previewDiv);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Handle business image upload
             if (pengusahaImage) {
-                pengusahaImage.addEventListener('change', function (e) {
+                pengusahaImage.addEventListener('change', function(e) {
                     const files = e.target.files;
-                    imagePreview.innerHTML = '';
+                    businessImagePreview.innerHTML = '';
+
                     if (files.length === 0) {
-                        fileName.textContent = 'Pilih Foto (max 5)';
-                        imagePreview.classList.add('hidden');
+                        businessFileName.textContent = 'Pilih Foto Usaha (Maksimal 5 foto)';
                         return;
                     }
 
                     if (files.length > 5) {
-                        alert('Anda hanya boleh memilih maksimal 5 foto.');
+                        alert('Anda hanya boleh memilih maksimal 5 foto untuk usaha.');
                         pengusahaImage.value = '';
-                        fileName.textContent = 'Pilih Foto (max 5)';
-                        imagePreview.classList.add('hidden');
+                        businessFileName.textContent = 'Pilih Foto Usaha (Maksimal 5 foto)';
                         return;
                     }
 
-                    fileName.textContent = `${files.length} file dipilih`;
+                    let invalidFiles = [];
+                    let validFiles = [];
 
-                    let invalidFile = false;
                     for (let i = 0; i < files.length; i++) {
                         const file = files[i];
-                        if (file.size > 2 * 1024 * 1024) {
-                            alert(`File ${file.name} terlalu besar. Maksimal 2MB.`);
-                            invalidFile = true;
-                            break;
+
+                        if (!validateFileType(file)) {
+                            invalidFiles.push(`${file.name} (format tidak didukung)`);
+                        } else if (!validateFileSize(file)) {
+                            invalidFiles.push(`${file.name} (ukuran terlalu besar)`);
+                        } else {
+                            validFiles.push(file);
+                            createImagePreview(file, businessImagePreview);
                         }
-                        const reader = new FileReader();
-                        reader.onload = function (e) {
-                            const img = document.createElement('img');
-                            img.src = e.target.result;
-                            img.alt = `Preview Foto ${i + 1}`;
-                            img.className = 'h-40 w-auto object-cover rounded-lg';
-                            imagePreview.appendChild(img);
-                        }
-                        reader.readAsDataURL(file);
                     }
 
-                    if (invalidFile) {
+                    if (invalidFiles.length > 0) {
+                        alert('File berikut tidak valid:\n' + invalidFiles.join('\n') + '\n\nHanya file JPG, PNG dengan ukuran maksimal 2MB yang diperbolehkan.');
+                    }
+
+                    if (validFiles.length > 0) {
+                        businessFileName.textContent = `${validFiles.length} foto usaha dipilih`;
+                    } else {
+                        businessFileName.textContent = 'Pilih Foto Usaha (Maksimal 5 foto)';
                         pengusahaImage.value = '';
-                        fileName.textContent = 'Pilih Foto (max 5)';
-                        imagePreview.innerHTML = '';
-                        imagePreview.classList.add('hidden');
-                        return;
                     }
-
-                    imagePreview.classList.remove('hidden');
                 });
             }
 
+            // Handle menu image upload
+            if (menuImages) {
+                menuImages.addEventListener('change', function(e) {
+                    const files = e.target.files;
+                    menuImagePreview.innerHTML = '';
+
+                    if (files.length === 0) {
+                        menuFileName.textContent = 'Pilih Foto Menu (Maksimal 10 foto)';
+                        return;
+                    }
+
+                    if (files.length > 10) {
+                        alert('Anda hanya boleh memilih maksimal 10 foto untuk menu.');
+                        menuImages.value = '';
+                        menuFileName.textContent = 'Pilih Foto Menu (Maksimal 10 foto)';
+                        return;
+                    }
+
+                    let invalidFiles = [];
+                    let validFiles = [];
+
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+
+                        if (!validateFileType(file)) {
+                            invalidFiles.push(`${file.name} (format tidak didukung)`);
+                        } else if (!validateFileSize(file)) {
+                            invalidFiles.push(`${file.name} (ukuran terlalu besar)`);
+                        } else {
+                            validFiles.push(file);
+                            createImagePreview(file, menuImagePreview);
+                        }
+                    }
+
+                    if (invalidFiles.length > 0) {
+                        alert('File berikut tidak valid:\n' + invalidFiles.join('\n') + '\n\nHanya file JPG, PNG dengan ukuran maksimal 2MB yang diperbolehkan.');
+                    }
+
+                    if (validFiles.length > 0) {
+                        menuFileName.textContent = `${validFiles.length} foto menu dipilih`;
+                    } else {
+                        menuFileName.textContent = 'Pilih Foto Menu (Maksimal 10 foto)';
+                        menuImages.value = '';
+                    }
+                });
+            }
+
+            // Role change handlers
             roleRadios.forEach(radio => {
-                radio.addEventListener('change', togglepengusahaFields);
+                radio.addEventListener('change', togglePengusahaFields);
             });
 
-            togglepengusahaFields();
+            // Initialize
+            togglePengusahaFields();
         });
     </script>
 
-    <!-- Tambahkan style untuk animasi -->
+    <!-- CSS Animations -->
     <style>
         @keyframes float1 {
             0%, 100% { transform: translateY(0) translateX(0); }
@@ -410,6 +561,29 @@
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
+        }
+
+        /* Custom scrollbar for image preview areas */
+        #business-image-preview::-webkit-scrollbar,
+        #menu-image-preview::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        #business-image-preview::-webkit-scrollbar-track,
+        #menu-image-preview::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 2px;
+        }
+
+        #business-image-preview::-webkit-scrollbar-thumb,
+        #menu-image-preview::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 2px;
+        }
+
+        #business-image-preview::-webkit-scrollbar-thumb:hover,
+        #menu-image-preview::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
         }
     </style>
 </x-guest-layout>

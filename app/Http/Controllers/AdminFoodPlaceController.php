@@ -3,95 +3,205 @@
 namespace App\Http\Controllers;
 
 use App\Models\FoodPlace;
+use App\Models\FoodCategories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class AdminFoodPlaceController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = FoodPlace::with(['category', 'reviews.user', 'images'])
+            ->withCount('reviews')
+            ->withAvg('reviews as average_rating', 'rating')
+            ->orderBy('created_at', 'desc');
 
-    public function index() {
-        $foodPlaces = FoodPlace::with(['category', 'reviews.user', 'images'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        // Filter by category
+        if ($request->filled('category')) {
+            $query->where('food_category_id', $request->category);
+        }
+
+        // Filter by rating
+        if ($request->filled('rating')) {
+            $rating = $request->rating;
+            if (str_contains($rating, '+')) {
+                $minRating = (int) str_replace('+', '', $rating);
+                $query->having('average_rating', '>=', $minRating);
+            } else {
+                $query->having('average_rating', '>=', $rating)
+                    ->having('average_rating', '<', $rating + 1);
+            }
+        }
+
         return view('admin.food-places.index', [
-            'foodPlaces' => $foodPlaces,
+            'foodPlaces' => $query->paginate(10),
+            'categories' => FoodCategories::all(),
+            'selectedCategory' => $request->category,
+            'selectedRating' => $request->rating,
         ]);
     }
-    /**
-     * Display the specified food place.
-     *
-     * @param  int  $id
-     * @return \Illuminate\View\View
-     */
-    public function show($id)
-    {
-        $foodPlace = FoodPlace::with(['category', 'reviews.user', 'images'])
-            ->findOrFail($id);
+    public function save(Request $request)
+{
+    // Simpan data khusus
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'food_category_id' => 'required|exists:food_categories,id',
+        'min_price' => 'required|numeric|min:0',
+        'max_price' => 'required|numeric|min:0|gte:min_price',
+        'location' => 'required|string|max:255',
+        'source_location' => 'nullable|url|max:255',
+        'images' => 'required|array|max:5',
+        'images.*' => 'image|mimes:jpeg,png,jpg|max:5120', // 5MB
+    ], [
+        'max_price.gte' => 'Harga maksimum harus lebih besar atau sama dengan harga minimum.',
+    ])->validate();
+   
+    // Validasi dan simpan sesuai kebutuhan
+    $foodPlace = FoodPlace::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'food_category_id' => $request->food_category_id,
+        'min_price' => $request->min_price,
+        'max_price' => $request->max_price,
+        'location' => $request->location,
+        'source_location' => $request->source_location,
+        'status' => 'active',
+    ]);
+}
 
-
-        return view('layouts.food-place-detail', ['foodPlace' => $foodPlace]);
-    }
-
-    /**
-     * Show the food place registration form.
-     *
-     * @return \Illuminate\View\View
-     */
     public function create()
     {
-        return view('auth.register');
+        return view('admin.food-places.create', [
+            'categories' => FoodCategories::all()
+        ]);
     }
 
-    /**
-     * Store a newly created food place in the database.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(Request $request)
     {
-        // Validasi input form
         $validated = $request->validate([
-            'title'            => 'required|string|max:255',
-            'description'      => 'required|string',
-            'category'         => 'required|string|max:100',
-            'min_price'        => 'required|numeric|min:0',
-            'max_price'        => 'required|numeric|min:0|gte:min_price',
-            'location'         => 'required|string|max:255',
-            'source_location'  => 'nullable|url|max:255',
-            'image'            => 'required|array|max:5',
-            'image.*'          => 'image|mimes:jpeg,png,jpg|max:2048',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'food_category_id' => 'required|exists:food_categories,id',
+            'min_price' => 'required|numeric|min:0',
+            'max_price' => 'required|numeric|min:0|gte:min_price',
+            'location' => 'required|string|max:255',
+            'source_location' => 'nullable|url',
+            'images' => 'required|array|max:5',
+            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ], [
             'max_price.gte' => 'Harga maksimum harus lebih besar atau sama dengan harga minimum.',
         ]);
 
-        // Handle upload gambar
-        if ($request->hasFile('image')) {
-            if ($request->hasFile('image')) {
-                foreach ($request->file('image') as $image) {
-                    $imageName = Str::slug($validated['title']) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-                    $imagePath = 'images/food-places/' . $imageName;
-                    $image->move(public_path('images/food-places'), $imageName);
-                    $imagePaths[] = $imagePath;
-                }
-            }
-
-        // Simpan data tempat makan ke database
-        FoodPlace::create([
-            'title'           => $validated['title'],
-            'description'     => $validated['description'],
-            'category'        => $validated['category'],
-            'min_price'       => $validated['min_price'],
-            'max_price'       => $validated['max_price'],
-            'location'        => $validated['location'],
-            'source_location' => $validated['source_location'] ?? null,
-            'image'           => $validated['image'],
-            'status'          => 'pending', // default status menunggu persetujuan admin
+        $foodPlace = FoodPlace::create([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'food_category_id' => $validated['food_category_id'],
+            'min_price' => $validated['min_price'],
+            'max_price' => $validated['max_price'],
+            'location' => $validated['location'],
+            'source_location' => $validated['source_location'],
+            'status' => 'active',
         ]);
 
+        // Handle image uploads
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('public/food-places');
+                $foodPlace->images()->create([
+                    'image_path' => str_replace('public/', '', $path)
+                ]);
+            }
+        }
+
         return redirect()
-            ->route('food-places.index')
-            ->with('success', 'Tempat makan berhasil didaftarkan dan menunggu persetujuan admin!');
+            ->route('admin.food-places.index')
+            ->with('success', 'Tempat makan berhasil ditambahkan!');
     }
- }
+
+    public function show($id)
+    {
+          $foodPlace = FoodPlace::with(['images', 'category', 'reviews'])->findOrFail($id);
+        // $foodPlace->increment('views_count'); // Increment view count
+        return view('layouts.food-place-detail', compact('foodPlace'));
+    }
+
+  public function edit($id)
+{
+    $foodPlace = FoodPlace::findOrFail($id);
+    $categories = FoodCategories::all();
+    return view('admin.food-places.edit', compact('foodPlace', 'categories'));
+}
+    public function update(Request $request, $id)
+{
+    $foodPlace = FoodPlace::findOrFail($id);
+
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'food_category_id' => 'required|exists:food_categories,id',
+        'price_min' => 'required|numeric|min:0',
+        'price_max' => 'required|numeric|min:0|gte:price_min',
+        'location' => 'required|string|max:255',
+        'source_location' => 'nullable|url|max:255',
+        'images' => 'sometimes|array|max:5',
+        'images.*' => 'image|mimes:jpeg,png,jpg|max:5120', // 5MB
+        'delete_images' => 'sometimes|array',
+    ], [
+        'price_max.gte' => 'Harga maksimum harus lebih besar atau sama dengan harga minimum.',
+    ]);
+
+      $foodPlace = FoodPlace::findOrFail($id);
+    $foodPlace->update($validated);
+
+    $foodPlace->update([
+        'title' => $validated['title'],
+        'description' => $validated['description'],
+        'food_category_id' => $validated['food_category_id'],
+        'min_price' => $validated['price_min'],
+        'max_price' => $validated['price_max'],
+        'location' => $validated['location'],
+        'source_location' => $validated['source_location'],
+    ]);
+
+    // Handle deleted images
+   if ($request->has('delete_images')) {
+        foreach ($request->delete_images as $imageId) {
+            $image = $foodPlace->images()->find($imageId);
+            if ($image) {
+                Storage::delete('public/' . $image->image_path);
+                $image->delete();
+            }
+        }
+    }
+
+    // Handle new image uploads
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('public/food-places');
+            $foodPlace->images()->create([
+                'image_path' => str_replace('public/', '', $path)
+            ]);
+        }
+    }
+
+    return redirect()->route('admin.food-places.index')
+                   ->with('success', 'Food place updated successfully!');
+}
+
+    public function destroy(FoodPlace $foodPlace)
+    {
+        // Delete associated images
+        foreach ($foodPlace->images as $image) {
+            Storage::delete('public/' . $image->image_path);
+            $image->delete();
+        }
+
+        $foodPlace->delete();
+
+        return redirect()
+            ->route('admin.food-places.index')
+            ->with('success', 'Tempat makan berhasil dihapus!');
+    }
 }

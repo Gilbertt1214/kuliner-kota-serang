@@ -1,11 +1,14 @@
 <?php
 // app/Http/Kernel.php
 
-namespace App\Http\Middleware;
+namespace App\Http;
+use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use App\Http\Middleware\IsAdmin;
 
-class Kernel
+
+class Kernel extends HttpKernel
 {
-protected $routeMiddleware = [
+    protected $routeMiddleware = [
     'auth' => \App\Http\Middleware\Authenticate::class,
     'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
     'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
@@ -15,7 +18,6 @@ protected $routeMiddleware = [
     'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
     'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-    'is_admin' => \App\Http\Middleware\IsAdmin::class,
-    // ...
+    'is_admin' => IsAdmin::class, // Middleware to check if user is admin
 ];
 }

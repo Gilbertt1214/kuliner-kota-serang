@@ -11,7 +11,7 @@
                     <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">Temukan Kuliner Terbaik di Kota Serang</h1>
                     <p class="text-xl mb-6 opacity-90">Jelajahi kekayaan kuliner nusantara dari Sabang sampai Merauke. Temukan rekomendasi kuliner terbaik untuk semua selera.</p>
                     <div class="flex space-x-4">
-                        <a href="#" class="px-6 py-3 bg-white text-orange-500 font-medium rounded-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-lg">Jelajahi Sekarang</a>
+                        {{-- <a href="#" class="px-6 py-3 bg-white text-orange-500 font-medium rounded-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-lg">Jelajahi Sekarang</a> --}}
                         <a href="{{ route('food-places.index') }}" class="px-6 py-3 border-2 border-white text-white font-medium rounded-lg hover:bg-white hover:text-orange-500 transition-all duration-300 transform hover:-translate-y-1">Lihat Kategori</a>
                     </div>
                 </div>

@@ -1,25 +1,39 @@
-<div class="flex flex-wrap -mx-3">
-  <div class="flex-none w-full max-w-full px-3">
-    <div class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
-      <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-        <h6>{{ $title }}</h6>
-      </div>
-      <div class="flex-auto px-0 pt-0 pb-2">
-        <div class="p-0 overflow-x-auto">
-          <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
-            <thead class="align-bottom">
-              <tr>
-                @foreach($headers as $header)
-                  <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">{{ $header }}</th>
-                @endforeach
-              </tr>
-            </thead>
-            <tbody>
-              {{ $slot }}
-            </tbody>
-          </table>
-        </div>
-      </div>
+<div class="container mx-auto px-4 py-6">
+  <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <!-- Table Header -->
+    <div class="px-6 py-4 border-b border-gray-100">
+      <h2 class="text-xl font-semibold text-gray-800">{{ $title }}</h2>
     </div>
+
+    <!-- Table Container -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <!-- Table Head -->
+        <thead class="bg-gray-50">
+          <tr>
+            @foreach($headers as $header)
+              <th
+                scope="col"
+                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                {{ $header }}
+              </th>
+            @endforeach
+          </tr>
+        </thead>
+
+        <!-- Table Body -->
+        <tbody class="bg-white divide-y divide-gray-200">
+          {{ $slot }}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Optional Table Footer -->
+    @if(isset($footer))
+      <div class="px-6 py-3 border-t border-gray-100 bg-gray-50">
+        {{ $footer }}
+      </div>
+    @endif
   </div>
 </div>

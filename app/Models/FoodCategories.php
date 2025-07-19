@@ -11,11 +11,15 @@ class FoodCategories extends Model
         // App\Models\FoodPlace.php
     protected $fillable = [
         'name',
-        
+
     ];
 
     public function kategoriPengusaha()
     {
         return $this->hasMany(FoodPlace::class, 'food_category_id');
     }
+    public function category()
+{
+    return $this->belongsTo(FoodCategories::class, 'food_category_id');
+}
 }

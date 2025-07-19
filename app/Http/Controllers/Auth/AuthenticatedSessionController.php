@@ -28,7 +28,17 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('home'));
+        // Cek jika role pengguna redirect ke halaman home jika admin ke
+
+
+        if (Auth::user()->role === 'admin') {
+             return redirect()->route('admin.food-places.index');
+        } elseif (Auth::user()->role === 'pengusaha') {
+            return redirect()->route('pengusaha.dashboard');
+        } else {
+            return redirect('/');
+        }
+
     }
 
     /**
