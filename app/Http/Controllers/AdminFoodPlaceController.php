@@ -58,7 +58,8 @@ class AdminFoodPlaceController extends Controller
     }
 
     public function store(Request $request)
-    {
+{
+    try {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -68,8 +69,23 @@ class AdminFoodPlaceController extends Controller
             'location' => 'required|string|max:255',
             'source_location' => 'nullable|url',
             'images' => 'required|array|max:5',
-            'images.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
+            'status' => 'required|in:active,inactive'
         ]);
+
+        // Check if max price is greater than min price
+        if ($validated['max_price'] <= $validated['min_price']) {
+            return redirect()->back()
+                ->with('error', 'Max price must be greater than min price')
+                ->withInput();
+        }
+
+        // Check image count
+        if (count($request->file('images')) > 5) {
+            return redirect()->back()
+                ->with('error', 'You can upload maximum 5 images')
+                ->withInput();
+        }
 
         $foodPlace = FoodPlace::create([
             'title' => $validated['title'],
@@ -79,22 +95,31 @@ class AdminFoodPlaceController extends Controller
             'max_price' => $validated['max_price'],
             'location' => $validated['location'],
             'source_location' => $validated['source_location'],
-            'status' => 'active',
-            'user_id' => auth()->id(), // Simpan id pengusaha yang login
+            'status' => $validated['status'] ?? 'active',
+            'user_id' => auth()->id(),
         ]);
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('public/food-places');
-                $foodPlace->images()->create([
-                    'image_path' => str_replace('public/', '', $path)
-                ]);
-            }
+        // Handle image upload
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('public/food-places');
+            $foodPlace->images()->create([
+                'image_path' => str_replace('public/', '', $path)
+            ]);
         }
 
         return redirect()->route('admin.food-places.index')
-            ->with('success', 'Tempat makan berhasil ditambahkan!');
+            ->with('success', 'Food place added successfully!');
+
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return redirect()->back()
+            ->withErrors($e->validator)
+            ->withInput();
+    } catch (\Exception $e) {
+        return redirect()->back()
+            ->with('error', 'Error creating food place: ' . $e->getMessage())
+            ->withInput();
     }
+}
 
     public function show($id)
     {
@@ -159,16 +184,23 @@ class AdminFoodPlaceController extends Controller
             ->with('success', 'Tempat makan berhasil diperbarui!');
     }
 
-    public function destroy(FoodPlace $foodPlace)
-    {
+   public function destroy( $id)
+{
+    try {
+        // Delete all images first
+        $foodPlace = FoodPlace::findOrFail($id);
         foreach ($foodPlace->images as $image) {
             Storage::delete('public/' . $image->image_path);
             $image->delete();
         }
-
+        // Then delete the food place
         $foodPlace->delete();
-
         return redirect()->route('admin.food-places.index')
-            ->with('success', 'Tempat makan berhasil dihapus!');
+            ->with('success', 'Food place deleted successfully!');
+
+    } catch (\Exception $e) {
+        return redirect()->back()
+            ->with('error', 'Error deleting food place: ' . $e->getMessage());
     }
+}
 }

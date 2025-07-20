@@ -2,5 +2,5 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    BladeUI\Heroicons\BladeHeroiconsServiceProvider::class
+    // BladeUI\Heroicons\BladeHeroiconsServiceProvider::class
 ];
