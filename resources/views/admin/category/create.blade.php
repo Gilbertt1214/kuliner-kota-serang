@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@csrf
 @section('content')
     <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6">
         <h2 class="text-2xl font-bold mb-6">Create New Category</h2>

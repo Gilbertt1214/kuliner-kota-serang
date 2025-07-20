@@ -8,6 +8,7 @@
             <h1 class="text-2xl font-bold text-gray-900">Food Places Management</h1>
             <p class="text-gray-600">Manage all food places in your system</p>
         </div>
+        <!-- Add New Food Place Button -->
         <button id="openModalBtn" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
             <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
@@ -151,6 +152,7 @@
                         </div>
 
                         <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                            <a ></a>
                             <button type="button" id="cancelBtn" class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 Cancel
                             </button>
@@ -223,110 +225,110 @@
 
     <!-- Food Places Table -->
     <div class="bg-white shadow rounded-lg overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-medium text-gray-900">Food Places List</h3>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
-                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse ($foodPlaces as $foodPlace)
-                    <tr class="food-place-row hover:bg-gray-50 transition-colors duration-150"
-                        data-category="{{ $foodPlace->food_category_id }}"
-                        data-rating="{{ $foodPlace->reviews->avg('rating') ?? 0 }}">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10">
-                                    @if($foodPlace->images->count() > 0)
-                                        <img class="h-10 w-10 rounded-lg object-cover" src="{{ asset('storage/' . $foodPlace->images->first()->image_path) }}" alt="">
-                                    @else
-                                        <div class="h-10 w-10 rounded-lg bg-gray-200 flex items-center justify-center">
-                                            <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">{{ $foodPlace->title }}</div>
-                                    <div class="text-sm text-gray-500 line-clamp-1">{{ $foodPlace->description }}</div>
-                                </div>
+    <div class="px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-medium text-gray-900">Food Places List</h3>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pengusaha</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Location</th>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Rating</th>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @forelse ($foodPlaces as $foodPlace)
+                <tr class="hover:bg-gray-50 transition-colors duration-150">
+                    {{-- Name + Image --}}
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                @if($foodPlace->images->count())
+                                    <img class="h-10 w-10 rounded-lg object-cover" src="{{ asset('storage/' . $foodPlace->images->first()->image_path) }}" alt="Food Image">
+                                @else
+                                    <div class="h-10 w-10 rounded-lg bg-gray-200 flex items-center justify-center">
+                                        <x-heroicon-o-photograph class="h-6 w-6 text-gray-400" />
+                                    </div>
+                                @endif
                             </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">
-                                {{ $foodPlace->category->name ?? 'No Category' }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <div class="flex items-center">
-                                <svg class="h-4 w-4 text-gray-400 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">{{ $foodPlace->title }}</div>
+                                <div class="text-sm text-gray-500 line-clamp-1">{{ $foodPlace->description }}</div>
+                            </div>
+                        </div>
+                    </td>
+
+                    {{-- Category --}}
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">
+                            {{ $foodPlace->category->name ?? 'No Category' }}
+                        </span>
+                    </td>
+
+
+
+                    {{-- Pengusaha --}}
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                       {{ $place->owner->name ?? 'Tidak diketahui' }}
+                    </td>
+
+                    {{-- Location --}}
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div class="flex items-center">
+                            <x-heroicon-o-location-marker class="h-4 w-4 text-gray-400 mr-1" />
+                            <span class="line-clamp-1">{{ $foodPlace->location }}</span>
+                        </div>
+                    </td>
+
+                    {{-- Rating --}}
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                        <div class="flex items-center justify-center">
+                            @php $rating = round($foodPlace->reviews->avg('rating') ?? 0); @endphp
+                            @for ($i = 1; $i <= 5; $i++)
+                                <svg class="h-4 w-4 {{ $i <= $rating ? 'text-yellow-400' : 'text-gray-300' }}" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
-                                <span class="line-clamp-1">{{ $foodPlace->location }}</span>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-center">
-                            <div class="flex items-center justify-center">
-                                <div class="flex items-center">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <svg class="h-4 w-4 {{ $i <= ($foodPlace->reviews->avg('rating') ?? 0) ? 'text-yellow-400' : 'text-gray-300' }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                        </svg>
-                                    @endfor
-                                    <span class="ml-1 text-xs text-gray-500">({{ $foodPlace->reviews->count() }})</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                            <div class="flex justify-center space-x-2">
-                                <a href="{{ route('admin.food-places.show', $foodPlace->id) }}" class="text-indigo-600 hover:text-indigo-900" title="View">
-                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                </a>
-                                <a href="{{ route('admin.food-places.edit', $foodPlace->id) }}" class="text-yellow-600 hover:text-yellow-900" title="Edit">
-                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg>
-                                </a>
-                                <form action="{{ route('admin.food-places.destroy', $foodPlace->id) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" onclick="confirmDelete(this)" class="text-red-600 hover:text-red-900" title="Delete">
-                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                            No food places found
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        <div class="px-6 py-3 border-t border-gray-200">
-            {{ $foodPlaces->links() }}
-        </div>
+                            @endfor
+                            <span class="ml-1 text-xs text-gray-500">({{ $foodPlace->reviews->count() }})</span>
+                        </div>
+                    </td>
+
+                    {{-- Actions --}}
+                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                        <div class="flex justify-center space-x-2">
+                            <a href="{{ route('admin.food-places.show', $foodPlace->id) }}" class="text-indigo-600 hover:text-indigo-900" title="View">
+                                <x-heroicon-o-eye class="h-5 w-5" />
+                            </a>
+                            <a href="{{ route('admin.food-places.edit', $foodPlace->id) }}" class="text-yellow-600 hover:text-yellow-900" title="Edit">
+                                <x-heroicon-o-pencil-alt class="h-5 w-5" />
+                            </a>
+                            <form action="{{ route('admin.food-places.destroy', $foodPlace->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" onclick="confirmDelete(this)" class="text-red-600 hover:text-red-900" title="Delete">
+                                    <x-heroicon-o-trash class="h-5 w-5" />
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">No food places found</td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+    <div class="px-6 py-3 border-t border-gray-200">
+        {{ $foodPlaces->links() }}
     </div>
 </div>
+
 
 @push('scripts')
 <script>

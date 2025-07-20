@@ -6,18 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <title>@yield('title', 'Admin Dashboard')</title>
+
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}" />
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}" />
 
-    <title>@yield('title', 'Admin Dashboard')</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 
     <!-- Tailwind CSS -->
@@ -29,17 +25,12 @@
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <!-- Custom Style -->
     <style>
-        :root {
-            --primary-color: #4f46e5;
-            --secondary-color: #10b981;
-            --dark-color: #1e293b;
-            --light-color: #f8fafc;
-        }
-
         body {
             font-family: 'Inter', sans-serif;
-            @apply bg-gray-50 text-slate-800;
+            background-color: #f9fafb;
+            color: #1e293b;
         }
 
         .sidebar-transition {
@@ -57,23 +48,24 @@
         }
 
         ::-webkit-scrollbar-track {
-            @apply bg-gray-100;
+            background-color: #f1f5f9;
         }
 
         ::-webkit-scrollbar-thumb {
-            @apply bg-indigo-400 rounded-full;
+            background-color: #6366f1;
+            border-radius: 9999px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            @apply bg-indigo-500;
+            background-color: #4f46e5;
         }
     </style>
 
     @stack('styles')
 </head>
 
-<body class="antialiased" x-data="{ sidebarOpen: window.innerWidth >= 1280 ? true : false }">
-    <!-- Mobile sidebar backdrop -->
+<body class="antialiased" x-data="{ sidebarOpen: window.innerWidth >= 1280 }">
+    <!-- Mobile Sidebar Backdrop -->
     <div x-show="sidebarOpen" @click="sidebarOpen = false"
          class="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"
          x-transition:enter="transition-opacity ease-linear duration-300"
@@ -87,18 +79,18 @@
     <!-- Sidebar -->
     @include('admin.components.sidebar')
 
+    <!-- Main Content Wrapper -->
     <div class="flex flex-col min-h-screen lg:ml-64 transition-all duration-300 ease-in-out">
         <!-- Navbar -->
         @include('admin.components.navbar')
 
-        <!-- Main Content -->
+        <!-- Main Content Area -->
         <main class="flex-grow px-4 py-6 sm:px-6 lg:px-8 content-area">
             <!-- Page Header -->
             <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <h2 class="text-2xl font-bold text-gray-800">
                     @yield('page-title', 'Dashboard')
                 </h2>
-
                 <div class="mt-2 sm:mt-0">
                     @yield('breadcrumbs')
                 </div>
@@ -116,11 +108,9 @@
                 <p class="text-sm text-gray-600">
                     &copy; <span id="current-year"></span> Your Company. All rights reserved.
                 </p>
-                <div class="mt-2 md:mt-0">
-                    <p class="text-sm text-gray-600">
-                        v1.0.0
-                    </p>
-                </div>
+                <p class="text-sm text-gray-600 mt-2 md:mt-0">
+                    v1.0.0
+                </p>
             </div>
         </footer>
     </div>
@@ -129,23 +119,15 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
 
-    <!-- Initialize Perfect Scrollbar -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Set current year
             document.getElementById('current-year').textContent = new Date().getFullYear();
 
-            // Initialize scrollbar on main content
-            new PerfectScrollbar('.content-area', {
-                suppressScrollX: true
-            });
-
-            // Close mobile sidebar when clicking on nav items
-            document.querySelectorAll('.mobile-sidebar-close').forEach(item => {
-                item.addEventListener('click', () => {
-                    Alpine.store('sidebarOpen', false);
-                });
-            });
+            // Initialize Perfect Scrollbar
+            if (typeof PerfectScrollbar !== 'undefined') {
+                new PerfectScrollbar('.content-area', { suppressScrollX: true });
+            }
         });
     </script>
 

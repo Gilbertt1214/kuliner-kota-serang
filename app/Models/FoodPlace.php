@@ -38,6 +38,10 @@ class FoodPlace extends Model
     /**
      * Get the average rating attribute
      */
+    public function owner()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
     public function getAverageRatingAttribute()
     {
         return $this->reviews()->avg('rating') ?? 0;

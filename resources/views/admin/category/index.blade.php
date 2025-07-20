@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@csrf
 @section('content')
 <div class="flex flex-col gap-4">
     <!-- Add Category Button -->

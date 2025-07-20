@@ -1,30 +1,37 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6">
-        <h2 class="text-2xl font-bold mb-6">Edit Category</h2>
+    <div class="max-w-xl mx-auto mt-10 bg-white rounded-2xl shadow-lg p-8">
+        <h2 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Edit Kategori</h2>
 
-        <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
+        <form action="{{ route('admin.categories.edit', $category->id) }}" method="POST" class="space-y-6">
             @csrf
             @method('PUT')
-            <div class="mb-4">
-                <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Category Name</label>
-                <input type="text" name="name" id="name" value="{{ old('name', $category->name) }}" required
-                       class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama Kategori</label>
+                <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value="{{ old('name', $category->name) }}"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                >
                 @error('name')
-                    <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="flex items-center justify-between">
-                <button type="submit"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Update Category
-                </button>
+            <div class="flex justify-between items-center">
                 <a href="{{ route('admin.categories.index') }}"
-                   class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
-                    Cancel
+                   class="text-gray-600 hover:text-blue-600 text-sm font-medium transition duration-150">
+                    ← Kembali
                 </a>
+                <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg transition duration-150">
+                    Simpan Perubahan
+                </button>
             </div>
         </form>
     </div>

@@ -91,19 +91,15 @@ Route::middleware([IsAdmin::class])->prefix('admin')->group(function () {
     });
 
     // Categories Management
+    Route::prefix('admin')->group(function () {
     Route::prefix('categories')->group(function () {
-    Route::get('/', [AdminCategoryController::class, 'index'])
-        ->name('admin.categories.index');
-    Route::get('/create', [AdminCategoryController::class, 'create'])
-        ->name('admin.categories.create');
-    Route::post('/', [AdminCategoryController::class, 'store'])
-        ->name('admin.categories.store');
-    Route::get('/{id}/edit', [AdminCategoryController::class, 'edit'])
-        ->name('admin.categories.edit');
-    Route::put('/{id}', [AdminCategoryController::class, 'update'])
-        ->name('admin.categories.update');
-    Route::delete('/{id}', [AdminCategoryController::class, 'destroy'])
-        ->name('admin.categories.destroy');
+        Route::get('/', [AdminCategoryController::class, 'index'])->name('admin.categories.index');
+        Route::get('/create', [AdminCategoryController::class, 'create'])->name('admin.categories.create');
+        Route::post('/', [AdminCategoryController::class, 'store'])->name('admin.categories.store');
+        Route::get('/{category}/edit', [AdminCategoryController::class, 'edit'])->name('admin.categories.edit');
+        Route::put('/{category}', [AdminCategoryController::class, 'update'])->name('admin.categories.update');
+        Route::delete('/{category}', [AdminCategoryController::class, 'destroy'])->name('admin.categories.destroy');
+    });
 });
 
     // Users Management
