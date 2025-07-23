@@ -6,6 +6,7 @@
         <div class="max-w-6xl mx-auto">
             <!-- Header Section with Back Button - Enhanced Animation -->
             <div class="mb-6 flex items-center">
+                <a href="{{ route('food-places.index') }}" class="flex items-center text-gray-600 hover:text-orange-600 transition-colors duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd"
                         d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
@@ -277,16 +278,65 @@
                     </svg>
                     Ulasan Pengunjung
                 </h2>
-                <div class="mt-8 flex justify-end">
-                    <a href="{{ route('review.index', $foodPlace->id) }}"
-                        class="flex items-center rounded-full px-6 py-3 bg-orange-500 text-white hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-md active:scale-95">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        <span class="font-medium">Tulis Review</span>
-                    </a>
+                <div class="my-8 flex justify-end">
+                    @auth
+                        @if ($userReview)
+                            <!-- User already reviewed - Show existing review info -->
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-4 mr-4 flex-1 max-w-sm">
+                                <div class="flex items-center text-green-700">
+                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span class="font-medium">Anda sudah memberikan ulasan</span>
+                                </div>
+                                <p class="text-green-600 text-sm mt-1">
+                                    Rating: {{ $userReview->rating }}/5 • {{ $userReview->created_at->diffForHumans() }}
+                                </p>
+                            </div>
+                            <button disabled
+                                class="flex items-center rounded-full px-6 py-1 bg-gray-300 text-gray-500 cursor-not-allowed shadow opacity-75">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span class="font-medium">Sudah Direview</span>
+                            </button>
+                        @else
+                            <!-- User hasn't reviewed yet - Show review button -->
+                            <a href="{{ route('review.index', $foodPlace->id) }}"
+                                class="flex items-center rounded-full px-6 py-3 bg-orange-500 text-white hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-md active:scale-95">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                <span class="font-medium">Tulis Review</span>
+                            </a>
+                        @endif
+                    @else
+                        <!-- User not logged in -->
+                        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mr-4 flex-1 max-w-md">
+                            <div class="flex items-center text-gray-600">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span class="font-medium">Login untuk memberikan ulasan</span>
+                            </div>
+                        </div>
+                        <a href="{{ route('login') }}"
+                            class="flex items-center rounded-full px-6 py-3 bg-orange-500 text-white hover:bg-orange-600 transition-all duration-300 transform hover:scale-105 shadow hover:shadow-md active:scale-95">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                            </svg>
+                            <span class="font-medium">Login</span>
+                        </a>
+                    @endauth
                 </div>
                 <div class="space-y-6">
                     @php

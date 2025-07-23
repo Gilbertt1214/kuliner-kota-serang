@@ -58,8 +58,19 @@ class FoodPlaceController extends Controller
         $foodPlace = FoodPlace::with(['category', 'reviews.user', 'images', 'businessImages', 'menuImages'])
             ->findOrFail($id);
 
+        // Check if current user has already reviewed this place
+        $userReview = null;
+        if (Auth::check()) {
+            $userReview = $foodPlace->reviews()
+                ->where('user_id', Auth::id())
+                ->first();
+        }
 
-        return view('layouts.food-place-detail', ['foodPlace' => $foodPlace, 'categories' => $categories]);
+        return view('layouts.food-place-detail', [
+            'foodPlace' => $foodPlace,
+            'categories' => $categories,
+            'userReview' => $userReview
+        ]);
     }
 
     /**
