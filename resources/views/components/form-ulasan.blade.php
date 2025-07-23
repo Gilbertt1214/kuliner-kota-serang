@@ -35,8 +35,55 @@
                             </div>
                         </div>
 
+                        <!-- Error and Success Messages -->
+                        @if (session('success'))
+                            <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    {{ session('success') }}
+                                </div>
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    {{ session('error') }}
+                                </div>
+                            </div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                                <div class="flex items-start">
+                                    <svg class="w-5 h-5 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <div>
+                                        <p class="font-medium">Terjadi kesalahan:</p>
+                                        <ul class="mt-1 text-sm list-disc list-inside">
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                         <form action="{{ route('review.store', $foodPlace->id) }}" method="POST"
-                            enctype="multipart/form-data" class="space-y-6">
+                            enctype="multipart/form-data" class="space-y-6" id="review-form">
                             @csrf
 
                             <!-- Overall Rating -->
@@ -75,7 +122,7 @@
                                                 <input type="radio" id="taste{{ $i }}" name="taste_rating"
                                                     value="{{ $i }}" class="hidden">
                                                 <label for="taste{{ $i }}" class="taste-star cursor-pointer">
-                                                    <svg class="h-5 w-5 text-gray-300 hover:text-yellow-400 transition-colors"
+                                                    <svg class="h-5 w-5 text-gray-300 transition-colors duration-200"
                                                         fill="currentColor" viewBox="0 0 20 20">
                                                         <path
                                                             d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -93,7 +140,7 @@
                                                 <input type="radio" id="price{{ $i }}" name="price_rating"
                                                     value="{{ $i }}" class="hidden">
                                                 <label for="price{{ $i }}" class="price-star cursor-pointer">
-                                                    <svg class="h-5 w-5 text-gray-300 hover:text-green-400 transition-colors"
+                                                    <svg class="h-5 w-5 text-gray-300 transition-colors duration-200"
                                                         fill="currentColor" viewBox="0 0 20 20">
                                                         <path
                                                             d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -108,11 +155,11 @@
                                         <label class="text-xs font-medium text-gray-600 mb-1 block">🏪 Pelayanan</label>
                                         <div class="flex space-x-1">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <input type="radio" id="service{{ $i }}" name="service_rating"
-                                                    value="{{ $i }}" class="hidden">
+                                                <input type="radio" id="service{{ $i }}"
+                                                    name="service_rating" value="{{ $i }}" class="hidden">
                                                 <label for="service{{ $i }}"
                                                     class="service-star cursor-pointer">
-                                                    <svg class="h-5 w-5 text-gray-300 hover:text-blue-400 transition-colors"
+                                                    <svg class="h-5 w-5 text-gray-300 transition-colors duration-200"
                                                         fill="currentColor" viewBox="0 0 20 20">
                                                         <path
                                                             d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -131,7 +178,7 @@
                                                     name="ambiance_rating" value="{{ $i }}" class="hidden">
                                                 <label for="ambiance{{ $i }}"
                                                     class="ambiance-star cursor-pointer">
-                                                    <svg class="h-5 w-5 text-gray-300 hover:text-purple-400 transition-colors"
+                                                    <svg class="h-5 w-5 text-gray-300 transition-colors duration-200"
                                                         fill="currentColor" viewBox="0 0 20 20">
                                                         <path
                                                             d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -148,8 +195,11 @@
                                 <label for="comment"
                                     class="block text-sm font-semibold text-gray-700 mb-2">Komentar:</label>
                                 <textarea name="comment" rows="4" required
-                                    class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-all duration-300 hover:shadow-md resize-none"
-                                    placeholder="Ceritakan pengalaman Anda... (minimal 10 karakter)"></textarea>
+                                    class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 transition-all duration-300 hover:shadow-md resize-none @error('comment') border-red-500 @enderror"
+                                    placeholder="Ceritakan pengalaman Anda... (minimal 10 karakter)">{{ old('comment') }}</textarea>
+                                @error('comment')
+                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                                 <div class="text-xs text-gray-500 mt-1">💡 Tip: Semakin detail ulasan Anda, semakin
                                     membantu pengunjung lain</div>
                             </div>
@@ -181,7 +231,9 @@
                                             <p class="text-xs text-gray-500">PNG, JPG, JPEG up to 5MB (max 3 foto)</p>
                                         </div>
                                     </div>
-                                    <div id="image-preview" class="mt-4 grid grid-cols-3 gap-2 hidden"></div>
+                                    <div id="image-preview" class="mt-4 hidden">
+                                        <div class="grid grid-cols-3 gap-2"></div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -251,8 +303,9 @@
                             <!-- Anonymous Option -->
                             <div class="bg-white rounded-lg p-4 shadow-sm">
                                 <label class="inline-flex items-center">
-                                    <input type="checkbox" name="is_anonymous"
-                                        class="rounded border-gray-300 text-orange-600 focus:ring-orange-500">
+                                    <input type="checkbox" name="is_anonymous" value="1"
+                                        class="rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+                                        {{ old('is_anonymous') ? 'checked' : '' }}>
                                     <span class="ml-2 text-sm text-gray-700">
                                         <span class="font-medium">Posting sebagai anonim</span>
                                         <span class="text-gray-500 block text-xs">Nama Anda tidak akan ditampilkan di
@@ -267,13 +320,13 @@
                                     class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
                                     Reset
                                 </button>
-                                <button type="submit"
-                                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 border border-transparent rounded-lg font-semibold text-white hover:from-orange-600 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg">
+                                <button type="submit" id="submit-btn"
+                                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 border border-transparent rounded-lg font-semibold text-white hover:from-orange-600 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                                     </svg>
-                                    Kirim Ulasan
+                                    <span class="submit-text">Kirim Ulasan</span>
                                 </button>
                             </div>
                         </form>
@@ -292,6 +345,27 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             console.log('Form initialized'); // Debug log
+            console.log('User authenticated:', {{ auth()->check() ? 'true' : 'false' }});
+            console.log('Current URL:', window.location.href);
+
+            // Check for session messages and auto-hide them
+            const successMessage = document.querySelector('.bg-green-100');
+            const errorMessage = document.querySelector('.bg-red-100');
+
+            if (successMessage) {
+                console.log('Success message displayed');
+                setTimeout(() => {
+                    successMessage.style.transition = 'opacity 0.5s ease';
+                    successMessage.style.opacity = '0';
+                    setTimeout(() => {
+                        successMessage.remove();
+                    }, 500);
+                }, 5000);
+            }
+
+            if (errorMessage) {
+                console.log('Error message displayed');
+            }
 
             const stars = document.querySelectorAll('.rating-stars input');
             const ratingValue = document.getElementById('rating-value');
@@ -371,32 +445,49 @@
 
                 console.log(
                     `Setting up ${category} ratings: ${inputs.length} inputs, ${labels.length} labels`
-                    ); // Debug log
+                ); // Debug log
 
-                inputs.forEach((input, index) => {
+                // Event listener untuk radio button change
+                inputs.forEach((input) => {
                     input.addEventListener('change', function() {
                         console.log(`${category} rating changed to: ${this.value}`); // Debug log
                         updateDetailStars(labels, this.value, activeColor);
                     });
-
-                    // Fix untuk label click event
-                    const label = document.querySelector(`label[for="${input.id}"]`);
-                    if (label) {
-                        label.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            input.checked = true;
-                            console.log(
-                                `${category} label clicked, value: ${input.value}`); // Debug log
-                            updateDetailStars(labels, input.value, activeColor);
-                        });
-                    }
                 });
 
-                // Mouse hover effects untuk label stars
+                // Event listener untuk star label click
                 labels.forEach((label, index) => {
+                    const starValue = index + 1;
+
+                    // Click event untuk memilih rating
+                    label.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        console.log(`${category} star ${starValue} clicked`); // Debug log
+
+                        const radioInput = document.querySelector(
+                            `input[name="${category}_rating"][value="${starValue}"]`);
+                        if (radioInput) {
+                            // Uncheck all first
+                            inputs.forEach(inp => inp.checked = false);
+                            // Check the selected one
+                            radioInput.checked = true;
+                            console.log(
+                                `${category} rating set to: ${starValue}`); // Debug log
+                            updateDetailStars(labels, starValue, activeColor);
+
+                            // Trigger change event manually
+                            radioInput.dispatchEvent(new Event('change'));
+                        } else {
+                            console.error(
+                                `Radio input not found for ${category} value ${starValue}`);
+                        }
+                    });
+
+                    // Mouse hover effects
                     label.addEventListener('mouseenter', function() {
-                        const hoverValue = index + 1;
-                        highlightStars(labels, hoverValue, activeColor);
+                        highlightStars(labels, starValue, activeColor);
                     });
 
                     label.addEventListener('mouseleave', function() {
@@ -405,44 +496,72 @@
                         const selectedValue = selectedInput ? selectedInput.value : 0;
                         updateDetailStars(labels, selectedValue, activeColor);
                     });
-
-                    // Tambahkan click event untuk label star
-                    label.addEventListener('click', function() {
-                        const starValue = index + 1;
-                        const radioInput = document.querySelector(
-                            `input[name="${category}_rating"][value="${starValue}"]`);
-                        if (radioInput) {
-                            radioInput.checked = true;
-                            console.log(
-                                `${category} star clicked, value: ${starValue}`); // Debug log
-                            updateDetailStars(labels, starValue, activeColor);
-                        }
-                    });
                 });
+
+                // Initialize with no selection (all gray)
+                updateDetailStars(labels, 0, activeColor);
             }
 
             function highlightStars(labels, value, color) {
                 labels.forEach((label, index) => {
                     const svg = label.querySelector('svg');
                     if (index < value) {
-                        svg.className = `h-5 w-5 ${color} transition-colors`;
+                        // Use specific color values instead of Tailwind classes
+                        const colorMap = {
+                            'text-yellow-400': '#fbbf24',
+                            'text-green-400': '#4ade80',
+                            'text-blue-400': '#60a5fa',
+                            'text-purple-400': '#c084fc'
+                        };
+                        svg.style.color = colorMap[color] || '#fbbf24';
+                        svg.className = 'h-5 w-5 transition-colors duration-200';
                     } else {
-                        svg.className = 'h-5 w-5 text-gray-300 hover:text-gray-400 transition-colors';
+                        svg.style.color = '#d1d5db'; // gray-300
+                        svg.className = 'h-5 w-5 transition-colors duration-200';
                     }
                 });
             }
 
             function updateDetailStars(labels, value, color) {
-                highlightStars(labels, value, color);
+                console.log(`Updating stars to value: ${value} with color: ${color}`); // Debug log
+                labels.forEach((label, index) => {
+                    const svg = label.querySelector('svg');
+                    if (index < parseInt(value)) {
+                        // Use specific color values instead of Tailwind classes
+                        const colorMap = {
+                            'text-yellow-400': '#fbbf24',
+                            'text-green-400': '#4ade80',
+                            'text-blue-400': '#60a5fa',
+                            'text-purple-400': '#c084fc'
+                        };
+                        svg.style.color = colorMap[color] || '#fbbf24';
+                        svg.className = 'h-5 w-5 transition-colors duration-200';
+
+                        // Add small animation effect
+                        svg.style.transform = 'scale(1.1)';
+                        setTimeout(() => {
+                            svg.style.transform = 'scale(1)';
+                        }, 150);
+                    } else {
+                        svg.style.color = '#d1d5db'; // gray-300
+                        svg.className = 'h-5 w-5 transition-colors duration-200';
+                    }
+                });
             }
 
-            // Tags functionality
+            // Tags functionality - Fixed untuk memastikan checkbox bekerja dengan benar
             const tagBadges = document.querySelectorAll('.tag-badge');
             tagBadges.forEach(badge => {
-                badge.addEventListener('click', function() {
+                badge.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
                     const checkbox = this.parentElement.querySelector('input[type="checkbox"]');
+
+                    // Toggle checkbox state
                     checkbox.checked = !checkbox.checked;
 
+                    // Update visual state
                     if (checkbox.checked) {
                         this.classList.remove('opacity-60');
                         this.classList.add('opacity-100', 'border-orange-300', 'ring-2',
@@ -454,42 +573,173 @@
                             'ring-orange-200');
                         console.log('Tag deselected:', checkbox.value); // Debug log
                     }
+
+                    // Trigger change event
+                    checkbox.dispatchEvent(new Event('change'));
+                });
+            });
+
+            // Additional event listener untuk checkbox langsung
+            document.querySelectorAll('input[name="tags[]"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const badge = this.parentElement.querySelector('.tag-badge');
+                    if (this.checked) {
+                        badge.classList.remove('opacity-60');
+                        badge.classList.add('opacity-100', 'border-orange-300', 'ring-2',
+                            'ring-orange-200');
+                    } else {
+                        badge.classList.add('opacity-60');
+                        badge.classList.remove('opacity-100', 'border-orange-300', 'ring-2',
+                            'ring-orange-200');
+                    }
                 });
             });
 
             // Form submission debug
-            const form = document.querySelector('form');
-            form.addEventListener('submit', function(e) {
-                console.log('Form submitting...'); // Debug log
+            const form = document.getElementById('review-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    console.log('Form submission started...'); // Debug log
 
-                // Log all form data
-                const formData = new FormData(this);
-                for (let [key, value] of formData.entries()) {
-                    console.log(key + ': ' + value);
-                }
+                    // Validate required comment field
+                    const comment = this.querySelector('textarea[name="comment"]').value.trim();
+                    // if (comment.length < 10) {
+                    //     e.preventDefault();
+                    //     console.error('Comment validation failed: too short');
+                    //     alert('Komentar minimal 10 karakter');
+                    //     return false;
+                    // }
 
-                // Check tags specifically
-                const selectedTags = [];
-                document.querySelectorAll('input[name="tags[]"]:checked').forEach(input => {
-                    selectedTags.push(input.value);
-                });
-                console.log('Selected tags:', selectedTags);
+                    // Check if user is authenticated
+                    @if (!auth()->check())
+                        e.preventDefault();
+                        console.error('User not authenticated');
+                        alert('Anda harus login terlebih dahulu');
+                        window.location.href = '{{ route('login') }}';
+                        return false;
+                    @endif
 
-                // Check detail ratings
-                ['taste', 'price', 'service', 'ambiance'].forEach(category => {
-                    const selected = document.querySelector(
-                        `input[name="${category}_rating"]:checked`);
-                    if (selected) {
-                        console.log(`${category}_rating:`, selected.value);
+                    // Check main rating is selected
+                    const mainRating = document.querySelector('input[name="rating"]:checked');
+                    if (!mainRating) {
+                        e.preventDefault();
+                        console.error('Main rating not selected');
+                        alert('Silakan berikan rating keseluruhan');
+                        return false;
                     }
+
+                    // Disable submit button to prevent double submission
+                    const submitButton = document.getElementById('submit-btn');
+                    const submitText = submitButton.querySelector('.submit-text');
+                    const originalText = submitText.textContent;
+
+                    submitButton.disabled = true;
+                    submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+                    submitButton.classList.remove('hover:scale-105');
+
+                    submitText.textContent = 'Mengirim...';
+
+                    // Add loading spinner
+                    const loadingSpinner = document.createElement('svg');
+                    loadingSpinner.className = 'animate-spin -ml-1 mr-3 h-4 w-4 text-white';
+                    loadingSpinner.innerHTML = `
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    `;
+                    loadingSpinner.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+                    loadingSpinner.setAttribute('fill', 'none');
+                    loadingSpinner.setAttribute('viewBox', '0 0 24 24');
+
+                    // Replace the send icon with loading spinner
+                    const sendIcon = submitButton.querySelector('svg');
+                    sendIcon.replaceWith(loadingSpinner);
+
+                    // Re-enable button after timeout (fallback)
+                    setTimeout(() => {
+                        if (submitButton.disabled) {
+                            submitButton.disabled = false;
+                            submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                            submitButton.classList.add('hover:scale-105');
+                            submitText.textContent = originalText;
+
+                            // Restore send icon
+                            loadingSpinner.replaceWith(sendIcon);
+                            console.warn('Form submission timeout - re-enabled button');
+                        }
+                    }, 15000);
+
+                    // Log all form data
+                    const formData = new FormData(this);
+                    console.log('=== FORM DATA ===');
+                    for (let [key, value] of formData.entries()) {
+                        console.log(key + ': ' + value);
+                    }
+
+                    // Check CSRF token
+                    const csrfToken = formData.get('_token');
+                    if (!csrfToken) {
+                        e.preventDefault();
+                        console.error('CSRF token missing');
+                        alert('Session expired. Silakan refresh halaman dan coba lagi.');
+
+                        // Re-enable button
+                        submitButton.disabled = false;
+                        submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                        submitText.textContent = originalText;
+                        loadingSpinner.replaceWith(sendIcon);
+
+                        return false;
+                    }
+
+                    // Check tags specifically
+                    const selectedTags = [];
+                    document.querySelectorAll('input[name="tags[]"]:checked').forEach(input => {
+                        selectedTags.push(input.value);
+                    });
+                    console.log('Selected tags array:', selectedTags);
+
+                    // Check detail ratings
+                    ['taste', 'price', 'service', 'ambiance'].forEach(category => {
+                        const selected = document.querySelector(
+                            `input[name="${category}_rating"]:checked`);
+                        if (selected) {
+                            console.log(`${category}_rating:`, selected.value);
+                        } else {
+                            console.log(`${category}_rating: not selected`);
+                        }
+                    });
+
+                    console.log('Main rating:', mainRating.value);
+
+                    // Check anonymous checkbox
+                    const isAnonymous = document.querySelector('input[name="is_anonymous"]');
+                    console.log('Is anonymous checkbox found:', isAnonymous ? 'yes' : 'no');
+                    console.log('Is anonymous checked:', isAnonymous ? isAnonymous.checked : 'n/a');
+                    console.log('Is anonymous value:', isAnonymous ? isAnonymous.value : 'n/a');
+
+                    if (isAnonymous && isAnonymous.checked) {
+                        console.log('Anonymous submission: true');
+                    } else {
+                        console.log('Anonymous submission: false');
+                    }
+
+                    console.log('=== FORM VALIDATION PASSED ===');
+                    console.log('Form submitting to:', this.action);
+                    console.log('Form method:', this.method);
+
+                    // Allow form to submit
+                    return true;
                 });
-            });
+            }
         });
 
         // Image preview functionality
         function previewImages(input) {
             const preview = document.getElementById('image-preview');
-            preview.innerHTML = '';
+            const gridContainer = preview.querySelector('.grid');
+
+            // Clear existing content
+            gridContainer.innerHTML = '';
 
             if (input.files && input.files.length > 0) {
                 preview.classList.remove('hidden');
@@ -509,7 +759,7 @@
                                     ×
                                 </button>
                             `;
-                            preview.appendChild(div);
+                            gridContainer.appendChild(div);
                         };
                         reader.readAsDataURL(file);
                     }
@@ -535,11 +785,30 @@
 
         function clearForm() {
             // Reset form
-            document.querySelector('form').reset();
+            const form = document.getElementById('review-form');
+            if (form) {
+                form.reset();
+            }
 
-            // Reset stars
-            document.getElementById('star5').checked = true;
-            updateStars(5);
+            // Re-enable submit button if disabled
+            const submitButton = document.getElementById('submit-btn');
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                submitButton.classList.add('hover:scale-105');
+
+                const submitText = submitButton.querySelector('.submit-text');
+                if (submitText) {
+                    submitText.textContent = 'Kirim Ulasan';
+                }
+            }
+
+            // Reset main rating stars to default (5 stars)
+            const star5 = document.getElementById('star5');
+            if (star5) {
+                star5.checked = true;
+                updateStars(5);
+            }
 
             // Reset detail ratings
             document.querySelectorAll('input[name$="_rating"]').forEach(input => {
@@ -551,17 +820,21 @@
                 const labels = document.querySelectorAll(`.${category}-star`);
                 labels.forEach(label => {
                     const svg = label.querySelector('svg');
-                    svg.className = 'h-5 w-5 text-gray-300 hover:text-gray-400 transition-colors';
+                    if (svg) {
+                        svg.style.color = '#d1d5db'; // gray-300
+                        svg.className = 'h-5 w-5 transition-colors duration-200';
+                        svg.style.transform = 'scale(1)'; // Reset any scale transform
+                    }
                 });
             });
 
-            // Reset tags
+            // Reset tags visual state
             document.querySelectorAll('.tag-badge').forEach(badge => {
                 badge.classList.add('opacity-60');
                 badge.classList.remove('opacity-100', 'border-orange-300', 'ring-2', 'ring-orange-200');
             });
 
-            // Reset checkboxes (tags and anonymous)
+            // Reset all checkboxes (tags and anonymous)
             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 checkbox.checked = false;
             });
@@ -570,7 +843,10 @@
             const imagePreview = document.getElementById('image-preview');
             if (imagePreview) {
                 imagePreview.classList.add('hidden');
-                imagePreview.innerHTML = '';
+                const gridContainer = imagePreview.querySelector('.grid');
+                if (gridContainer) {
+                    gridContainer.innerHTML = '';
+                }
             }
 
             // Reset file input
@@ -579,7 +855,7 @@
                 fileInput.value = '';
             }
 
-            console.log('Form cleared'); // Debug log
+            console.log('Form cleared completely'); // Debug log
         }
     </script>
 
@@ -603,6 +879,50 @@
         .star-label:hover svg {
             transform: scale(1.2);
             transition: transform 0.2s ease;
+        }
+
+        /* Detail rating star styles with better specificity */
+        .taste-star svg:hover {
+            color: #fbbf24 !important;
+            /* yellow-400 */
+            transform: scale(1.1);
+            transition: all 0.2s ease;
+        }
+
+        .price-star svg:hover {
+            color: #4ade80 !important;
+            /* green-400 */
+            transform: scale(1.1);
+            transition: all 0.2s ease;
+        }
+
+        .service-star svg:hover {
+            color: #60a5fa !important;
+            /* blue-400 */
+            transform: scale(1.1);
+            transition: all 0.2s ease;
+        }
+
+        .ambiance-star svg:hover {
+            color: #c084fc !important;
+            /* purple-400 */
+            transform: scale(1.1);
+            transition: all 0.2s ease;
+        }
+
+        /* Active state untuk selected detail stars - remove unused CSS */
+        .detail-star-selected {
+            color: currentColor !important;
+        }
+
+        /* Tag badge enhancement */
+        .tag-badge {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tag-badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
     </style>
 @endsection
