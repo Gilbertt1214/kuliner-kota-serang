@@ -8,18 +8,14 @@ class FoodCategories extends Model
 {
     protected $table = 'food_categories';
 
-        // App\Models\FoodPlace.php
+    // App\Models\FoodPlace.php
     protected $fillable = [
         'name',
 
     ];
 
-    public function kategoriPengusaha()
+    public function foodPlaces()
     {
         return $this->hasMany(FoodPlace::class, 'food_category_id');
     }
-    public function category()
-{
-    return $this->belongsTo(FoodCategories::class, 'food_category_id');
-}
 }

@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Middleware\IsAdmin;
 
-class DashboardController extends Controller
+class DashboardAdmin extends Controller
 {
     //
-     public function __construct()
+    public function __construct()
     {
         $this->middleware(IsAdmin::class);
     }

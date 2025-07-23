@@ -6,12 +6,12 @@ use App\Http\Controllers\FoodPlaceController;
 use App\Http\Controllers\AdminFoodPlaceController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\DashboardAdmin;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,18 +20,14 @@ use App\Http\Middleware\IsAdmin;
 */
 
 // Public Routes
-Route::get('/', function () {
-    return view('layouts.home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
 Route::get('/food-places', [FoodPlaceController::class, 'index'])->name('food-places.index');
 
 // Google OAuth
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
-// Business Registration
-Route::get('/form-pendaftaran-usaha', [BusinessController::class, 'create'])->name('business.create');
-Route::post('/form-pendaftaran-usaha', [BusinessController::class, 'store'])->name('business.store');
 
 // Review Routes
 Route::get('/form-ulasan', function () {
@@ -52,7 +48,7 @@ Route::middleware('auth')->group(function () {
 
     // User Dashboard
     Route::get('/dashboard-pengusaha', [DashboardController::class, 'index'])
-        ->name('dashboardpengusaha');
+        ->name('dashboard.pengusaha');
 
     // Food Places
     Route::middleware('verified')->group(function () {
@@ -85,22 +81,21 @@ Route::middleware([IsAdmin::class])->prefix('admin')->group(function () {
             ->name('admin.food-places.update');
         Route::delete('/{id}', [AdminFoodPlaceController::class, 'destroy'])
             ->name('admin.food-places.destroy');
-            Route::post('/save', [AdminFoodPlaceController::class, 'save'])
-    ->name('admin.food-places.save');
-
+        Route::post('/save', [AdminFoodPlaceController::class, 'save'])
+            ->name('admin.food-places.save');
     });
 
     // Categories Management
     Route::prefix('admin')->group(function () {
-    Route::prefix('categories')->group(function () {
-        Route::get('/', [AdminCategoryController::class, 'index'])->name('admin.categories.index');
-        Route::get('/create', [AdminCategoryController::class, 'create'])->name('admin.categories.create');
-        Route::post('/', [AdminCategoryController::class, 'store'])->name('admin.categories.store');
-        Route::get('/{category}/edit', [AdminCategoryController::class, 'edit'])->name('admin.categories.edit');
-        Route::put('/{category}', [AdminCategoryController::class, 'update'])->name('admin.categories.update');
-        Route::delete('/{category}', [AdminCategoryController::class, 'destroy'])->name('admin.categories.destroy');
+        Route::prefix('categories')->group(function () {
+            Route::get('/', [AdminCategoryController::class, 'index'])->name('admin.categories.index');
+            Route::get('/create', [AdminCategoryController::class, 'create'])->name('admin.categories.create');
+            Route::post('/', [AdminCategoryController::class, 'store'])->name('admin.categories.store');
+            Route::get('/{category}/edit', [AdminCategoryController::class, 'edit'])->name('admin.categories.edit');
+            Route::put('/{category}', [AdminCategoryController::class, 'update'])->name('admin.categories.update');
+            Route::delete('/{category}', [AdminCategoryController::class, 'destroy'])->name('admin.categories.destroy');
+        });
     });
-});
 
 
 
