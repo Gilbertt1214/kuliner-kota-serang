@@ -9,7 +9,7 @@ class AdminCategoryController extends Controller
 {
     public function index()
     {
-        $categories = FoodCategories::with(['kategoriPengusaha'])
+        $categories = FoodCategories::with(['foodPlaces'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -34,7 +34,7 @@ class AdminCategoryController extends Controller
         ]);
 
         return redirect()->route('admin.categories.index')
-                         ->with('success', 'Category created successfully.');
+            ->with('success', 'Category created successfully.');
     }
 
     public function edit($id)
@@ -55,7 +55,7 @@ class AdminCategoryController extends Controller
         ]);
 
         return redirect()->route('admin.categories.index')
-                         ->with('success', 'Category updated successfully.');
+            ->with('success', 'Category updated successfully.');
     }
 
     public function destroy($id)
@@ -64,6 +64,6 @@ class AdminCategoryController extends Controller
         $category->delete();
 
         return redirect()->route('admin.categories.index')
-                         ->with('success', 'Category deleted successfully.');
+            ->with('success', 'Category deleted successfully.');
     }
 }

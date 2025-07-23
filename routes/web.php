@@ -99,9 +99,9 @@ Route::middleware([IsAdmin::class])->prefix('admin')->name('admin.')->group(func
         Route::get('/', [AdminCategoryController::class, 'index'])->name('index');
         Route::get('/create', [AdminCategoryController::class, 'create'])->name('create');
         Route::post('/', [AdminCategoryController::class, 'store'])->name('store');
-        Route::get('/{category}/edit', [AdminCategoryController::class, 'edit'])->name('edit');
-        Route::put('/{category}', [AdminCategoryController::class, 'update'])->name('update');
-        Route::delete('/{category}', [AdminCategoryController::class, 'destroy'])->name('destroy');
+        Route::get('/{id}/edit', [AdminCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [AdminCategoryController::class, 'update'])->name('update');
+        Route::delete('/{id}', [AdminCategoryController::class, 'destroy'])->name('destroy');
     });
 
     // Users Management
