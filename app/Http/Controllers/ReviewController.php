@@ -1,9 +1,12 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Review;
 use App\Models\FoodPlace;
 use Illuminate\Http\Request;
+use App\Models\FoodCategories;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -12,13 +15,15 @@ class ReviewController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $foodPlaceId
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function index($foodPlaceId)
     {
         $foodPlace = FoodPlace::findOrFail($foodPlaceId);
         $reviews = $foodPlace->reviews()->with('user')->get();
-        return view('components.form-ulasan', compact('foodPlace', 'reviews'));
+        $categories = FoodCategories::with('foodPlaces')->withCount('foodPlaces')->get();
+
+        return view('components.form-ulasan', compact('foodPlace', 'reviews', 'categories'));
     }
     public function store(Request $request, $foodPlaceId)
     {
@@ -28,12 +33,12 @@ class ReviewController extends Controller
         ]);
 
         Review::create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'food_place_id' => $foodPlaceId,
             'rating' => $request->rating,
             'comment' => $request->comment,
         ]);
 
-         return redirect()-> route('food-place.show',$foodPlaceId) ->with('success', 'Ulasan berhasil dikirim!');
+        return redirect()->route('food-place.show', $foodPlaceId)->with('success', 'Ulasan berhasil dikirim!');
     }
 }

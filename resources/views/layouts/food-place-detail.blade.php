@@ -201,7 +201,7 @@
                 </div>
             </div>
 
-            <!-- Map Section - Enhanced -->
+            <!-- Map Section - Enhanced with OpenStreetMap -->
             @if (isset($foodPlace->source_location))
                 <div
                     class="mt-8 bg-white rounded-xl shadow-lg p-6 transition-all duration-500 hover:shadow-xl animate-fade-in-up delay-100">
@@ -213,15 +213,53 @@
                         </svg>
                         Peta Lokasi
                     </h2>
+
+                    <!-- Map Container -->
                     <div
-                        class="rounded-lg overflow-hidden transition-all duration-500 hover:ring-2 hover:ring-orange-200 hover:rounded-xl">
-                        <iframe src="{{ $foodPlace->source_location }}" width="100%" height="450" style="border:0;"
-                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                            class="transition-all duration-500 hover:opacity-90"></iframe>
+                        class="rounded-lg overflow-hidden transition-all duration-500 hover:ring-2 hover:ring-orange-200 hover:rounded-xl mb-4">
+                        <div id="map" class="w-full h-96 bg-gray-100 flex items-center justify-center">
+                            <div class="text-center">
+                                <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <p class="text-gray-500">Loading map...</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-4 text-gray-600">
-                        <p>Untuk petunjuk arah, silakan klik <a href="{{ $foodPlace->source_location }}" target="_blank"
-                                class="text-orange-500 hover:underline">di sini</a>.</p>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="{{ $foodPlace->source_location }}" target="_blank"
+                            class="flex items-center justify-center px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                            Buka di Google Maps
+                        </a>
+
+                        <button onclick="shareLocation()"
+                            class="flex items-center justify-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+                            </svg>
+                            Bagikan Lokasi
+                        </button>
+                    </div>
+
+                    <!-- Location Info -->
+                    <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                        <p class="text-sm text-gray-600 mb-2">
+                            <strong>Alamat:</strong> {{ $foodPlace->location ?? 'Alamat tidak tersedia' }}
+                        </p>
+                        <p class="text-xs text-gray-500">
+                            💡 Tip: Gunakan aplikasi peta favorit Anda untuk navigasi yang lebih akurat
+                        </p>
                     </div>
                 </div>
             @endif
@@ -356,7 +394,7 @@
                 // Check if clicked element is modal-trigger or inside a container with modal-trigger
                 let target = e.target;
                 let imageElement = null;
-                
+
                 if (target.classList.contains('modal-trigger')) {
                     // Direct click on image
                     imageElement = target;
@@ -367,7 +405,7 @@
                         imageElement = container.querySelector('.modal-trigger');
                     }
                 }
-                
+
                 if (imageElement) {
                     e.preventDefault();
                     const imageUrl = imageElement.getAttribute('data-image-url') || imageElement.src;
@@ -449,6 +487,61 @@
                 updateCarousel();
             }
         });
+
+        function shareLocation() {
+            const title = '{{ $foodPlace->title }}';
+            const location = '{{ $foodPlace->location ?? '' }}';
+            const url = '{{ $foodPlace->source_location ?? '' }}';
+
+            if (navigator.share) {
+                navigator.share({
+                    title: `Lokasi ${title}`,
+                    text: `Cek lokasi ${title} di ${location}`,
+                    url: url
+                });
+            } else {
+                // Fallback untuk browser yang tidak support Web Share API
+                const shareText = `Lokasi ${title} - ${location}\n${url}`;
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('Lokasi telah disalin ke clipboard!');
+                }).catch(() => {
+                    // Fallback jika clipboard tidak didukung
+                    const textArea = document.createElement('textarea');
+                    textArea.value = shareText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('Lokasi telah disalin ke clipboard!');
+                });
+            }
+        }
+
+        // Initialize map (placeholder - bisa diganti dengan OpenStreetMap nanti)
+        function initMap() {
+            const mapContainer = document.getElementById('map');
+            if (mapContainer) {
+                // Simple map placeholder dengan styling yang bagus
+                mapContainer.innerHTML = `
+                    <div class="w-full h-full bg-gradient-to-br from-blue-100 to-green-100 flex items-center justify-center">
+                        <div class="text-center p-6">
+                            <svg class="w-16 h-16 mx-auto mb-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-2">{{ $foodPlace->title }}</h3>
+                            <p class="text-gray-600 mb-4">{{ $foodPlace->location ?? 'Lokasi tidak tersedia' }}</p>
+                            <div class="flex justify-center space-x-2">
+                                <span class="px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-sm">📍 Lokasi Tempat</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize map when page loads
+        document.addEventListener('DOMContentLoaded', initMap);
     </script>
 
     <!-- Add this to your CSS file or style tag -->
