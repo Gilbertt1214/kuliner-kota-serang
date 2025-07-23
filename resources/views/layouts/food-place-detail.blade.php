@@ -294,39 +294,170 @@
                     @endphp
 
                     @forelse ($reviews as $review)
-                        <div class="p-4 border-b border-gray-200 last:border-0 transition-all duration-300 hover:bg-gray-50 rounded-lg transform hover:-translate-y-1 animate-fade-in-up"
+                        <div class="p-6 border border-gray-200 rounded-xl mb-6 transition-all duration-300 hover:bg-gray-50 hover:shadow-md transform hover:-translate-y-1 animate-fade-in-up"
                             style="animation-delay: {{ $loop->index * 50 }}ms">
-                            <div class="flex items-center mb-3">
-                                <div class="flex items-center mr-3">
-                                    <span class="text-yellow-500 flex">
-                                        @for ($i = 0; $i < 5; $i++)
-                                            @if ($i < $review->rating)
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="h-5 w-5 inline-block transition-all duration-200 transform hover:scale-125"
-                                                    fill="currentColor" viewBox="0 0 20 20">
-                                                    <path
-                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                            @else
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    class="h-5 w-5 inline-block text-gray-300 transition-all duration-200"
-                                                    fill="currentColor" viewBox="0 0 20 20">
-                                                    <path
-                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
-                                            @endif
-                                        @endfor
-                                    </span>
+
+                            <!-- Review Header -->
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="flex items-center mr-3">
+                                        <span class="text-yellow-500 flex">
+                                            @for ($i = 0; $i < 5; $i++)
+                                                @if ($i < $review->rating)
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="h-5 w-5 inline-block transition-all duration-200 transform hover:scale-125"
+                                                        fill="currentColor" viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        class="h-5 w-5 inline-block text-gray-300 transition-all duration-200"
+                                                        fill="currentColor" viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                    </svg>
+                                                @endif
+                                            @endfor
+                                        </span>
+                                        <span
+                                            class="ml-2 text-sm font-medium text-gray-600">{{ $review->rating }}/5</span>
+                                    </div>
                                 </div>
-                                <span
-                                    class="text-sm text-gray-500 transition-all duration-300 hover:text-gray-700">{{ $review->created_at->diffForHumans() }}</span>
+                                <span class="text-sm text-gray-500 transition-all duration-300 hover:text-gray-700">
+                                    {{ $review->created_at->diffForHumans() }}
+                                </span>
                             </div>
-                            <div class="mb-2">
+
+                            <!-- User Info -->
+                            <div class="mb-4">
                                 <h4 class="font-semibold text-gray-800 transition-all duration-300 hover:text-orange-600">
-                                    {{ $review->user->name ?? 'Anonymous' }}</h4>
+                                    @if ($review->is_anonymous)
+                                        <span class="text-gray-600">Pengguna Anonim</span>
+                                    @else
+                                        {{ $review->user->name ?? 'Anonymous' }}
+                                    @endif
+                                </h4>
                             </div>
-                            <p class="text-gray-600 leading-relaxed transition-all duration-300 hover:text-gray-800">
-                                {{ $review->comment }}</p>
+
+                            <!-- Detail Ratings -->
+                            @if ($review->taste_rating || $review->price_rating || $review->service_rating || $review->ambiance_rating)
+                                <div class="mb-4 p-3 bg-gray-50 rounded-lg">
+                                    <h5 class="text-sm font-medium text-gray-700 mb-2">Rating Detail:</h5>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                                        @if ($review->taste_rating)
+                                            <div class="flex items-center">
+                                                <span class="mr-1">🍽️</span>
+                                                <span class="mr-1">Rasa:</span>
+                                                <div class="flex">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <svg class="w-3 h-3 {{ $i <= $review->taste_rating ? 'text-yellow-400' : 'text-gray-300' }}"
+                                                            fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        </svg>
+                                                    @endfor
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        @if ($review->price_rating)
+                                            <div class="flex items-center">
+                                                <span class="mr-1">💰</span>
+                                                <span class="mr-1">Harga:</span>
+                                                <div class="flex">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <svg class="w-3 h-3 {{ $i <= $review->price_rating ? 'text-green-400' : 'text-gray-300' }}"
+                                                            fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        </svg>
+                                                    @endfor
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        @if ($review->service_rating)
+                                            <div class="flex items-center">
+                                                <span class="mr-1">🏪</span>
+                                                <span class="mr-1">Layanan:</span>
+                                                <div class="flex">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <svg class="w-3 h-3 {{ $i <= $review->service_rating ? 'text-blue-400' : 'text-gray-300' }}"
+                                                            fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        </svg>
+                                                    @endfor
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        @if ($review->ambiance_rating)
+                                            <div class="flex items-center">
+                                                <span class="mr-1">🌟</span>
+                                                <span class="mr-1">Suasana:</span>
+                                                <div class="flex">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <svg class="w-3 h-3 {{ $i <= $review->ambiance_rating ? 'text-purple-400' : 'text-gray-300' }}"
+                                                            fill="currentColor" viewBox="0 0 20 20">
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        </svg>
+                                                    @endfor
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Comment -->
+                            @if ($review->comment)
+                                <p
+                                    class="text-gray-600 leading-relaxed transition-all duration-300 hover:text-gray-800 mb-4">
+                                    {{ $review->comment }}
+                                </p>
+                            @endif
+
+                            <!-- Tags -->
+                            @if ($review->tags && count($review->tags) > 0)
+                                <div class="mb-4">
+                                    <div class="flex flex-wrap gap-2">
+                                        @foreach ($review->tags as $tag)
+                                            <span
+                                                class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 border border-orange-200">
+                                                #{{ $tag }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Review Photos -->
+                            @if ($review->photos && count($review->photos) > 0)
+                                <div class="mt-4">
+                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                        @foreach ($review->photos as $photo)
+                                            <div class="relative group cursor-pointer"
+                                                onclick="openImageModal('{{ asset('storage/' . $photo) }}')">
+                                                <img src="{{ asset('storage/' . $photo) }}" alt="Review Photo"
+                                                    class="w-full h-24 object-cover rounded-lg hover:opacity-90 transition-all duration-300 group-hover:scale-105">
+                                                <div
+                                                    class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 rounded-lg flex items-center justify-center">
+                                                    <svg class="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-all duration-300"
+                                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7">
+                                                        </path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     @empty
                         <div class="text-center py-8 text-gray-500 animate-pulse">
