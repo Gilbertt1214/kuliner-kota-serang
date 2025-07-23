@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FoodPlace;
 use App\Models\FoodCategories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class AdminFoodPlaceController extends Controller
@@ -12,11 +13,11 @@ class AdminFoodPlaceController extends Controller
     public function index(Request $request)
     {
         $query = FoodPlace::with([
-                'category',
-                'reviews.user',
-                'images',
-                'user'
-            ])
+            'category',
+            'reviews.user',
+            'images',
+            'user'
+        ])
             ->whereHas('user', function ($q) {
                 $q->where('role', 'pengusaha');
             })
@@ -58,73 +59,82 @@ class AdminFoodPlaceController extends Controller
     }
 
     public function store(Request $request)
-{
-    try {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'food_category_id' => 'required|exists:food_categories,id',
-            'min_price' => 'required|numeric|min:0',
-            'max_price' => 'required|numeric|min:0|gte:min_price',
-            'location' => 'required|string|max:255',
-            'source_location' => 'nullable|url',
-            'images' => 'required|array|max:5',
-            'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-            'status' => 'required|in:active,inactive'
-        ]);
-
-        // Check if max price is greater than min price
-        if ($validated['max_price'] <= $validated['min_price']) {
-            return redirect()->back()
-                ->with('error', 'Max price must be greater than min price')
-                ->withInput();
-        }
-
-        // Check image count
-        if (count($request->file('images')) > 5) {
-            return redirect()->back()
-                ->with('error', 'You can upload maximum 5 images')
-                ->withInput();
-        }
-
-        $foodPlace = FoodPlace::create([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'food_category_id' => $validated['food_category_id'],
-            'min_price' => $validated['min_price'],
-            'max_price' => $validated['max_price'],
-            'location' => $validated['location'],
-            'source_location' => $validated['source_location'],
-            'status' => $validated['status'] ?? 'active',
-            'user_id' => auth()->id(),
-        ]);
-
-        // Handle image upload
-        foreach ($request->file('images') as $image) {
-            $path = $image->store('public/food-places');
-            $foodPlace->images()->create([
-                'image_path' => str_replace('public/', '', $path)
+    {
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'food_category_id' => 'required|exists:food_categories,id',
+                'min_price' => 'required|numeric|min:0',
+                'max_price' => 'required|numeric|min:0|gte:min_price',
+                'location' => 'required|string|max:255',
+                'source_location' => 'nullable|url',
+                'images' => 'required|array|max:5',
+                'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
+                'status' => 'required|in:active,inactive'
             ]);
+
+            // Check if max price is greater than min price
+            if ($validated['max_price'] <= $validated['min_price']) {
+                return redirect()->back()
+                    ->with('error', 'Max price must be greater than min price')
+                    ->withInput();
+            }
+
+            // Check image count
+            if (count($request->file('images')) > 5) {
+                return redirect()->back()
+                    ->with('error', 'You can upload maximum 5 images')
+                    ->withInput();
+            }
+
+            $foodPlace = FoodPlace::create([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'food_category_id' => $validated['food_category_id'],
+                'min_price' => $validated['min_price'],
+                'max_price' => $validated['max_price'],
+                'location' => $validated['location'],
+                'source_location' => $validated['source_location'],
+                'status' => $validated['status'] ?? 'active',
+                'user_id' => auth()->id(),
+            ]);
+
+            // Handle image upload
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('public/food-places');
+                $foodPlace->images()->create([
+                    'image_path' => str_replace('public/', '', $path)
+                ]);
+            }
+
+            return redirect()->route('admin.food-places.index')
+                ->with('success', 'Food place added successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Error creating food place: ' . $e->getMessage())
+                ->withInput();
         }
-
-        return redirect()->route('admin.food-places.index')
-            ->with('success', 'Food place added successfully!');
-
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return redirect()->back()
-            ->withErrors($e->validator)
-            ->withInput();
-    } catch (\Exception $e) {
-        return redirect()->back()
-            ->with('error', 'Error creating food place: ' . $e->getMessage())
-            ->withInput();
     }
-}
 
     public function show($id)
     {
         $foodPlace = FoodPlace::with(['images', 'category', 'reviews'])->findOrFail($id);
-        return view('layouts.food-place-detail', compact('foodPlace'));
+        // Check if current user has already reviewed this place
+
+        $categories = FoodCategories::with('foodPlaces')->withCount('foodPlaces')->get();
+
+        $userReview = null;
+        if (Auth::check()) {
+            $userReview = $foodPlace->reviews()
+                ->where('user_id', Auth::id())
+                ->first();
+        }
+        return view('layouts.food-place-detail', compact('foodPlace', 'userReview', 'categories'));
     }
 
     public function edit($id)
@@ -184,23 +194,22 @@ class AdminFoodPlaceController extends Controller
             ->with('success', 'Tempat makan berhasil diperbarui!');
     }
 
-   public function destroy( $id)
-{
-    try {
-        // Delete all images first
-        $foodPlace = FoodPlace::findOrFail($id);
-        foreach ($foodPlace->images as $image) {
-            Storage::delete('public/' . $image->image_path);
-            $image->delete();
+    public function destroy($id)
+    {
+        try {
+            // Delete all images first
+            $foodPlace = FoodPlace::findOrFail($id);
+            foreach ($foodPlace->images as $image) {
+                Storage::delete('public/' . $image->image_path);
+                $image->delete();
+            }
+            // Then delete the food place
+            $foodPlace->delete();
+            return redirect()->route('admin.food-places.index')
+                ->with('success', 'Food place deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Error deleting food place: ' . $e->getMessage());
         }
-        // Then delete the food place
-        $foodPlace->delete();
-        return redirect()->route('admin.food-places.index')
-            ->with('success', 'Food place deleted successfully!');
-
-    } catch (\Exception $e) {
-        return redirect()->back()
-            ->with('error', 'Error deleting food place: ' . $e->getMessage());
     }
-}
 }
