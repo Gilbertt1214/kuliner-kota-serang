@@ -26,6 +26,7 @@ class FoodPlace extends Model
         // 'images' dihapus karena sudah dihandle oleh relasi
     ];
 
+
     protected $casts = [
         'min_price' => 'float',
         'max_price' => 'float',
@@ -37,6 +38,24 @@ class FoodPlace extends Model
 
     /**
      * Get the average rating attribute
+     */
+    public function scopeSearch($query, $search)
+    {
+        return $query->where(function($q) use ($search) {
+            $q->where('name', 'LIKE', "%{$search}%")
+              ->orWhere('description', 'LIKE', "%{$search}%")
+              ->orWhere('address', 'LIKE', "%{$search}%");
+        });
+    }
+    public function scopeByCategory($query, $categoryId)
+    {
+        if ($categoryId) {
+            return $query->where('food_category_id', $categoryId);
+        }
+        return $query;
+    }
+    /**
+     * Get the owner of the food place
      */
     public function owner()
 {

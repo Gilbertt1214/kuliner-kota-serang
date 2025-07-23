@@ -72,13 +72,155 @@
             </div>
         </div>
     </section>
+    <section class="py-8 bg-white relative z-10">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6 -mt-20 relative z-20 animate-float-up">
+                <form action="{{ route('food.search') }}" method="GET"
+                    class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="flex-grow relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-3.5 text-gray-400"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Cari kuliner atau lokasi..."
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300">
+                    </div>
+                    <div class="md:w-1/4 relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-3.5 text-gray-400"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                        </svg>
+                        <select name="category"
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none transition-all duration-300">
+                            <option value="">Semua Kategori</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"
+                                    {{ request('category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <button type="submit"
+                            class="w-full md:w-auto px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            Cari
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Results Section -->
+    <section class="py-8">
+        <div class="container mx-auto px-4">
+            @if (request()->has('search') || request()->has('category'))
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Hasil Pencarian</h2>
+                    <p class="text-gray-600">
+                        Ditemukan {{ $foodPlaces->total() }} hasil
+                        @if (request('search'))
+                            untuk "<span class="font-semibold">{{ request('search') }}</span>"
+                        @endif
+                        @if (request('category'))
+                            @php
+                                $selectedCategory = $categories->find(request('category'));
+                            @endphp
+                            @if ($selectedCategory)
+                                dalam kategori "<span class="font-semibold">{{ $selectedCategory->name }}</span>"
+                            @endif
+                        @endif
+                    </p>
+                </div>
+            @endif
+
+            @if (isset($foodPlaces) && $foodPlaces->count() > 0)
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach ($foodPlaces as $foodPlace)
+                        <div
+                            class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                            @if ($foodPlace->image)
+                                <img src="{{ asset('storage/' . $foodPlace->image) }}" alt="{{ $foodPlace->name }}"
+                                    class="w-full h-48 object-cover">
+                            @else
+                                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                                    <span class="text-gray-400">No Image</span>
+                                </div>
+                            @endif
+
+                            <div class="p-4">
+                                <h3 class="font-semibold text-lg mb-2">{{ $foodPlace->name }}</h3>
+
+                                @if ($foodPlace->category)
+                                    <span
+                                        class="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full mb-2">
+                                        {{ $foodPlace->category->name }}
+                                    </span>
+                                @endif
+
+                                @if ($foodPlace->description)
+                                    <p class="text-gray-600 text-sm mb-2">{{ Str::limit($foodPlace->description, 100) }}
+                                    </p>
+                                @endif
+
+                                @if ($foodPlace->address)
+                                    <p class="text-gray-500 text-sm flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        {{ $foodPlace->address }}
+                                    </p>
+                                @endif
+
+                                <div class="mt-3">
+                                    <a href="{{ route('food-place.show', $foodPlace->id) }}"
+                                        class="text-orange-500 hover:text-orange-600 font-medium text-sm">
+                                        Lihat Detail →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-8">
+                    {{ $foodPlaces->links() }}
+                </div>
+            @else
+                <div class="text-center py-12">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Tidak ada hasil ditemukan</h3>
+                    <p class="text-gray-500">Coba ubah kata kunci pencarian atau kategori yang dipilih</p>
+                </div>
+            @endif
+        </div>
+    </section>
 
     <!-- Featured Categories Section with Hover Effects -->
     <section class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
             <div class="text-center mb-12 animate-fade-in">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4">Kategori Kuliner</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">Jelajahi berbagai kategori kuliner di kota serang yang menawarkan
+                <p class="text-gray-600 max-w-2xl mx-auto">Jelajahi berbagai kategori kuliner di kota serang yang
+                    menawarkan
                     cita rasa autentik.</p>
             </div>
 
