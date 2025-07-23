@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +14,13 @@
         }
     </style>
 </head>
+
 <body class="flex flex-col min-h-screen bg-gray-100">
     <!-- Navbar -->
     @include('components.navbar')
 
     <!-- Main Content -->
-    <main class=" py-6">
+    <main class="">
         @yield('content')
     </main>
 
@@ -28,4 +30,5 @@
     <!-- Scripts -->
     @vite('resources/js/app.js')
 </body>
+
 </html>
