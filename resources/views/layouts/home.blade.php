@@ -31,50 +31,6 @@
     <section class="py-8 bg-white relative z-10">
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6 -mt-20 relative z-20 animate-float-up">
-                <form action="#" method="GET" class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-                    <div class="flex-grow relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-3.5 text-gray-400"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        <input type="text" placeholder="Cari kuliner atau lokasi..."
-                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300">
-                    </div>
-                    <div class="md:w-1/4 relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-3.5 text-gray-400"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                        </svg>
-                        <select
-                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none transition-all duration-300">
-                            <option value="">Semua Kategori</option>
-                            <option value="makanan-berat">Makanan Berat</option>
-                            <option value="makanan-ringan">Makanan Ringan</option>
-                            <option value="jajanan-pasar">Jajanan Pasar</option>
-                            <option value="minuman">Minuman</option>
-                            <option value="dessert">Dessert</option>
-                        </select>
-                    </div>
-                    <div>
-                        <button type="submit"
-                            class="w-full md:w-auto px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-lg flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                            Cari
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-    <section class="py-8 bg-white relative z-10">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6 -mt-20 relative z-20 animate-float-up">
                 <form action="{{ route('food.search') }}" method="GET"
                     class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
                     <div class="flex-grow relative">
@@ -147,48 +103,45 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($foodPlaces as $foodPlace)
                         <div
-                            class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                            @if ($foodPlace->image)
-                                <img src="{{ asset('storage/' . $foodPlace->image) }}" alt="{{ $foodPlace->name }}"
-                                    class="w-full h-48 object-cover">
-                            @else
-                                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
-                                    <span class="text-gray-400">No Image</span>
-                                </div>
-                            @endif
-
-                            <div class="p-4">
-                                <h3 class="font-semibold text-lg mb-2">{{ $foodPlace->name }}</h3>
-
-                                @if ($foodPlace->category)
-                                    <span
-                                        class="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full mb-2">
-                                        {{ $foodPlace->category->name }}
+                            class="group bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 hover:shadow-xl transform hover:-translate-y-2 animate-fade-in-up delay-100">
+                            <div class="relative h-60 overflow-hidden">
+                                @if ($foodPlace->images->count() > 0)
+                                    <img src="{{ asset('storage/' . $foodPlace->images->first()->image_path) }}"
+                                        alt="{{ $foodPlace->title }}"
+                                        class="w-full aspect-video object-cover rounded-t-lg">
+                                @else
+                                    <div
+                                        class="aspect-video w-full bg-gray-200 flex items-center justify-center rounded-t-lg">
+                                        <span class="text-gray-500">No Image</span>
+                                    </div>
+                                @endif
+                                <div
+                                    class="absolute top-3 right-3 bg-white/90 text-yellow-600 rounded-full px-3 py-1 flex items-center shadow-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400"
+                                        viewBox="0 0 20 20" fill="currentColor">
+                                        <path
+                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    <span class="text-sm ml-1">
+                                        {{ $foodPlace->reviews->count() > 0 ? number_format($foodPlace->reviews->avg('rating'), 1) : '0.0' }}
                                     </span>
-                                @endif
-
-                                @if ($foodPlace->description)
-                                    <p class="text-gray-600 text-sm mb-2">{{ Str::limit($foodPlace->description, 100) }}
-                                    </p>
-                                @endif
-
-                                @if ($foodPlace->address)
-                                    <p class="text-gray-500 text-sm flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        </svg>
-                                        {{ $foodPlace->address }}
-                                    </p>
-                                @endif
-
-                                <div class="mt-3">
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <div class="flex items-center mb-3">
+                                    <span class="bg-orange-100 text-orange-500 text-xs font-medium px-3 py-1 rounded-full">
+                                        {{ $foodPlace->category ? $foodPlace->category->name : '-' }}</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $foodPlace->title }}</h3>
+                                <p class="text-gray-600 mb-4 line-clamp-2">{{ $foodPlace->description }}</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-orange-500 font-medium">Rp
+                                        {{ number_format($foodPlace->min_price, 0, '', '.') }} -
+                                        {{ number_format($foodPlace->max_price, 0, '', '.') }}
+                                    </span>
                                     <a href="{{ route('food-place.show', $foodPlace->id) }}"
-                                        class="text-orange-500 hover:text-orange-600 font-medium text-sm">
-                                        Lihat Detail →
+                                        class="text-sm text-orange-500 hover:text-orange-600 font-medium transition-all duration-300 opacity-0 group-hover:opacity-100">
+                                        Detail →
                                     </a>
                                 </div>
                             </div>
@@ -306,6 +259,7 @@
                             <!-- Food Places Count -->
                             <p class="text-sm text-gray-500 mb-4">
                                 {{ $category->food_places_count ?? 0 }} tempat
+                                {{-- Debug: {{ $category->id }} - {{ $category->name }} --}}
                             </p>
 
                             <!-- Hover Action -->
