@@ -55,7 +55,7 @@ class FoodPlaceController extends Controller
     {
         $categories = FoodCategories::with('foodPlaces')->withCount('foodPlaces')->get();
 
-        $foodPlace = FoodPlace::with(['category', 'reviews.user', 'images'])
+        $foodPlace = FoodPlace::with(['category', 'reviews.user', 'images', 'businessImages', 'menuImages'])
             ->findOrFail($id);
 
 

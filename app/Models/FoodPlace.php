@@ -41,10 +41,10 @@ class FoodPlace extends Model
      */
     public function scopeSearch($query, $search)
     {
-        return $query->where(function($q) use ($search) {
+        return $query->where(function ($q) use ($search) {
             $q->where('name', 'LIKE', "%{$search}%")
-              ->orWhere('description', 'LIKE', "%{$search}%")
-              ->orWhere('address', 'LIKE', "%{$search}%");
+                ->orWhere('description', 'LIKE', "%{$search}%")
+                ->orWhere('address', 'LIKE', "%{$search}%");
         });
     }
     public function scopeByCategory($query, $categoryId)
@@ -58,9 +58,9 @@ class FoodPlace extends Model
      * Get the owner of the food place
      */
     public function owner()
-{
-    return $this->belongsTo(User::class, 'user_id');
-}
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
     public function getAverageRatingAttribute()
     {
         return $this->reviews()->avg('rating') ?? 0;
@@ -88,6 +88,22 @@ class FoodPlace extends Model
     public function images(): HasMany
     {
         return $this->hasMany(FoodPlaceImage::class);
+    }
+
+    /**
+     * Get business images only
+     */
+    public function businessImages()
+    {
+        return $this->hasMany(FoodPlaceImage::class)->where('type', 'business');
+    }
+
+    /**
+     * Get menu images only
+     */
+    public function menuImages()
+    {
+        return $this->hasMany(FoodPlaceImage::class)->where('type', 'menu');
     }
 
     /**

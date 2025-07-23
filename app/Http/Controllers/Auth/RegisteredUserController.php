@@ -27,7 +27,6 @@ class RegisteredUserController extends Controller
 
         if (!in_array($role, ['user', 'pengusaha'])) {
             return back()->withErrors(['role' => 'Role harus diisi.']);
-
         }
 
 
@@ -47,25 +46,31 @@ class RegisteredUserController extends Controller
                 'pengusaha_category' => ['required', 'exists:food_categories,id'],
                 'min_price' => ['required', 'numeric', 'min:0'],
                 'max_price' => ['required', 'numeric', 'min:0', 'gte:min_price'],
-                'pengusaha_location' => ['required', 'string', ],
-                'source_location' => ['nullable', 'url', ],
+                'pengusaha_location' => ['required', 'string',],
+                'source_location' => ['nullable', 'url',],
                 'pengusaha_image' => ['required', 'array', 'min:1', 'max:5'],
                 'pengusaha_image.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                'menu_images' => ['required', 'array', 'min:1', 'max:10'],
+                'menu_images.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             ]);
-
         }
 
         $messages = [
             'max_price.gte' => 'Harga maksimum harus lebih besar dari harga minimum.',
-            'pengusaha_image.required' => 'Minimal satu gambar harus diunggah.',
-            'pengusaha_image.max' => 'Maksimal 5 gambar diperbolehkan.',
-            'pengusaha_image.*.image' => 'Setiap file harus berupa gambar.',
-            'pengusaha_image.*.mimes' => 'Format gambar hanya jpeg, png, jpg, atau gif.',
-            'pengusaha_image.*.max' => 'Ukuran gambar maksimal 2MB.',
+            'pengusaha_image.required' => 'Minimal satu gambar usaha harus diunggah.',
+            'pengusaha_image.max' => 'Maksimal 5 gambar usaha diperbolehkan.',
+            'pengusaha_image.*.image' => 'Setiap file usaha harus berupa gambar.',
+            'pengusaha_image.*.mimes' => 'Format gambar usaha hanya jpeg, png, jpg, atau gif.',
+            'pengusaha_image.*.max' => 'Ukuran gambar usaha maksimal 2MB.',
+            'menu_images.required' => 'Minimal satu foto menu harus diunggah.',
+            'menu_images.max' => 'Maksimal 10 foto menu diperbolehkan.',
+            'menu_images.*.image' => 'Setiap file menu harus berupa gambar.',
+            'menu_images.*.mimes' => 'Format foto menu hanya jpeg, png, jpg, atau gif.',
+            'menu_images.*.max' => 'Ukuran foto menu maksimal 2MB.',
         ];
 
 
-         $validated = $request->validate($rules, $messages);
+        $validated = $request->validate($rules, $messages);
 
         // Buat user
         $user = User::create([
@@ -77,12 +82,19 @@ class RegisteredUserController extends Controller
 
         // Jika pengusaha, buat FoodPlace dan simpan gambar-gambarnya
         if ($role === 'pengusaha') {
-            $imagePaths = [];
+            // Upload business images
+            $businessImagePaths = [];
             foreach ($request->file('pengusaha_image') as $image) {
-                $imagePaths[] = $image->store('images/businesses', 'public');
+                $businessImagePaths[] = $image->store('images/businesses', 'public');
             }
 
-            // Simpan data FoodPlace, gambar pertama sebagai thumbnail
+            // Upload menu images
+            $menuImagePaths = [];
+            foreach ($request->file('menu_images') as $image) {
+                $menuImagePaths[] = $image->store('images/menus', 'public');
+            }
+
+            // Simpan data FoodPlace
             $foodPlace = FoodPlace::create([
                 'title'            => $validated['title'],
                 'description'      => $validated['description'],
@@ -94,11 +106,21 @@ class RegisteredUserController extends Controller
                 'user_id'          => $user->id,
             ]);
 
-            // Simpan semua gambar ke tabel food_place_images
-            foreach ($imagePaths as $path) {
+            // Simpan semua gambar usaha ke tabel food_place_images dengan type 'business'
+            foreach ($businessImagePaths as $path) {
                 FoodPlaceImage::create([
                     'food_place_id' => $foodPlace->id,
                     'image_path'    => $path,
+                    'type'          => 'business',
+                ]);
+            }
+
+            // Simpan semua foto menu ke tabel food_place_images dengan type 'menu'
+            foreach ($menuImagePaths as $path) {
+                FoodPlaceImage::create([
+                    'food_place_id' => $foodPlace->id,
+                    'image_path'    => $path,
+                    'type'          => 'menu',
                 ]);
             }
         }

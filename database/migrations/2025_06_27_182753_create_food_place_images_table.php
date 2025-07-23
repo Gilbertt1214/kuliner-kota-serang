@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('food_place_id')->constrained()->onDelete('cascade');
             $table->string('image_path');
+            $table->enum('type', ['business', 'menu'])->default('business');
             $table->timestamps();
         });
     }

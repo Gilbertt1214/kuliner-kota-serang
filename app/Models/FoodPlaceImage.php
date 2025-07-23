@@ -12,6 +12,7 @@ class FoodPlaceImage extends Model
     protected $fillable = [
         'food_place_id',
         'image_path',
+        'type',
     ];
 
     /**
