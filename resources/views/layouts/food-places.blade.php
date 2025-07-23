@@ -5,6 +5,62 @@
 <div class="container mx-auto px-4 py-8 pt-20">
     <h1 class="text-3xl font-bold text-center mb-8">Daftar Tempat Makanan</h1>
 
+    {{-- Search and Filter Section --}}
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 mb-8">
+        <form action="{{ route('food-places.index') }}" method="GET" class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+            <div class="flex-grow relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari kuliner atau lokasi..."
+                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300">
+            </div>
+            <div class="md:w-1/4 relative">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                </svg>
+                <select name="category" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent appearance-none transition-all duration-300">
+                    <option value="">Semua Kategori</option>
+                    @if(isset($categories))
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="w-full md:w-auto px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-all duration-300 transform hover:-translate-y-1 shadow-md hover:shadow-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    Cari
+                </button>
+            </div>
+        </form>
+        
+        {{-- Search Results Info --}}
+        @if (request()->has('search') || request()->has('category'))
+            <div class="mt-4 pt-4 border-t border-gray-200">
+                <p class="text-gray-600">
+                    Ditemukan {{ $foodPlaces->total() }} hasil
+                    @if (request('search'))
+                        untuk "<span class="font-semibold">{{ request('search') }}</span>"
+                    @endif
+                    @if (request('category'))
+                        @php
+                            $selectedCategory = $categories->find(request('category'));
+                        @endphp
+                        @if ($selectedCategory)
+                            dalam kategori "<span class="font-semibold">{{ $selectedCategory->name }}</span>"
+                        @endif
+                    @endif
+                </p>
+            </div>
+        @endif
+    </div>
+
     {{-- Grid Card --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         @forelse($foodPlaces as $place)
@@ -67,6 +123,13 @@
             </div>
         @endforelse
     </div>
+    
+    {{-- Pagination --}}
+    @if(isset($foodPlaces) && method_exists($foodPlaces, 'links'))
+        <div class="mt-8 flex justify-center">
+            {{ $foodPlaces->links() }}
+        </div>
+    @endif
 </div>
 
 <!-- Add CSS for animations -->

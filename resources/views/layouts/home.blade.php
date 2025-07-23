@@ -31,7 +31,7 @@
     <section class="py-8 bg-white relative z-10">
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl p-6 -mt-20 relative z-20 animate-float-up">
-                <form action="{{ route('food.search') }}" method="GET"
+                <form action="{{ route('food-places.index') }}" method="GET"
                     class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
                     <div class="flex-grow relative">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 absolute left-3 top-3.5 text-gray-400"
@@ -75,7 +75,7 @@
             </div>
         </div>
     </section>
-
+    {{-- 
     <!-- Search Results Section -->
     <section class="py-8">
         <div class="container mx-auto px-4">
@@ -165,7 +165,7 @@
                 </div>
             @endif
         </div>
-    </section>
+    </section> --}}
 
     <!-- Featured Categories Section with Hover Effects -->
     <section class="py-16 bg-gray-50">
@@ -350,9 +350,65 @@
                         </div>
                     @endforeach
                 @else
-                    <div class="col-span-full flex flex-col items-center justify-center gap-4 py-12">
-
-                        <p class="text-gray-500">Tidak ada rekomendasi terbaru saat ini.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                        @if (isset($featuredPlaces) && $featuredPlaces->count() > 0)
+                            @foreach ($featuredPlaces as $foodPlace)
+                                <div
+                                    class="group bg-white rounded-xl shadow-md overflow-hidden transition-all duration-500 hover:shadow-xl transform hover:-translate-y-2 animate-fade-in-up delay-100">
+                                    <div class="relative h-60 overflow-hidden">
+                                        @if ($foodPlace->images->count() > 0)
+                                            <img src="{{ asset('storage/' . $foodPlace->images->first()->image_path) }}"
+                                                alt="{{ $foodPlace->title }}"
+                                                class="w-full aspect-video object-cover rounded-t-lg">
+                                        @else
+                                            <div
+                                                class="aspect-video w-full bg-gray-200 flex items-center justify-center rounded-t-lg">
+                                                <span class="text-gray-500">No Image</span>
+                                            </div>
+                                        @endif
+                                        <div
+                                            class="absolute top-3 right-3 bg-white/90 text-yellow-600 rounded-full px-3 py-1 flex items-center shadow-md">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-400"
+                                                viewBox="0 0 20 20" fill="currentColor">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </svg>
+                                            <span class="text-sm ml-1">
+                                                {{ $foodPlace->reviews->count() > 0 ? number_format($foodPlace->reviews->avg('rating'), 1) : '0.0' }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="p-5">
+                                        <div class="flex items-center mb-3">
+                                            <span
+                                                class="bg-orange-100 text-orange-500 text-xs font-medium px-3 py-1 rounded-full">
+                                                {{ $foodPlace->category ? $foodPlace->category->name : '-' }}</span>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $foodPlace->title }}</h3>
+                                        <p class="text-gray-600 mb-4 line-clamp-2">{{ $foodPlace->description }}</p>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-orange-500 font-medium">Rp
+                                                {{ number_format($foodPlace->min_price, 0, '', '.') }} -
+                                                {{ number_format($foodPlace->max_price, 0, '', '.') }}
+                                            </span>
+                                            <a href="{{ route('food-place.show', $foodPlace->id) }}"
+                                                class="text-sm text-orange-500 hover:text-orange-600 font-medium transition-all duration-300 opacity-0 group-hover:opacity-100">
+                                                Detail →
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="col-span-full flex flex-col items-center justify-center gap-4 py-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                </svg>
+                                <p class="text-gray-500">Tidak ada rekomendasi terbaru saat ini.</p>
+                            </div>
+                        @endif
                     </div>
                 @endif
             </div>

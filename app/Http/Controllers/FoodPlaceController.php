@@ -5,13 +5,43 @@ namespace App\Http\Controllers;
 use App\Models\FoodPlace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class FoodPlaceController extends Controller
 {
 
-    public function index() {
-        $foodPlaces = FoodPlace::all();
-        return view('layouts.food-places', ['foodPlaces' => $foodPlaces]);
+    public function index(Request $request) {
+        // Ambil semua categories untuk dropdown filter
+        $categories = \App\Models\FoodCategories::withCount('foodPlaces')->get();
+        
+        // Query dasar untuk food places dengan eager loading
+        $query = FoodPlace::with(['category', 'reviews', 'images']);
+
+        // Filter berdasarkan pencarian teks
+        if ($request->filled('search')) {
+            $searchTerm = $request->get('search');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('title', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('location', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
+        // Filter berdasarkan kategori
+        if ($request->filled('category') && $request->get('category') != '') {
+            $query->where('food_category_id', $request->get('category'));
+        }
+
+        // Filter berdasarkan lokasi (jika ada)
+        if ($request->filled('location')) {
+            $location = $request->get('location');
+            $query->where('location', 'LIKE', "%{$location}%");
+        }
+
+        // Ambil hasil dengan pagination
+        $foodPlaces = $query->paginate(12)->withQueryString();
+        
+        return view('layouts.food-places', compact('foodPlaces', 'categories'));
     }
     /**
      * Display the specified food place.
@@ -62,26 +92,26 @@ class FoodPlaceController extends Controller
         ]);
 
         // Handle upload gambar
+        $imagePaths = [];
         if ($request->hasFile('image')) {
-            if ($request->hasFile('image')) {
-                foreach ($request->file('image') as $image) {
-                    $imageName = Str::slug($validated['title']) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
-                    $imagePath = 'images/food-places/' . $imageName;
-                    $image->move(public_path('images/food-places'), $imageName);
-                    $imagePaths[] = $imagePath;
-                }
+            foreach ($request->file('image') as $image) {
+                $imageName = Str::slug($validated['title']) . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $imagePath = 'images/food-places/' . $imageName;
+                $image->move(public_path('images/food-places'), $imageName);
+                $imagePaths[] = $imagePath;
             }
+        }
 
         // Simpan data tempat makan ke database
         FoodPlace::create([
             'title'           => $validated['title'],
             'description'     => $validated['description'],
-            'category'        => $validated['category'],
+            'food_category_id'=> $validated['category'], // Perbaiki field name
             'min_price'       => $validated['min_price'],
             'max_price'       => $validated['max_price'],
             'location'        => $validated['location'],
             'source_location' => $validated['source_location'] ?? null,
-            'image'           => $validated['image'],
+            'user_id'         => Auth::id() ?? 1, // Tambahkan user_id
             'status'          => 'pending', // default status menunggu persetujuan admin
         ]);
 
@@ -89,5 +119,4 @@ class FoodPlaceController extends Controller
             ->route('food-places.index')
             ->with('success', 'Tempat makan berhasil didaftarkan dan menunggu persetujuan admin!');
     }
- }
 }
