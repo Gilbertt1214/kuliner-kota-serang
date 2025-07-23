@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FoodCategories;
 use App\Models\FoodPlace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -10,10 +11,11 @@ use Illuminate\Support\Facades\Auth;
 class FoodPlaceController extends Controller
 {
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         // Ambil semua categories untuk dropdown filter
-        $categories = \App\Models\FoodCategories::withCount('foodPlaces')->get();
-        
+        $categories = FoodCategories::withCount('foodPlaces')->get();
+
         // Query dasar untuk food places dengan eager loading
         $query = FoodPlace::with(['category', 'reviews', 'images']);
 
@@ -40,7 +42,7 @@ class FoodPlaceController extends Controller
 
         // Ambil hasil dengan pagination
         $foodPlaces = $query->paginate(12)->withQueryString();
-        
+
         return view('layouts.food-places', compact('foodPlaces', 'categories'));
     }
     /**
@@ -51,11 +53,13 @@ class FoodPlaceController extends Controller
      */
     public function show($id)
     {
+        $categories = FoodCategories::with('foodPlaces')->withCount('foodPlaces')->get();
+
         $foodPlace = FoodPlace::with(['category', 'reviews.user', 'images'])
             ->findOrFail($id);
 
 
-        return view('layouts.food-place-detail', ['foodPlace' => $foodPlace]);
+        return view('layouts.food-place-detail', ['foodPlace' => $foodPlace, 'categories' => $categories]);
     }
 
     /**
@@ -106,7 +110,7 @@ class FoodPlaceController extends Controller
         FoodPlace::create([
             'title'           => $validated['title'],
             'description'     => $validated['description'],
-            'food_category_id'=> $validated['category'], // Perbaiki field name
+            'food_category_id' => $validated['category'], // Perbaiki field name
             'min_price'       => $validated['min_price'],
             'max_price'       => $validated['max_price'],
             'location'        => $validated['location'],
