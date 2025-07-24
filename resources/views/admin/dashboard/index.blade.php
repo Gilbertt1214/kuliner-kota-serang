@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Dashboard Header -->
-    <div class="w-full px-6 py-6 mx-auto">
+    <div class="">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
             <div class="mb-4 md:mb-0">
                 <h1 class="text-3xl font-bold text-gray-900">Dashboard Admin</h1>
