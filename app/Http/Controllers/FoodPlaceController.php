@@ -40,7 +40,9 @@ class FoodPlaceController extends Controller
             $query->where('location', 'LIKE', "%{$location}%");
         }
 
-        // Ambil hasil dengan pagination
+        // Ambil hasil dengan pagination dan status active
+        $query->where('status', 'active');
+
         $foodPlaces = $query->paginate(12)->withQueryString();
 
         return view('layouts.food-places', compact('foodPlaces', 'categories'));

@@ -193,9 +193,9 @@
                         </div>
                     </div>
 
-                    @if ($foodPlaces->count() > 0)
+                    @if ($recentFoodPlaces->count() > 0)
                         <div class="divide-y divide-gray-200">
-                            @foreach ($foodPlaces->take(5) as $place)
+                            @foreach ($recentFoodPlaces as $place)
                                 <div class="p-6 hover:bg-gray-50 transition-colors">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-start space-x-4">
@@ -225,7 +225,7 @@
                                             <!-- Place Info -->
                                             <div class="flex-1 min-w-0">
                                                 <h4 class="text-lg font-semibold text-gray-900 truncate">
-                                                    {{ $place->name }}</h4>
+                                                    {{ $place->title }}</h4>
                                                 <p class="text-sm text-gray-600 mt-1">
                                                     {{ $place->category->name ?? 'Kategori tidak diketahui' }}</p>
                                                 <div class="flex items-center mt-2 space-x-4">
@@ -378,20 +378,11 @@
                                     <span class="ml-3 text-sm font-medium text-gray-900">Total Ulasan</span>
                                 </div>
                                 <span class="text-lg font-bold text-gray-900">
-                                    {{ $foodPlaces->sum(function ($place) {return $place->reviews->count();}) }}
+                                    {{ $stats['total_reviews'] }}
                                 </span>
                             </div>
 
                             <!-- Average Rating -->
-                            @php
-                                $totalReviews = $foodPlaces->sum(function ($place) {
-                                    return $place->reviews->count();
-                                });
-                                $totalRating = $foodPlaces->sum(function ($place) {
-                                    return $place->reviews->sum('rating');
-                                });
-                                $averageRating = $totalReviews > 0 ? round($totalRating / $totalReviews, 1) : 0;
-                            @endphp
                             <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                                 <div class="flex items-center">
                                     <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
@@ -404,7 +395,7 @@
                                     <span class="ml-3 text-sm font-medium text-gray-900">Rating Rata-rata</span>
                                 </div>
                                 <span class="text-lg font-bold text-gray-900">
-                                    {{ $averageRating }}/5
+                                    {{ $stats['average_rating'] }}/5
                                 </span>
                             </div>
 

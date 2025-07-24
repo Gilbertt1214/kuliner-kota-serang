@@ -10,7 +10,6 @@ class DashboardPengusaha extends Controller
 {
     public function index()
     {
-
         if (Auth::user()->role !== 'pengusaha') {
             abort(403, 'Unauthorized');
         }
@@ -19,17 +18,40 @@ class DashboardPengusaha extends Controller
         $foodPlaces = FoodPlace::where('user_id', $user->id)
             ->with(['category', 'images', 'reviews'])
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->get();
 
+        // Calculate comprehensive statistics
         $stats = [
-            'total' => $foodPlaces->total(),
-            'pending' => FoodPlace::where('user_id', $user->id)->where('status', 'pending')->count(),
-            'active' => FoodPlace::where('user_id', $user->id)->where('status', 'active')->count(),
-            'rejected' => FoodPlace::where('user_id', $user->id)->where('status', 'rejected')->count(),
+            'total' => $foodPlaces->count(),
+            'pending' => $foodPlaces->where('status', 'pending')->count(),
+            'active' => $foodPlaces->where('status', 'active')->count(),
+            'rejected' => $foodPlaces->where('status', 'rejected')->count(),
+            'total_reviews' => $foodPlaces->sum(function ($place) {
+                return $place->reviews->count();
+            }),
+            'average_rating' => $this->calculateAverageRating($foodPlaces),
         ];
+
+        // Recent food places for display
+        $recentFoodPlaces = $foodPlaces->take(6);
 
         $categories = FoodCategories::with('foodPlaces')->withCount('foodPlaces')->get();
 
-        return view('pengusaha.dashboard', compact('foodPlaces', 'stats', 'categories'));
+        return view('pengusaha.dashboard', compact('recentFoodPlaces', 'stats', 'categories'));
+    }
+
+    private function calculateAverageRating($foodPlaces)
+    {
+        $totalRating = 0;
+        $totalReviews = 0;
+
+        foreach ($foodPlaces as $place) {
+            foreach ($place->reviews as $review) {
+                $totalRating += $review->rating;
+                $totalReviews++;
+            }
+        }
+
+        return $totalReviews > 0 ? round($totalRating / $totalReviews, 1) : 0;
     }
 }

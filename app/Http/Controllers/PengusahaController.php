@@ -54,7 +54,6 @@ class PengusahaController extends Controller
 
   public function store(Request $request)
   {
-    dd($request->all());
     try {
       $validated = $request->validate([
         'title' => 'required|string|max:255',
@@ -64,8 +63,10 @@ class PengusahaController extends Controller
         'location' => 'required|string|max:500',
         'description' => 'required|string',
         'source_location' => 'nullable|url',
-        'images' => 'required|array|max:5',
-        'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
+        'images' => 'required|array|min:1|max:5',
+        'images.*' => 'image|mimes:jpeg,png,jpg,webp,gif|max:2048',
+        'menu_images' => 'required|array|min:1|max:10',
+        'menu_images.*' => 'image|mimes:jpeg,png,jpg,webp,gif|max:2048',
       ]);
 
       // Create food place with pending status
@@ -81,15 +82,30 @@ class PengusahaController extends Controller
         'status' => 'pending', // Always pending for pengusaha submissions
       ]);
 
-      // Handle image uploads
+
+
+      // Handle business images upload
       if ($request->hasFile('images')) {
         foreach ($request->file('images') as $index => $image) {
-          $path = $image->store('food-places', 'public');
+          $path = $image->store('food-places/business', 'public');
 
           FoodPlaceImage::create([
             'food_place_id' => $foodPlace->id,
             'image_path' => $path,
-            'type' => 'business', // Use 'business' type to match existing structure
+            'type' => 'business',
+          ]);
+        }
+      }
+
+      // Handle menu images upload
+      if ($request->hasFile('menu_images')) {
+        foreach ($request->file('menu_images') as $index => $image) {
+          $path = $image->store('food-places/menu', 'public');
+
+          FoodPlaceImage::create([
+            'food_place_id' => $foodPlace->id,
+            'image_path' => $path,
+            'type' => 'menu',
           ]);
         }
       }
@@ -123,7 +139,6 @@ class PengusahaController extends Controller
   public function show($id)
   {
     $foodPlace = FoodPlace::with(['images', 'category', 'reviews'])->findOrFail($id);
-    // Check if current user has already reviewed this place
 
     $categories = FoodCategories::with('foodPlaces')->withCount('foodPlaces')->get();
 
@@ -133,11 +148,6 @@ class PengusahaController extends Controller
         ->where('user_id', Auth::id())
         ->first();
     }
-    // return view('layouts.food-place-detail', compact('foodPlace', 'userReview', 'categories'));
-    // $foodPlace = FoodPlace::where('user_id', Auth::id())
-    //   ->with(['category', 'images', 'reviews.user'])
-    //   ->findOrFail($id);
-
     return view('pengusaha.food-places.show', compact('foodPlace'));
   }
 

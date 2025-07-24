@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 pb-6 pt-28">
+    <div class="">
         <!-- Header -->
         <div class="mb-8">
             <div class="flex items-center mb-4">
@@ -123,7 +123,7 @@
                     <div>
                         <label for="images" class="block text-sm font-medium text-gray-700">Foto Tempat Kuliner *</label>
                         <div
-                            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-indigo-400 transition-colors duration-200">
                             <div class="space-y-1 text-center">
                                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
                                     viewBox="0 0 48 48">
@@ -134,7 +134,7 @@
                                 <div class="flex text-sm text-gray-600">
                                     <label for="images"
                                         class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                        <span>Upload foto</span>
+                                        <span>Upload foto tempat</span>
                                         <input id="images" name="images[]" type="file" class="sr-only" multiple
                                             accept="image/*" required>
                                     </label>
@@ -152,6 +152,75 @@
 
                         <!-- Image Preview -->
                         <div id="imagePreview" class="mt-4 grid grid-cols-2 md:grid-cols-5 gap-4 hidden"></div>
+                    </div>
+
+                    <!-- Foto Menu -->
+                    <div class="space-y-4">
+                        <label class="block text-sm font-medium text-gray-700">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-orange-500 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                Foto Menu <span class="text-red-500">*</span>
+                            </div>
+                        </label>
+
+                        <!-- Upload Area -->
+                        <div
+                            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-orange-400 transition-colors duration-200">
+                            <div class="space-y-1 text-center">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
+                                    viewBox="0 0 48 48">
+                                    <path
+                                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <div class="flex text-sm text-gray-600">
+                                    <label for="menu_images"
+                                        class="relative cursor-pointer bg-white rounded-md font-medium text-orange-600 hover:text-orange-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-orange-500">
+                                        <span id="menu-file-name">Upload foto menu</span>
+                                        <input id="menu_images" name="menu_images[]" type="file" class="sr-only"
+                                            multiple accept="image/*" required>
+                                    </label>
+                                    <p class="pl-1">atau drag and drop</p>
+                                </div>
+                                <p class="text-xs text-gray-500">PNG, JPG, JPEG hingga 2MB (maksimal 10 foto)</p>
+                            </div>
+                        </div>
+
+                        <!-- Menu Image Preview -->
+                        <div id="menu-image-preview" class="mt-4 hidden">
+                            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+                        </div>
+
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-orange-400" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-orange-700">
+                                        <strong>Tips Foto Menu:</strong> Upload foto menu yang jelas dan menarik untuk
+                                        menarik minat pelanggan.
+                                        Pastikan pencahayaan baik dan tampilkan variasi menu unggulan Anda.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        @error('menu_images')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                        @error('menu_images.*')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Info Box -->
@@ -214,6 +283,46 @@
             const minPriceInput = document.getElementById('min_price');
             const maxPriceInput = document.getElementById('max_price');
 
+
+            const menuImages = document.getElementById('menu_images');
+            const menuFileName = document.getElementById('menu-file-name');
+            const menuImagePreview = document.getElementById('menu-image-preview');
+
+            // Helper functions for validation
+            function validateFileSize(file, maxSize = 2 * 1024 * 1024) {
+                return file.size <= maxSize;
+            }
+
+            function validateFileType(file) {
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                return allowedTypes.includes(file.type);
+            }
+
+            function createImagePreview(file, container) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.className = 'relative group';
+                    div.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview" class="w-full h-24 object-cover rounded-lg border border-gray-300">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
+                            <span class="text-white text-xs font-medium text-center px-2">${file.name}</span>
+                        </div>
+                        <div class="absolute top-1 left-1 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                            ${Math.round(file.size / 1024)}KB
+                        </div>
+                    `;
+
+                    // For menu images, append to the grid container
+                    if (container.id === 'menu-image-preview') {
+                        container.querySelector('.grid').appendChild(div);
+                    } else {
+                        container.appendChild(div);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+
             // Image Preview
             imageInput.addEventListener('change', function(e) {
                 const files = Array.from(e.target.files);
@@ -275,6 +384,120 @@
                     imageInput.dispatchEvent(new Event('change'));
                 }
             });
+            // Handle menu image upload with enhanced functionality
+            if (menuImages) {
+                menuImages.addEventListener('change', function(e) {
+                    const files = Array.from(e.target.files);
+                    const gridContainer = menuImagePreview.querySelector('.grid');
+                    gridContainer.innerHTML = '';
+
+                    if (files.length === 0) {
+                        menuFileName.textContent = 'Upload foto menu';
+                        menuFileName.classList.remove('text-green-600', 'font-medium');
+                        menuImagePreview.classList.add('hidden');
+                        return;
+                    }
+
+                    if (files.length > 10) {
+                        alert('Anda hanya boleh memilih maksimal 10 foto untuk menu.');
+                        menuImages.value = '';
+                        menuFileName.textContent = 'Upload foto menu';
+                        menuFileName.classList.remove('text-green-600', 'font-medium');
+                        menuImagePreview.classList.add('hidden');
+                        return;
+                    }
+
+                    let invalidFiles = [];
+                    let validFiles = [];
+
+                    files.forEach((file, index) => {
+                        if (!validateFileType(file)) {
+                            invalidFiles.push(`${file.name} (format tidak didukung)`);
+                        } else if (!validateFileSize(file)) {
+                            invalidFiles.push(`${file.name} (ukuran terlalu besar)`);
+                        } else {
+                            validFiles.push(file);
+                            createImagePreview(file, menuImagePreview);
+                        }
+                    });
+
+                    if (invalidFiles.length > 0) {
+                        alert('File berikut tidak valid:\n' + invalidFiles.join('\n') +
+                            '\n\nHanya file JPG, PNG, GIF dengan ukuran maksimal 2MB yang diperbolehkan.'
+                            );
+
+                        // Remove invalid files from input
+                        const dt = new DataTransfer();
+                        validFiles.forEach(file => dt.items.add(file));
+                        menuImages.files = dt.files;
+                    }
+
+                    if (validFiles.length > 0) {
+                        menuFileName.textContent = `${validFiles.length} foto menu dipilih`;
+                        menuFileName.classList.add('text-green-600', 'font-medium');
+                        menuImagePreview.classList.remove('hidden');
+                    } else {
+                        menuFileName.textContent = 'Upload foto menu';
+                        menuFileName.classList.remove('text-green-600', 'font-medium');
+                        menuImagePreview.classList.add('hidden');
+                    }
+                });
+            }
+
+
+            // Add drag and drop functionality for both image types
+            const businessUploadArea = imageInput.closest('.border-dashed');
+            const menuUploadArea = document.querySelector('#menu_images').closest('.border-dashed');
+
+            // Setup drag and drop for both areas
+            [businessUploadArea, menuUploadArea].forEach(area => {
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    area.addEventListener(eventName, preventDefaults, false);
+                });
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    area.addEventListener(eventName, (e) => highlight(e, area), false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    area.addEventListener(eventName, (e) => unhighlight(e, area), false);
+                });
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            function highlight(e, area) {
+                area.classList.add('border-indigo-400', 'bg-indigo-50');
+            }
+
+            function unhighlight(e, area) {
+                area.classList.remove('border-indigo-400', 'bg-indigo-50');
+            }
+
+            // Handle drop for business images
+            businessUploadArea.addEventListener('drop', function(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+
+                const dataTransfer = new DataTransfer();
+                Array.from(files).forEach(file => dataTransfer.items.add(file));
+                imageInput.files = dataTransfer.files;
+                imageInput.dispatchEvent(new Event('change'));
+            }, false);
+
+            // Handle drop for menu images
+            menuUploadArea.addEventListener('drop', function(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+
+                const dataTransfer = new DataTransfer();
+                Array.from(files).forEach(file => dataTransfer.items.add(file));
+                menuImages.files = dataTransfer.files;
+                menuImages.dispatchEvent(new Event('change'));
+            }, false);
 
             // Price validation
             function validatePrices() {
@@ -291,18 +514,31 @@
             minPriceInput.addEventListener('input', validatePrices);
             maxPriceInput.addEventListener('input', validatePrices);
 
-            // Form submission
+            // Form submission with enhanced validation
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
 
                 // Validate images
                 if (imageInput.files.length === 0) {
                     alert('Silakan upload minimal satu foto tempat kuliner');
+                    imageInput.focus();
                     return;
                 }
 
                 if (imageInput.files.length > 5) {
-                    alert('Maksimal 5 foto yang dapat diupload');
+                    alert('Maksimal 5 foto tempat kuliner yang dapat diupload');
+                    return;
+                }
+
+                // Validate menu images
+                if (menuImages.files.length === 0) {
+                    alert('Silakan upload minimal satu foto menu');
+                    menuImages.focus();
+                    return;
+                }
+
+                if (menuImages.files.length > 10) {
+                    alert('Maksimal 10 foto menu yang dapat diupload');
                     return;
                 }
 
@@ -325,16 +561,43 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            // Success
-                            alert('Tempat kuliner berhasil didaftarkan! Menunggu persetujuan admin.');
-                            if (data.redirect) {
-                                window.location.href = data.redirect;
-                            } else {
-                                window.location.href = '{{ route('pengusaha.dashboard') }}';
-                            }
+                            // Success notification with better styling
+                            const successMessage = document.createElement('div');
+                            successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+                            successMessage.innerHTML = `
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Tempat kuliner berhasil didaftarkan!
+                                </div>
+                            `;
+                            document.body.appendChild(successMessage);
+                            
+                            setTimeout(() => {
+                                if (data.redirect) {
+                                    window.location.href = data.redirect;
+                                } else {
+                                    window.location.href = '{{ route('pengusaha.dashboard') }}';
+                                }
+                            }, 1500);
                         } else {
-                            // Error
-                            alert(data.message || 'Terjadi kesalahan. Silakan coba lagi.');
+                            // Error notification
+                            const errorMessage = document.createElement('div');
+                            errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+                            errorMessage.innerHTML = `
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                    ${data.message || 'Terjadi kesalahan. Silakan coba lagi.'}
+                                </div>
+                            `;
+                            document.body.appendChild(errorMessage);
+                            
+                            setTimeout(() => {
+                                document.body.removeChild(errorMessage);
+                            }, 5000);
 
                             // Reset form state
                             submitBtn.disabled = false;
@@ -344,7 +607,23 @@
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Terjadi kesalahan jaringan. Silakan coba lagi.');
+                        
+                        // Network error notification
+                        const errorMessage = document.createElement('div');
+                        errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+                        errorMessage.innerHTML = `
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                                Terjadi kesalahan jaringan. Silakan coba lagi.
+                            </div>
+                        `;
+                        document.body.appendChild(errorMessage);
+                        
+                        setTimeout(() => {
+                            document.body.removeChild(errorMessage);
+                        }, 5000);
 
                         // Reset form state
                         submitBtn.disabled = false;
@@ -354,4 +633,75 @@
             });
         });
     </script>
+
+    <!-- Custom CSS for enhanced UI -->
+    <style>
+        /* Image preview animations */
+        #imagePreview .relative,
+        #menu-image-preview .relative {
+            animation: fadeInUp 0.3s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* File upload area hover effects */
+        .border-dashed:hover {
+            border-color: #f59e0b;
+            background-color: #fef3e2;
+        }
+
+        /* Progress indication for file size */
+        .file-size-indicator {
+            background: linear-gradient(90deg, #10b981 0%, #fbbf24 70%, #ef4444 100%);
+            height: 2px;
+            border-radius: 1px;
+        }
+
+        /* Success state styling */
+        .upload-success {
+            border-color: #10b981 !important;
+            background-color: #ecfdf5;
+        }
+
+        /* Enhanced button states */
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .form-field-focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
+        }
+
+        /* Tooltip styling */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1f2937;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            z-index: 10;
+        }
+    </style>
 @endsection

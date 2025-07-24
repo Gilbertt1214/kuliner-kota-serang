@@ -29,6 +29,7 @@ class HomeController extends Controller
 
         // Get featured food places untuk section rekomendasi (tidak terpengaruh pencarian)
         $featuredPlaces = FoodPlace::with('category')
+            ->where('status', 'active')
             ->latest()
             ->limit(6)
             ->get();
