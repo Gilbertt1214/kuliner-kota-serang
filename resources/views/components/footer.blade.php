@@ -37,14 +37,14 @@
                 </div>
             </div>
 
-            <!-- Column 2 -->
+            {{-- <!-- Column 2 -->
             <div>
                 <h3 class="text-lg font-semibold mb-4">Kategori</h3>
                 @foreach ($categories as $category)
                     <a href="{{ route('food-places.index', ['category' => $category->id]) }}"
                         class="text-gray-300 hover:text-white block">{{ $category->name }}</a>
                 @endforeach
-            </div>
+            </div> --}}
 
             <!-- Column 3 -->
             <div>

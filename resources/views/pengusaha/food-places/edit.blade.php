@@ -1,7 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 pb-6 pt-28">
         <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
 
             <!-- Header -->

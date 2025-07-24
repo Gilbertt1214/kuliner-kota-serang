@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\DashboardPengusaha;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FoodPlaceController;
 use App\Http\Controllers\AdminFoodPlaceController;
+use App\Http\Controllers\PengusahaController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardAdmin;
@@ -51,7 +54,7 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 // ===========================
 // AUTHENTICATED USER ROUTES
 // ===========================
-Route::middleware('auth')->group(function () {
+Route::middleware('auth',)->group(function () {
 
     // Profile Management
     Route::prefix('profile')->group(function () {
@@ -60,9 +63,67 @@ Route::middleware('auth')->group(function () {
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-    // User Dashboard
-    Route::get('/dashboard-pengusaha', [DashboardController::class, 'index'])
-        ->name('dashboard.pengusaha');
+    // ===========================
+    // AUTHENTICATED PENGUSAHA ROUTES
+    // ===========================
+    Route::middleware(['auth'])->prefix('pengusaha')->name('pengusaha.')->group(function () {
+
+        // Dashboard with inline role check
+        Route::get('/dashboard', [DashboardPengusaha::class, 'index'])->name('dashboard');
+
+        // Food Places Management for Pengusaha - with inline role checks
+        Route::prefix('food-places')->name('food-places.')->group(function () {
+
+            Route::get('/', function () {
+                if (Auth::user()->role !== 'pengusaha') {
+                    abort(403, 'Unauthorized');
+                }
+                return app(PengusahaController::class)->index();
+            })->name('index');
+
+            Route::get('/create', function () {
+                if (Auth::user()->role !== 'pengusaha') {
+                    abort(403, 'Unauthorized');
+                }
+                return app(PengusahaController::class)->create();
+            })->name('create');
+
+            Route::post('/', function () {
+                if (Auth::user()->role !== 'pengusaha') {
+                    abort(403, 'Unauthorized');
+                }
+                return app(PengusahaController::class)->store(request());
+            })->name('store');
+
+            Route::get('/{id}', function ($id) {
+                if (Auth::user()->role !== 'pengusaha') {
+                    abort(403, 'Unauthorized');
+                }
+                return app(PengusahaController::class)->show($id);
+            })->name('show');
+
+            Route::get('/{id}/edit', function ($id) {
+                if (Auth::user()->role !== 'pengusaha') {
+                    abort(403, 'Unauthorized');
+                }
+                return app(PengusahaController::class)->edit($id);
+            })->name('edit');
+
+            Route::put('/{id}', function ($id) {
+                if (Auth::user()->role !== 'pengusaha') {
+                    abort(403, 'Unauthorized');
+                }
+                return app(PengusahaController::class)->update(request(), $id);
+            })->name('update');
+
+            Route::delete('/{id}', function ($id) {
+                if (Auth::user()->role !== 'pengusaha') {
+                    abort(403, 'Unauthorized');
+                }
+                return app(PengusahaController::class)->destroy($id);
+            })->name('destroy');
+        });
+    });
 
     // Reviews (Auth required)
     Route::post('/food-place/{id}/review', [ReviewController::class, 'store'])
@@ -92,6 +153,9 @@ Route::middleware([IsAdmin::class])->prefix('admin')->name('admin.')->group(func
         Route::put('/{id}', [AdminFoodPlaceController::class, 'update'])->name('update');
         Route::delete('/{id}', [AdminFoodPlaceController::class, 'destroy'])->name('destroy');
         Route::post('/save', [AdminFoodPlaceController::class, 'save'])->name('save');
+        Route::patch('/{id}/approve', [AdminFoodPlaceController::class, 'approve'])->name('approve');
+        Route::patch('/{id}/reject', [AdminFoodPlaceController::class, 'reject'])->name('reject');
+        Route::patch('/{id}/status', [AdminFoodPlaceController::class, 'updateStatus'])->name('updateStatus');
     });
 
     // Categories Management

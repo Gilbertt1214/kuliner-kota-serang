@@ -10,9 +10,6 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PengusahaController;
-use App\Http\Controllers\UserController;
 
 Route::middleware('guest')->group(function () {
     // Register
@@ -51,22 +48,4 @@ Route::middleware('auth')->group(function () {
 
     // Logout
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
-    // Routes untuk admin
-    Route::middleware(['role:admin'])->group(function () {
-        Route::get('dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-        // Routes admin lainnya...
-    });
-
-    // Routes untuk pengusaha
-    Route::middleware(['role:pengusaha'])->group(function () {
-        Route::get('/pengusaha/dashboard', [PengusahaController::class, 'index'])->name('pengusaha.dashboard');
-        // Routes pengusaha lainnya...
-    });
-
-    // Routes untuk user biasa
-    Route::middleware(['role:user'])->group(function () {
-        Route::get('/user/dashboard', [UserController::class, 'index'])->name('user.dashboard');
-        // Routes user lainnya...
-    });
 });

@@ -11,7 +11,8 @@
                 <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                     <p class="mb-0 text-xs font-semibold leading-tight">{{ $user->name }}</p>
                 </td>
-                <td class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                <td
+                    class="p-2 text-sm leading-normal text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                     <span class="text-xs font-semibold leading-tight">{{ $user->email }}</span>
                 </td>
                 <td class="p-2 text-center align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
@@ -24,6 +25,4 @@
             </tr>
         @endforeach
     @endcomponent
-
-    @include('admin.components.footer')
 @endsection

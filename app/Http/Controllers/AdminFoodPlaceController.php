@@ -7,6 +7,7 @@ use App\Models\FoodCategories;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class AdminFoodPlaceController extends Controller
 {
@@ -29,8 +30,12 @@ class AdminFoodPlaceController extends Controller
         if ($request->filled('category')) {
             $query->where('food_category_id', $request->category);
         }
+
         // Filter by status
-        $foodPlaces = FoodPlace::with('owner')->get();
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
         // Filter by rating
         if ($request->filled('rating')) {
             $rating = $request->rating;
@@ -43,11 +48,14 @@ class AdminFoodPlaceController extends Controller
             }
         }
 
+        $foodPlaces = $query->paginate(10);
+
         return view('admin.food-places.index', [
-            'foodPlaces' => $query->paginate(10),
+            'foodPlaces' => $foodPlaces,
             'categories' => FoodCategories::all(),
             'selectedCategory' => $request->category,
             'selectedRating' => $request->rating,
+            'selectedStatus' => $request->status,
         ]);
     }
 
@@ -70,24 +78,31 @@ class AdminFoodPlaceController extends Controller
                 'location' => 'required|string|max:255',
                 'source_location' => 'nullable|url',
                 'images' => 'required|array|max:5',
-                'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-                'status' => 'required|in:active,inactive'
+                'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:1024', // Reduced to 1MB
             ]);
 
             // Check if max price is greater than min price
             if ($validated['max_price'] <= $validated['min_price']) {
                 return redirect()->back()
-                    ->with('error', 'Max price must be greater than min price')
+                    ->with('error', 'Harga maksimal harus lebih besar dari harga minimal')
+                    ->withInput();
+            }
+
+            // Check if images are uploaded
+            if (!$request->hasFile('images')) {
+                return redirect()->back()
+                    ->with('error', 'Silakan upload minimal satu gambar')
                     ->withInput();
             }
 
             // Check image count
             if (count($request->file('images')) > 5) {
                 return redirect()->back()
-                    ->with('error', 'You can upload maximum 5 images')
+                    ->with('error', 'Maksimal 5 gambar yang dapat diupload')
                     ->withInput();
             }
 
+            // Create food place
             $foodPlace = FoodPlace::create([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
@@ -96,27 +111,30 @@ class AdminFoodPlaceController extends Controller
                 'max_price' => $validated['max_price'],
                 'location' => $validated['location'],
                 'source_location' => $validated['source_location'],
-                'status' => $validated['status'] ?? 'active',
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
             ]);
 
             // Handle image upload
             foreach ($request->file('images') as $image) {
-                $path = $image->store('public/food-places');
-                $foodPlace->images()->create([
-                    'image_path' => str_replace('public/', '', $path)
-                ]);
+                if ($image->isValid()) {
+                    $path = $image->store('public/food-places');
+                    $foodPlace->images()->create([
+                        'image_path' => str_replace('public/', '', $path)
+                    ]);
+                }
             }
 
             return redirect()->route('admin.food-places.index')
-                ->with('success', 'Food place added successfully!');
+                ->with('success', 'Tempat makan berhasil ditambahkan!');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->validator)
-                ->withInput();
+                ->withInput()
+                ->with('error', 'Silakan periksa data yang Anda masukkan');
         } catch (\Exception $e) {
+            Log::error('Store error: ' . $e->getMessage());
             return redirect()->back()
-                ->with('error', 'Error creating food place: ' . $e->getMessage())
+                ->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())
                 ->withInput();
         }
     }
@@ -152,8 +170,8 @@ class AdminFoodPlaceController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'food_category_id' => 'required|exists:food_categories,id',
-            'price_min' => 'required|numeric|min:0',
-            'price_max' => 'required|numeric|min:0|gte:price_min',
+            'min_price' => 'required|numeric|min:0',
+            'max_price' => 'required|numeric|min:0|gte:min_price',
             'location' => 'required|string|max:255',
             'source_location' => 'nullable|url|max:255',
             'images' => 'sometimes|array|max:5',
@@ -165,8 +183,8 @@ class AdminFoodPlaceController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'food_category_id' => $validated['food_category_id'],
-            'min_price' => $validated['price_min'],
-            'max_price' => $validated['price_max'],
+            'min_price' => $validated['min_price'],
+            'max_price' => $validated['max_price'],
             'location' => $validated['location'],
             'source_location' => $validated['source_location'],
         ]);
@@ -197,19 +215,135 @@ class AdminFoodPlaceController extends Controller
     public function destroy($id)
     {
         try {
-            // Delete all images first
             $foodPlace = FoodPlace::findOrFail($id);
+
+            // Delete all images first
             foreach ($foodPlace->images as $image) {
                 Storage::delete('public/' . $image->image_path);
                 $image->delete();
             }
+
+            // Delete all reviews
+            $foodPlace->reviews()->delete();
+
             // Then delete the food place
             $foodPlace->delete();
+
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Food place deleted successfully!'
+                ]);
+            }
+
             return redirect()->route('admin.food-places.index')
                 ->with('success', 'Food place deleted successfully!');
         } catch (\Exception $e) {
+            Log::error('Delete error: ' . $e->getMessage());
+
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error deleting food place: ' . $e->getMessage()
+                ], 500);
+            }
+
             return redirect()->back()
                 ->with('error', 'Error deleting food place: ' . $e->getMessage());
+        }
+    }
+
+    public function approve($id)
+    {
+        try {
+            $foodPlace = FoodPlace::findOrFail($id);
+            $foodPlace->update(['status' => 'active']);
+
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Food place approved successfully!'
+                ]);
+            }
+
+            return redirect()->back()
+                ->with('success', 'Food place approved successfully!');
+        } catch (\Exception $e) {
+            Log::error('Approve error: ' . $e->getMessage());
+
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error approving food place'
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Error approving food place');
+        }
+    }
+
+    public function reject($id)
+    {
+        try {
+            $foodPlace = FoodPlace::findOrFail($id);
+            $foodPlace->update(['status' => 'rejected']);
+
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Food place rejected successfully!'
+                ]);
+            }
+
+            return redirect()->back()
+                ->with('success', 'Food place rejected successfully!');
+        } catch (\Exception $e) {
+            Log::error('Reject error: ' . $e->getMessage());
+
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error rejecting food place'
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Error rejecting food place');
+        }
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            $validated = $request->validate([
+                'status' => 'required|in:active,inactive,pending,rejected'
+            ]);
+
+            $foodPlace = FoodPlace::findOrFail($id);
+            $foodPlace->update(['status' => $validated['status']]);
+
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Status updated successfully!'
+                ]);
+            }
+
+            return redirect()->back()
+                ->with('success', 'Status updated successfully!');
+        } catch (\Exception $e) {
+            Log::error('Update status error: ' . $e->getMessage());
+
+            if (request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error updating status'
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Error updating status');
         }
     }
 }

@@ -104,23 +104,24 @@ class RegisteredUserController extends Controller
                 'location'         => $validated['pengusaha_location'],
                 'source_location'  => $validated['source_location'] ?? null,
                 'user_id'          => $user->id,
+                'status'           => 'pending', // Set default status to pending
             ]);
 
-            // Simpan semua gambar usaha ke tabel food_place_images dengan type 'business'
-            foreach ($businessImagePaths as $path) {
+            // Simpan semua gambar usaha ke tabel food_place_images
+            foreach ($businessImagePaths as $index => $path) {
                 FoodPlaceImage::create([
                     'food_place_id' => $foodPlace->id,
                     'image_path'    => $path,
-                    'type'          => 'business',
+                    'type'          => 'business', // Tetap gunakan type business
                 ]);
             }
 
-            // Simpan semua foto menu ke tabel food_place_images dengan type 'menu'
+            // Simpan semua foto menu ke tabel food_place_images
             foreach ($menuImagePaths as $path) {
                 FoodPlaceImage::create([
                     'food_place_id' => $foodPlace->id,
                     'image_path'    => $path,
-                    'type'          => 'menu',
+                    'type'          => 'menu', // Type menu
                 ]);
             }
         }
@@ -130,7 +131,7 @@ class RegisteredUserController extends Controller
 
         // Redirect sesuai role
         if ($role === 'pengusaha') {
-            return redirect('/pengusaha/dashboard-pengusaha');
+            return redirect()->route('pengusaha.dashboard');
         }
         return redirect('/');
     }

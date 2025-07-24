@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-@if(session('success'))
-<script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: '{{ session('success') }}',
-        timer: 3000,
-        showConfirmButton: false
-    });
-</script>
-@endif
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
 
-@if(session('error'))
-<script>
-    Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: '{{ session('error') }}'
-    });
-</script>
-@endif
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: '{{ session('error') }}'
+            });
+        </script>
+    @endif
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -88,14 +89,10 @@
 
 <body class="antialiased" x-data="{ sidebarOpen: window.innerWidth >= 1280 }">
     <!-- Mobile Sidebar Backdrop -->
-    <div x-show="sidebarOpen" @click="sidebarOpen = false"
-         class="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"
-         x-transition:enter="transition-opacity ease-linear duration-300"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition-opacity ease-linear duration-300"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0">
+    <div x-show="sidebarOpen" @click="sidebarOpen = false" class="fixed inset-0 z-20 bg-black bg-opacity-50 lg:hidden"
+        x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
     </div>
 
     <!-- Sidebar -->
@@ -108,16 +105,6 @@
 
         <!-- Main Content Area -->
         <main class="flex-grow px-4 py-6 sm:px-6 lg:px-8 content-area">
-            <!-- Page Header -->
-            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <h2 class="text-2xl font-bold text-gray-800">
-                    @yield('page-title', 'Dashboard')
-                </h2>
-                <div class="mt-2 sm:mt-0">
-                    @yield('breadcrumbs')
-                </div>
-            </div>
-
             <!-- Page Content -->
             <div class="bg-white rounded-lg shadow-sm p-4 sm:p-6">
                 @yield('content')
@@ -127,11 +114,10 @@
         <!-- Footer -->
         <footer class="bg-white border-t border-gray-200 py-4 px-6">
             <div class="flex flex-col md:flex-row items-center justify-between">
-                <p class="text-sm text-gray-600">
-                    &copy; <span id="current-year"></span> Your Company. All rights reserved.
-                </p>
-                <p class="text-sm text-gray-600 mt-2 md:mt-0">
-                    v1.0.0
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    © <span id="current-year">2025</span>
+                    <span class="font-medium text-gray-800">Santara Admin</span>.
+                    Dibuat dengan ❤️ untuk Indonesia.
                 </p>
             </div>
         </footer>
@@ -142,17 +128,20 @@
     <script src="{{ asset('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Set current year
             document.getElementById('current-year').textContent = new Date().getFullYear();
 
             // Initialize Perfect Scrollbar
             if (typeof PerfectScrollbar !== 'undefined') {
-                new PerfectScrollbar('.content-area', { suppressScrollX: true });
+                new PerfectScrollbar('.content-area', {
+                    suppressScrollX: true
+                });
             }
         });
     </script>
 
     @stack('scripts')
 </body>
+
 </html>
