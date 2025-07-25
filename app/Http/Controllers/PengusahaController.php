@@ -155,12 +155,6 @@ class PengusahaController extends Controller
   {
     $foodPlace = FoodPlace::where('user_id', Auth::id())->findOrFail($id);
 
-    // // Only allow editing if status is not active (to prevent changes to approved places)
-    // if ($foodPlace->status === 'active') {
-    //   return redirect()->route('pengusaha.dashboard')
-    //     ->with('warning', 'Tempat kuliner yang sudah aktif tidak dapat diedit. Hubungi admin jika perlu perubahan.');
-    // }
-
     $categories = FoodCategories::all();
     return view('pengusaha.food-places.edit', compact('foodPlace', 'categories'));
   }
@@ -181,13 +175,14 @@ class PengusahaController extends Controller
         'food_category_id' => 'required|exists:food_categories,id',
         'min_price' => 'required|numeric|min:0',
         'max_price' => 'required|numeric|gt:min_price',
-        'location' => 'required|string|max:500',
         'description' => 'required|string',
+        'location' => 'required|string|max:500',
         'source_location' => 'nullable|url',
-        'images' => 'nullable|array|max:5',
-        'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:2048',
-        'remove_images' => 'nullable|array',
-        'remove_images.*' => 'exists:food_place_images,id',
+        'business_images' => 'nullable|array|max:5',
+        'business_images.*' => 'image|mimes:jpeg,png,jpg,webp,gif|max:2048',
+        'menu_images' => 'nullable|array|max:10',
+        'menu_images.*' => 'image|mimes:jpeg,png,jpg,webp,gif|max:2048',
+        'images_to_delete' => 'nullable|string',
       ]);
 
       // Update food place
@@ -196,15 +191,16 @@ class PengusahaController extends Controller
         'food_category_id' => $validated['food_category_id'],
         'min_price' => $validated['min_price'],
         'max_price' => $validated['max_price'],
-        'location' => $validated['location'],
         'description' => $validated['description'],
-        'source_location' => $validated['source_location'],
+        'location' => $validated['location'],
+        'source_location' => $validated['source_location'] ?? null,
         'status' => 'pending', // Reset to pending after edit
       ]);
 
       // Remove selected images
-      if ($request->has('remove_images')) {
-        $imagesToRemove = FoodPlaceImage::whereIn('id', $request->remove_images)
+      if ($request->has('images_to_delete') && !empty($request->images_to_delete)) {
+        $imagesToDelete = explode(',', $request->images_to_delete);
+        $imagesToRemove = FoodPlaceImage::whereIn('id', $imagesToDelete)
           ->where('food_place_id', $foodPlace->id)
           ->get();
 
@@ -214,15 +210,28 @@ class PengusahaController extends Controller
         }
       }
 
-      // Add new images
-      if ($request->hasFile('images')) {
-        foreach ($request->file('images') as $image) {
-          $path = $image->store('food-places', 'public');
+      // Add new business images
+      if ($request->hasFile('business_images')) {
+        foreach ($request->file('business_images') as $image) {
+          $path = $image->store('food-places/business', 'public');
 
           FoodPlaceImage::create([
             'food_place_id' => $foodPlace->id,
             'image_path' => $path,
-            'type' => 'business', // Use 'business' type
+            'type' => 'business',
+          ]);
+        }
+      }
+
+      // Add new menu images
+      if ($request->hasFile('menu_images')) {
+        foreach ($request->file('menu_images') as $image) {
+          $path = $image->store('food-places/menu', 'public');
+
+          FoodPlaceImage::create([
+            'food_place_id' => $foodPlace->id,
+            'image_path' => $path,
+            'type' => 'menu',
           ]);
         }
       }

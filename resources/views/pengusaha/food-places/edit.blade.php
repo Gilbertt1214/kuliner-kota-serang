@@ -1,305 +1,676 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
-    <div class="container mx-auto px-4 pb-6 pt-28">
-        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-
+    <div class="min-h-screen bg-gray-50 py-8">
+        <div class="max-w-4xl mx-auto">
             <!-- Header -->
-            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 border-b border-gray-200 rounded-t-xl">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-2xl font-bold text-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2 text-yellow-500"
-                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        Edit Food Place
-                    </h2>
-                    <a href="{{ route('admin.food-places.index') }}" class="text-gray-500 hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </a>
+                    <div class="flex items-center">
+                        <a href="{{ route('pengusaha.dashboard') }}" class="text-white hover:text-blue-200 mr-4">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </a>
+                        <div>
+                            <h2 class="text-2xl font-bold text-white">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Edit Tempat Kuliner
+                            </h2>
+                            <p class="text-blue-100 mt-1">Perbarui informasi tempat kuliner Anda</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Form -->
-            <form action="{{ route('admin.food-places.update', $foodPlace->id) }}" method="POST"
-                enctype="multipart/form-data" class="p-6">
+            <!-- Form Container -->
+            <form action="{{ route('pengusaha.food-places.update', $foodPlace->id) }}" method="POST"
+                enctype="multipart/form-data" class="space-y-8 bg-white rounded-b-xl shadow-lg">
                 @csrf
                 @method('PUT')
 
-                <!-- Name -->
-                <div class="mb-6">
-                    <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                    <input type="text" name="title" id="title"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"
-                        value="{{ old('title', $foodPlace->title) }}" required>
-                    @error('title')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Category -->
-                <div class="mb-6">
-                    <label for="food_category_id" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                    <select name="food_category_id" id="food_category_id"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"
-                        required>
-                        <option value="">Select Category</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}"
-                                {{ $foodPlace->food_category_id == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('food_category_id')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Price Range -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="min_price" class="block text-sm font-medium text-gray-700 mb-1">Min Price</label>
-                            <div class="relative rounded-md shadow-sm">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span class="text-gray-500">Rp</span>
-                                </div>
-                                <input type="number" name="min_price" id="min_price" min="0" step="1000"
-                                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"
-                                    value="{{ old('min_price', $foodPlace->min_price) }}" required>
-                            </div>
-                            @error('min_price')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                <div class="p-8 space-y-8">
+                    <!-- Informasi Dasar -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Informasi Dasar
+                            </h3>
                         </div>
-                        <div>
-                            <label for="max_price" class="block text-sm font-medium text-gray-700 mb-1">Max Price</label>
-                            <div class="relative rounded-md shadow-sm">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span class="text-gray-500">Rp</span>
-                                </div>
-                                <input type="number" name="max_price" id="max_price" min="0" step="1000"
-                                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"
-                                    value="{{ old('max_price', $foodPlace->max_price) }}" required>
+                        <div class="p-6 space-y-6">
+                            <!-- Nama Tempat -->
+                            <div class="space-y-2">
+                                <label for="title" class="text-sm font-medium text-gray-700 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-blue-600"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                    </svg>
+                                    Nama Tempat Kuliner <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" name="title" id="title" value="{{ old('title', $foodPlace->title) }}"
+                                    class="w-full px-4 py-3 border @error('title') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                                    placeholder="Masukkan nama tempat kuliner">
+                                @error('title')
+                                    <p class="text-red-500 text-sm mt-1 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
                             </div>
-                            @error('max_price')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+
+                            <!-- Kategori -->
+                            <div class="space-y-2">
+                                <label for="food_category_id" class="text-sm font-medium text-gray-700 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-blue-600"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                    </svg>
+                                    Kategori Kuliner <span class="text-red-500">*</span>
+                                </label>
+                                <select name="food_category_id" id="food_category_id"
+                                    class="w-full px-4 py-3 border @error('food_category_id') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                                    <option value="">Pilih Kategori</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ old('food_category_id', $foodPlace->food_category_id) == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('food_category_id')
+                                    <p class="text-red-500 text-sm mt-1 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <!-- Harga -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label for="min_price" class="text-sm font-medium text-gray-700 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-green-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Harga Minimum (Rp) <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="number" name="min_price" id="min_price" min="0" step="1000"
+                                        value="{{ old('min_price', $foodPlace->min_price) }}"
+                                        class="w-full px-4 py-3 border @error('min_price') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200"
+                                        placeholder="10000">
+                                    @error('min_price')
+                                        <p class="text-red-500 text-sm mt-1 flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
+                                    @enderror
+                                </div>
+
+                                <div class="space-y-2">
+                                    <label for="max_price" class="text-sm font-medium text-gray-700 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-green-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Harga Maksimum (Rp) <span class="text-red-500">*</span>
+                                    </label>
+                                    <input type="number" name="max_price" id="max_price" min="0" step="1000"
+                                        value="{{ old('max_price', $foodPlace->max_price) }}"
+                                        class="w-full px-4 py-3 border @error('max_price') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200"
+                                        placeholder="50000">
+                                    @error('max_price')
+                                        <p class="text-red-500 text-sm mt-1 flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                            </svg>
+                                            {{ $message }}
+                                        </p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Deskripsi -->
+                            <div class="space-y-2">
+                                <label for="description" class="text-sm font-medium text-gray-700 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-blue-600"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    Deskripsi <span class="text-red-500">*</span>
+                                </label>
+                                <textarea name="description" id="description" rows="4"
+                                    class="w-full px-4 py-3 border @error('description') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 resize-none"
+                                    placeholder="Ceritakan tentang tempat kuliner Anda...">{{ old('description', $foodPlace->description) }}</textarea>
+                                @error('description')
+                                    <p class="text-red-500 text-sm mt-1 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Description -->
-                <div class="mb-6">
-                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                    <textarea name="description" id="description" rows="4"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"
-                        required>{{ old('description', $foodPlace->description) }}</textarea>
-                    @error('description')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
+                    <!-- Informasi Lokasi -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                Informasi Lokasi
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <!-- Alamat -->
+                            <div class="space-y-2">
+                                <label for="location" class="text-sm font-medium text-gray-700 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-green-600"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                    </svg>
+                                    Alamat Lengkap <span class="text-red-500">*</span>
+                                </label>
+                                <textarea name="location" id="location" rows="3"
+                                    class="w-full px-4 py-3 border @error('location') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 resize-none"
+                                    placeholder="Masukkan alamat lengkap tempat kuliner">{{ old('location', $foodPlace->location) }}</textarea>
+                                @error('location')
+                                    <p class="text-red-500 text-sm mt-1 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
 
-                <!-- Location -->
-                <div class="mb-6">
-                    <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                    <input type="text" name="location" id="location"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"
-                        value="{{ old('location', $foodPlace->location) }}" required>
-                    @error('location')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
+                            <!-- Google Maps Link -->
+                            <div class="space-y-2">
+                                <label for="source_location" class="text-sm font-medium text-gray-700 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-blue-600"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                    </svg>
+                                    Google Maps Link
+                                </label>
+                                <input type="url" name="source_location" id="source_location"
+                                    value="{{ old('source_location', $foodPlace->source_location) }}"
+                                    class="w-full px-4 py-3 border @error('source_location') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200"
+                                    placeholder="https://maps.google.com/...">
+                                <p class="text-gray-500 text-sm">Link Google Maps untuk lokasi tempat kuliner (opsional)</p>
+                                @error('source_location')
+                                    <p class="text-red-500 text-sm mt-1 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                        </svg>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
 
-                <!-- Google Maps Link -->
-                <div class="mb-6">
-                    <label for="source_location" class="block text-sm font-medium text-gray-700 mb-1">Google Maps
-                        Link</label>
-                    <input type="url" name="source_location" id="source_location"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"
-                        value="{{ old('source_location', $foodPlace->source_location) }}">
-                    <p class="mt-1 text-sm text-gray-500">Paste the full Google Maps URL for this location</p>
-                    @error('source_location')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
+                        </div>
+                    </div>
 
-                <!-- Current Images -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Current Images</label>
-                    @if ($foodPlace->images->count() > 0)
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                            @foreach ($foodPlace->images as $image)
-                                <div class="relative group">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}"
-                                        class="w-full h-40 object-cover rounded-lg shadow-sm border border-gray-200">
-                                    <div
-                                        class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition duration-200 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                        <label
-                                            class="inline-flex items-center px-3 py-1 bg-white rounded-full shadow cursor-pointer">
-                                            <input type="checkbox" name="delete_images[]" value="{{ $image->id }}"
-                                                class="form-checkbox h-4 w-4 text-yellow-600 transition duration-150">
-                                            <span class="ml-2 text-sm font-medium text-gray-700">Delete</span>
-                                        </label>
+                    <!-- Foto Bisnis/Usaha -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-600" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                Foto Bisnis/Usaha
+                            </h3>
+                            <p class="text-sm text-gray-600 mt-1">Foto eksterior, interior, atau suasana tempat</p>
+                        </div>
+                        <div class="p-6">
+                            <!-- Existing Business Images -->
+                            @if($foodPlace->images->where('type', 'business')->count() > 0)
+                                <div class="mb-6">
+                                    <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-purple-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                        </svg>
+                                        Foto Bisnis Saat Ini
+                                    </h4>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="existing-business-images">
+                                        @foreach($foodPlace->images->where('type', 'business') as $image)
+                                            <div class="relative group bg-gray-50 rounded-lg overflow-hidden">
+                                                <img src="{{ Storage::url($image->image_path) }}" alt="Business Photo"
+                                                    class="w-full h-32 object-cover">
+                                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
+                                                    <button type="button" onclick="removeExistingImage({{ $image->id }}, 'business')"
+                                                        class="opacity-0 group-hover:opacity-100 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-all duration-200">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
-                    @else
-                        <p class="text-sm text-gray-500">No images uploaded yet</p>
-                    @endif
-                </div>
+                            @endif
 
-                <!-- New Images -->
-                <div class="mb-6">
-                    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                        <div class="space-y-1 text-center">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
-                                viewBox="0 0 48 48">
-                                <path
-                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <div class="flex text-sm text-gray-600 justify-center">
-                                <label for="images"
-                                    class="relative cursor-pointer bg-white rounded-md font-medium text-yellow-600 hover:text-yellow-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-yellow-500">
-                                    <span>Upload files</span>
-                                    <input id="images" name="images[]" type="file" class="sr-only" multiple
-                                        accept="image/*" onchange="previewImages(this)">
-                                </label>
-                                <p class="pl-1">or drag and drop</p>
+                            <!-- Business Image Upload Area -->
+                            <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-purple-400 hover:bg-purple-50 transition-all duration-300 cursor-pointer"
+                                id="business-upload-area">
+                                <input type="file" id="business_images" name="business_images[]" multiple accept="image/*"
+                                    class="hidden">
+                                <div class="flex flex-col items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                    <h4 class="text-lg font-medium text-gray-700 mb-2">Upload Foto Bisnis</h4>
+                                    <p class="text-sm text-gray-500 mb-4">Klik atau drag & drop foto di sini</p>
+                                    <p class="text-xs text-gray-400">PNG, JPG, WEBP hingga 2MB (maksimal 5 foto)</p>
+                                </div>
                             </div>
-                            <p class="text-xs text-gray-500">PNG, JPG, JPEG up to 5MB (max 5 images)</p>
+
+                            <!-- Business Preview Area -->
+                            <div id="business-preview-area" class="mt-6 hidden">
+                                <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-purple-600"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    Preview Foto Bisnis Baru
+                                </h4>
+                                <div id="business-preview-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                </div>
+                            </div>
+
+                            @error('business_images')
+                                <p class="text-red-500 text-sm mt-2 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                    </svg>
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                            @error('business_images.*')
+                                <p class="text-red-500 text-sm mt-2 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                    </svg>
+                                    {{ $message }}
+                                </p>
+                            @enderror
                         </div>
                     </div>
 
-                    <!-- Image Preview Container -->
-                    <div id="imagePreviewContainer" class="mt-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 hidden">
+                    <!-- Foto Menu -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-orange-600" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                </svg>
+                                Foto Menu
+                            </h3>
+                            <p class="text-sm text-gray-600 mt-1">Foto makanan, minuman, atau daftar harga (opsional)</p>
+                        </div>
+                        <div class="p-6">
+                            <!-- Existing Menu Images -->
+                            @if($foodPlace->images->where('type', 'menu')->count() > 0)
+                                <div class="mb-6">
+                                    <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-orange-600"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                        </svg>
+                                        Foto Menu Saat Ini
+                                    </h4>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="existing-menu-images">
+                                        @foreach($foodPlace->images->where('type', 'menu') as $image)
+                                            <div class="relative group bg-gray-50 rounded-lg overflow-hidden">
+                                                <img src="{{ Storage::url($image->image_path) }}" alt="Menu Photo"
+                                                    class="w-full h-32 object-cover">
+                                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
+                                                    <button type="button" onclick="removeExistingImage({{ $image->id }}, 'menu')"
+                                                        class="opacity-0 group-hover:opacity-100 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-all duration-200">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Menu Image Upload Area -->
+                            <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-orange-400 hover:bg-orange-50 transition-all duration-300 cursor-pointer"
+                                id="menu-upload-area">
+                                <input type="file" id="menu_images" name="menu_images[]" multiple accept="image/*"
+                                    class="hidden">
+                                <div class="flex flex-col items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                    <h4 class="text-lg font-medium text-gray-700 mb-2">Upload Foto Menu</h4>
+                                    <p class="text-sm text-gray-500 mb-4">Klik atau drag & drop foto di sini</p>
+                                    <p class="text-xs text-gray-400">PNG, JPG, WEBP hingga 2MB (maksimal 10 foto)</p>
+                                </div>
+                            </div>
+
+                            <!-- Menu Preview Area -->
+                            <div id="menu-preview-area" class="mt-6 hidden">
+                                <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-orange-600"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    Preview Foto Menu Baru
+                                </h4>
+                                <div id="menu-preview-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                </div>
+                            </div>
+
+                            @error('menu_images')
+                                <p class="text-red-500 text-sm mt-2 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                    </svg>
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                            @error('menu_images.*')
+                                <p class="text-red-500 text-sm mt-2 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                    </svg>
+                                    {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
                     </div>
 
-                    @error('images')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                    @error('images.*')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Form Actions -->
-                <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-                    <a href="{{ route('admin.food-places.index') }}"
-                        class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition">
-                        Cancel
-                    </a>
-                    <button type="submit"
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-yellow-600 hover:bg-yellow-700 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="-ml-1 mr-2 h-5 w-5" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <a href="{{ route('admin.food-places.index', $foodPlace->id) }}" class="text-white">
-                            Update Food Place
-                    </button>
+                    <!-- Submit Button -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                        <button type="submit"
+                            class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-8 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-200 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                            </svg>
+                            Perbarui Tempat Kuliner
+                        </button>
+                        <a href="{{ route('pengusaha.dashboard') }}"
+                            class="flex-1 sm:flex-none bg-gray-500 text-white py-4 px-8 rounded-xl font-semibold hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all duration-300 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Batal
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
+
+    <!-- Hidden input for images to be deleted -->
+    <input type="hidden" id="images-to-delete" name="images_to_delete" value="">
 @endsection
 
 @push('scripts')
-    <script>
-        const imageFiles = [];
+<script>
+    let businessFiles = [];
+    let menuFiles = [];
+    let imagesToDelete = [];
 
-        function previewImages(input) {
-            const previewContainer = document.getElementById('imagePreviewContainer');
-            previewContainer.innerHTML = '';
-            imageFiles.length = 0; // Clear array
+    // Business Images Handler
+    document.getElementById('business-upload-area').addEventListener('click', function(e) {
+        if (e.target.id !== 'business_images') {
+            document.getElementById('business_images').click();
+        }
+    });
 
-            if (input.files && input.files.length > 0) {
-                previewContainer.classList.remove('hidden');
+    document.getElementById('business_images').addEventListener('change', function(e) {
+        handleImageUpload(e, 'business', businessFiles, 5);
+    });
 
-                for (let i = 0; i < input.files.length; i++) {
-                    const file = input.files[i];
-                    const reader = new FileReader();
+    // Menu Images Handler
+    document.getElementById('menu-upload-area').addEventListener('click', function(e) {
+        if (e.target.id !== 'menu_images') {
+            document.getElementById('menu_images').click();
+        }
+    });
 
-                    imageFiles.push(file); // store file
+    document.getElementById('menu_images').addEventListener('change', function(e) {
+        handleImageUpload(e, 'menu', menuFiles, 10);
+    });
 
-                    reader.onload = function(e) {
-                        const index = imageFiles.length - 1;
-                        const div = document.createElement('div');
-                        div.className = 'relative group';
-                        div.innerHTML = `
-                        <img src="${e.target.result}" class="w-full h-40 object-cover rounded-lg border border-gray-200">
-                        <button type="button" onclick="removeImagePreview(${index})" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    `;
-                        previewContainer.appendChild(div);
-                    }
+    // Handle image upload function
+    function handleImageUpload(event, type, filesArray, maxFiles) {
+        const files = Array.from(event.target.files);
+        const previewArea = document.getElementById(`${type}-preview-area`);
+        const previewGrid = document.getElementById(`${type}-preview-grid`);
+        
+        // Check file limit
+        if (files.length > maxFiles) {
+            alert(`Maksimal ${maxFiles} foto untuk ${type === 'business' ? 'bisnis' : 'menu'}`);
+            return;
+        }
 
-                    reader.readAsDataURL(file);
+        // Clear existing files array and preview
+        filesArray.length = 0;
+        previewGrid.innerHTML = '';
+
+        if (files.length > 0) {
+            previewArea.classList.remove('hidden');
+            
+            files.forEach((file, index) => {
+                // Validate file type and size
+                if (!file.type.startsWith('image/')) {
+                    alert('Hanya file gambar yang diperbolehkan');
+                    return;
+                }
+                
+                if (file.size > 2 * 1024 * 1024) { // 2MB
+                    alert(`File ${file.name} terlalu besar. Maksimal 2MB`);
+                    return;
                 }
 
-                updateFileList();
-            } else {
-                previewContainer.classList.add('hidden');
+                filesArray.push(file);
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageDiv = document.createElement('div');
+                    imageDiv.className = 'relative group bg-gray-50 rounded-lg overflow-hidden';
+                    imageDiv.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview" class="w-full h-32 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
+                            <button type="button" onclick="removeNewImage(${index}, '${type}')"
+                                class="opacity-0 group-hover:opacity-100 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-all duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                    previewGrid.appendChild(imageDiv);
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            updateFileInput(type, filesArray);
+        } else {
+            previewArea.classList.add('hidden');
+        }
+    }
+
+    // Remove new image from preview
+    function removeNewImage(index, type) {
+        const filesArray = type === 'business' ? businessFiles : menuFiles;
+        const previewArea = document.getElementById(`${type}-preview-area`);
+        const previewGrid = document.getElementById(`${type}-preview-grid`);
+        
+        filesArray.splice(index, 1);
+        
+        // Rebuild preview
+        previewGrid.innerHTML = '';
+        
+        if (filesArray.length > 0) {
+            filesArray.forEach((file, newIndex) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageDiv = document.createElement('div');
+                    imageDiv.className = 'relative group bg-gray-50 rounded-lg overflow-hidden';
+                    imageDiv.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview" class="w-full h-32 object-cover">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
+                            <button type="button" onclick="removeNewImage(${newIndex}, '${type}')"
+                                class="opacity-0 group-hover:opacity-100 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-all duration-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                    previewGrid.appendChild(imageDiv);
+                };
+                reader.readAsDataURL(file);
+            });
+        } else {
+            previewArea.classList.add('hidden');
+        }
+        
+        updateFileInput(type, filesArray);
+    }
+
+    // Remove existing image
+    function removeExistingImage(imageId, type) {
+        if (confirm('Apakah Anda yakin ingin menghapus foto ini?')) {
+            // Add to delete list
+            imagesToDelete.push(imageId);
+            document.getElementById('images-to-delete').value = imagesToDelete.join(',');
+            
+            // Remove from UI
+            event.target.closest('.relative').remove();
+            
+            // Check if no existing images left
+            const existingImagesContainer = document.getElementById(`existing-${type}-images`);
+            if (existingImagesContainer && existingImagesContainer.children.length === 0) {
+                existingImagesContainer.closest('.mb-6').style.display = 'none';
             }
         }
+    }
 
-        function removeImagePreview(index) {
-            imageFiles.splice(index, 1);
-
-            const dataTransfer = new DataTransfer();
-            imageFiles.forEach(file => dataTransfer.items.add(file));
-            document.getElementById('images').files = dataTransfer.files;
-
-            previewImages(document.getElementById('images'));
-        }
-
-        function updateFileList() {
-            const dataTransfer = new DataTransfer();
-            imageFiles.forEach(file => dataTransfer.items.add(file));
-            document.getElementById('images').files = dataTransfer.files;
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const input = document.getElementById('images');
-            input.addEventListener('change', function() {
-                previewImages(input);
-            });
-
-            // Price validation
-            const minPriceInput = document.getElementById('min_price');
-            const maxPriceInput = document.getElementById('max_price');
-
-            minPriceInput.addEventListener('input', function() {
-                const minPrice = parseFloat(this.value);
-                const maxPrice = parseFloat(maxPriceInput.value);
-                if (maxPrice && minPrice >= maxPrice) {
-                    this.setCustomValidity('Minimum price must be less than maximum price');
-                } else {
-                    this.setCustomValidity('');
-                }
-            });
-
-            maxPriceInput.addEventListener('input', function() {
-                const minPrice = parseFloat(minPriceInput.value);
-                const maxPrice = parseFloat(this.value);
-                if (minPrice && maxPrice <= minPrice) {
-                    this.setCustomValidity('Maximum price must be greater than minimum price');
-                } else {
-                    this.setCustomValidity('');
-                }
-            });
+    // Update file input
+    function updateFileInput(type, filesArray) {
+        const input = document.getElementById(`${type}_images`);
+        const dt = new DataTransfer();
+        
+        filesArray.forEach(file => {
+            dt.items.add(file);
         });
-    </script>
+        
+        input.files = dt.files;
+    }
+
+    // Drag and drop functionality
+    ['business-upload-area', 'menu-upload-area'].forEach(areaId => {
+        const area = document.getElementById(areaId);
+        const type = areaId.includes('business') ? 'business' : 'menu';
+        
+        area.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('border-blue-400', 'bg-blue-50');
+        });
+
+        area.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('border-blue-400', 'bg-blue-50');
+        });
+
+        area.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('border-blue-400', 'bg-blue-50');
+            
+            const files = e.dataTransfer.files;
+            const input = document.getElementById(`${type}_images`);
+            input.files = files;
+            
+            const event = new Event('change', { bubbles: true });
+            input.dispatchEvent(event);
+        });
+    });
+</script>
 @endpush

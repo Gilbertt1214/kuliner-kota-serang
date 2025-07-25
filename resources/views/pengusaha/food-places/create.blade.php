@@ -424,7 +424,7 @@
                     if (invalidFiles.length > 0) {
                         alert('File berikut tidak valid:\n' + invalidFiles.join('\n') +
                             '\n\nHanya file JPG, PNG, GIF dengan ukuran maksimal 2MB yang diperbolehkan.'
-                            );
+                        );
 
                         // Remove invalid files from input
                         const dt = new DataTransfer();
@@ -563,7 +563,8 @@
                         if (data.success) {
                             // Success notification with better styling
                             const successMessage = document.createElement('div');
-                            successMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+                            successMessage.className =
+                                'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
                             successMessage.innerHTML = `
                                 <div class="flex items-center">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -573,18 +574,20 @@
                                 </div>
                             `;
                             document.body.appendChild(successMessage);
-                            
+
                             setTimeout(() => {
                                 if (data.redirect) {
                                     window.location.href = data.redirect;
                                 } else {
-                                    window.location.href = '{{ route('pengusaha.dashboard') }}';
+                                    window.location.href =
+                                    '{{ route('pengusaha.dashboard') }}';
                                 }
                             }, 1500);
                         } else {
                             // Error notification
                             const errorMessage = document.createElement('div');
-                            errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+                            errorMessage.className =
+                                'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
                             errorMessage.innerHTML = `
                                 <div class="flex items-center">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -594,7 +597,7 @@
                                 </div>
                             `;
                             document.body.appendChild(errorMessage);
-                            
+
                             setTimeout(() => {
                                 document.body.removeChild(errorMessage);
                             }, 5000);
@@ -607,10 +610,11 @@
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        
+
                         // Network error notification
                         const errorMessage = document.createElement('div');
-                        errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+                        errorMessage.className =
+                            'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
                         errorMessage.innerHTML = `
                             <div class="flex items-center">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -620,7 +624,7 @@
                             </div>
                         `;
                         document.body.appendChild(errorMessage);
-                        
+
                         setTimeout(() => {
                             document.body.removeChild(errorMessage);
                         }, 5000);
