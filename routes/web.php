@@ -171,7 +171,10 @@ Route::middleware([IsAdmin::class])->prefix('admin')->name('admin.')->group(func
     // Users Management
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/', [AdminUserController::class, 'index'])->name('index');
-        // Add more user management routes as needed
+        Route::post('/', [AdminUserController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [AdminUserController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [AdminUserController::class, 'update'])->name('update');
+        Route::delete('/{id}', [AdminUserController::class, 'destroy'])->name('destroy');
     });
 });
 
