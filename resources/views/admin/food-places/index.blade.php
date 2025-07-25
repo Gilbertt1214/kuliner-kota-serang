@@ -252,10 +252,16 @@
                                             'inactive' => 'bg-gray-100 text-gray-800',
                                             'rejected' => 'bg-red-100 text-red-800',
                                         ];
+                                        $statusText = [
+                                            'pending' => 'Menunggu Review',
+                                            'active' => 'Aktif',
+                                            'inactive' => 'Tidak Aktif',
+                                            'rejected' => 'Ditolak',
+                                        ];
                                     @endphp
                                     <span
                                         class="px-2 py-1 text-xs font-medium rounded-full {{ $statusClasses[$foodPlace->status] ?? 'bg-gray-100 text-gray-800' }}">
-                                        {{ ucfirst($foodPlace->status) }}
+                                        {{ $statusText[$foodPlace->status] ?? ucfirst($foodPlace->status) }}
                                     </span>
                                 </td>
 
