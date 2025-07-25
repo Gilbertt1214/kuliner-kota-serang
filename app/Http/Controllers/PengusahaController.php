@@ -114,11 +114,11 @@ class PengusahaController extends Controller
         return response()->json([
           'success' => true,
           'message' => 'Tempat kuliner berhasil didaftarkan! Menunggu persetujuan admin.',
-          'redirect' => route('pengusaha.dashboard')
+          'redirect' => route('pengusaha.food-places.index')
         ]);
       }
 
-      return redirect()->route('pengusaha.dashboard')
+      return redirect()->route('pengusaha.food-places.index')
         ->with('success', 'Tempat kuliner berhasil didaftarkan! Menunggu persetujuan admin.');
     } catch (\Exception $e) {
       Log::error('Error creating food place: ' . $e->getMessage());
@@ -164,11 +164,6 @@ class PengusahaController extends Controller
     try {
       $foodPlace = FoodPlace::where('user_id', Auth::id())->findOrFail($id);
 
-      // Only allow editing if not active
-      if ($foodPlace->status === 'active') {
-        return redirect()->route('pengusaha.dashboard')
-          ->with('error', 'Tempat kuliner yang sudah aktif tidak dapat diedit.');
-      }
 
       $validated = $request->validate([
         'title' => 'required|string|max:255',
@@ -194,7 +189,6 @@ class PengusahaController extends Controller
         'description' => $validated['description'],
         'location' => $validated['location'],
         'source_location' => $validated['source_location'] ?? null,
-        'status' => 'pending', // Reset to pending after edit
       ]);
 
       // Remove selected images
@@ -244,7 +238,7 @@ class PengusahaController extends Controller
           ->withInput();
       }
 
-      return redirect()->route('pengusaha.dashboard')
+      return redirect()->route('pengusaha.food-places.index')
         ->with('success', 'Tempat kuliner berhasil diperbarui! Menunggu persetujuan admin kembali.');
     } catch (\Exception $e) {
       Log::error('Error updating food place: ' . $e->getMessage());
@@ -276,7 +270,7 @@ class PengusahaController extends Controller
         ]);
       }
 
-      return redirect()->route('pengusaha.dashboard')
+      return redirect()->route('pengusaha.food-places.index')
         ->with('success', 'Tempat kuliner berhasil dihapus.');
     } catch (\Exception $e) {
       Log::error('Error deleting food place: ' . $e->getMessage());

@@ -7,7 +7,7 @@
             <div class="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 border-b border-gray-200 rounded-t-xl">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <a href="{{ route('pengusaha.dashboard') }}" class="text-white hover:text-blue-200 mr-4">
+                        <a href="{{ route('pengusaha.food-places.index') }}" class="text-white hover:text-blue-200 mr-4">
                             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -15,8 +15,8 @@
                         </a>
                         <div>
                             <h2 class="text-2xl font-bold text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg>
@@ -58,7 +58,8 @@
                                     </svg>
                                     Nama Tempat Kuliner <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" name="title" id="title" value="{{ old('title', $foodPlace->title) }}"
+                                <input type="text" name="title" id="title"
+                                    value="{{ old('title', $foodPlace->title) }}"
                                     class="w-full px-4 py-3 border @error('title') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                                     placeholder="Masukkan nama tempat kuliner">
                                 @error('title')
@@ -189,8 +190,8 @@
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
                             <h3 class="text-lg font-semibold text-gray-800 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -239,7 +240,8 @@
                                     value="{{ old('source_location', $foodPlace->source_location) }}"
                                     class="w-full px-4 py-3 border @error('source_location') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200"
                                     placeholder="https://maps.google.com/...">
-                                <p class="text-gray-500 text-sm">Link Google Maps untuk lokasi tempat kuliner (opsional)</p>
+                                <p class="text-gray-500 text-sm">Link Google Maps untuk lokasi tempat kuliner (opsional)
+                                </p>
                                 @error('source_location')
                                     <p class="text-red-500 text-sm mt-1 flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
@@ -259,8 +261,8 @@
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
                             <h3 class="text-lg font-semibold text-gray-800 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-600" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-600"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
@@ -270,7 +272,7 @@
                         </div>
                         <div class="p-6">
                             <!-- Existing Business Images -->
-                            @if($foodPlace->images->where('type', 'business')->count() > 0)
+                            @if ($foodPlace->images->where('type', 'business')->count() > 0)
                                 <div class="mb-6">
                                     <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-purple-600"
@@ -280,17 +282,21 @@
                                         </svg>
                                         Foto Bisnis Saat Ini
                                     </h4>
-                                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="existing-business-images">
-                                        @foreach($foodPlace->images->where('type', 'business') as $image)
+                                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                                        id="existing-business-images">
+                                        @foreach ($foodPlace->images->where('type', 'business') as $image)
                                             <div class="relative group bg-gray-50 rounded-lg overflow-hidden">
                                                 <img src="{{ Storage::url($image->image_path) }}" alt="Business Photo"
                                                     class="w-full h-32 object-cover">
-                                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
-                                                    <button type="button" onclick="removeExistingImage({{ $image->id }}, 'business')"
+                                                <div
+                                                    class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
+                                                    <button type="button"
+                                                        onclick="removeExistingImage({{ $image->id }}, 'business')"
                                                         class="opacity-0 group-hover:opacity-100 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-all duration-200">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
                                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                         </svg>
                                                     </button>
@@ -304,11 +310,11 @@
                             <!-- Business Image Upload Area -->
                             <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-purple-400 hover:bg-purple-50 transition-all duration-300 cursor-pointer"
                                 id="business-upload-area">
-                                <input type="file" id="business_images" name="business_images[]" multiple accept="image/*"
-                                    class="hidden">
+                                <input type="file" id="business_images" name="business_images[]" multiple
+                                    accept="image/*" class="hidden">
                                 <div class="flex flex-col items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-4" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-4"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
@@ -330,7 +336,8 @@
                                     </svg>
                                     Preview Foto Bisnis Baru
                                 </h4>
-                                <div id="business-preview-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                <div id="business-preview-grid"
+                                    class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 </div>
                             </div>
 
@@ -361,8 +368,8 @@
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
                             <h3 class="text-lg font-semibold text-gray-800 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-orange-600" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-orange-600"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                                 </svg>
@@ -372,7 +379,7 @@
                         </div>
                         <div class="p-6">
                             <!-- Existing Menu Images -->
-                            @if($foodPlace->images->where('type', 'menu')->count() > 0)
+                            @if ($foodPlace->images->where('type', 'menu')->count() > 0)
                                 <div class="mb-6">
                                     <h4 class="text-sm font-medium text-gray-700 mb-3 flex items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-orange-600"
@@ -382,17 +389,21 @@
                                         </svg>
                                         Foto Menu Saat Ini
                                     </h4>
-                                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="existing-menu-images">
-                                        @foreach($foodPlace->images->where('type', 'menu') as $image)
+                                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+                                        id="existing-menu-images">
+                                        @foreach ($foodPlace->images->where('type', 'menu') as $image)
                                             <div class="relative group bg-gray-50 rounded-lg overflow-hidden">
                                                 <img src="{{ Storage::url($image->image_path) }}" alt="Menu Photo"
                                                     class="w-full h-32 object-cover">
-                                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
-                                                    <button type="button" onclick="removeExistingImage({{ $image->id }}, 'menu')"
+                                                <div
+                                                    class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
+                                                    <button type="button"
+                                                        onclick="removeExistingImage({{ $image->id }}, 'menu')"
                                                         class="opacity-0 group-hover:opacity-100 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-all duration-200">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
                                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                         </svg>
                                                     </button>
@@ -409,8 +420,8 @@
                                 <input type="file" id="menu_images" name="menu_images[]" multiple accept="image/*"
                                     class="hidden">
                                 <div class="flex flex-col items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-4" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-4"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                     </svg>
@@ -490,71 +501,71 @@
 @endsection
 
 @push('scripts')
-<script>
-    let businessFiles = [];
-    let menuFiles = [];
-    let imagesToDelete = [];
+    <script>
+        let businessFiles = [];
+        let menuFiles = [];
+        let imagesToDelete = [];
 
-    // Business Images Handler
-    document.getElementById('business-upload-area').addEventListener('click', function(e) {
-        if (e.target.id !== 'business_images') {
-            document.getElementById('business_images').click();
-        }
-    });
+        // Business Images Handler
+        document.getElementById('business-upload-area').addEventListener('click', function(e) {
+            if (e.target.id !== 'business_images') {
+                document.getElementById('business_images').click();
+            }
+        });
 
-    document.getElementById('business_images').addEventListener('change', function(e) {
-        handleImageUpload(e, 'business', businessFiles, 5);
-    });
+        document.getElementById('business_images').addEventListener('change', function(e) {
+            handleImageUpload(e, 'business', businessFiles, 5);
+        });
 
-    // Menu Images Handler
-    document.getElementById('menu-upload-area').addEventListener('click', function(e) {
-        if (e.target.id !== 'menu_images') {
-            document.getElementById('menu_images').click();
-        }
-    });
+        // Menu Images Handler
+        document.getElementById('menu-upload-area').addEventListener('click', function(e) {
+            if (e.target.id !== 'menu_images') {
+                document.getElementById('menu_images').click();
+            }
+        });
 
-    document.getElementById('menu_images').addEventListener('change', function(e) {
-        handleImageUpload(e, 'menu', menuFiles, 10);
-    });
+        document.getElementById('menu_images').addEventListener('change', function(e) {
+            handleImageUpload(e, 'menu', menuFiles, 10);
+        });
 
-    // Handle image upload function
-    function handleImageUpload(event, type, filesArray, maxFiles) {
-        const files = Array.from(event.target.files);
-        const previewArea = document.getElementById(`${type}-preview-area`);
-        const previewGrid = document.getElementById(`${type}-preview-grid`);
-        
-        // Check file limit
-        if (files.length > maxFiles) {
-            alert(`Maksimal ${maxFiles} foto untuk ${type === 'business' ? 'bisnis' : 'menu'}`);
-            return;
-        }
+        // Handle image upload function
+        function handleImageUpload(event, type, filesArray, maxFiles) {
+            const files = Array.from(event.target.files);
+            const previewArea = document.getElementById(`${type}-preview-area`);
+            const previewGrid = document.getElementById(`${type}-preview-grid`);
 
-        // Clear existing files array and preview
-        filesArray.length = 0;
-        previewGrid.innerHTML = '';
+            // Check file limit
+            if (files.length > maxFiles) {
+                alert(`Maksimal ${maxFiles} foto untuk ${type === 'business' ? 'bisnis' : 'menu'}`);
+                return;
+            }
 
-        if (files.length > 0) {
-            previewArea.classList.remove('hidden');
-            
-            files.forEach((file, index) => {
-                // Validate file type and size
-                if (!file.type.startsWith('image/')) {
-                    alert('Hanya file gambar yang diperbolehkan');
-                    return;
-                }
-                
-                if (file.size > 2 * 1024 * 1024) { // 2MB
-                    alert(`File ${file.name} terlalu besar. Maksimal 2MB`);
-                    return;
-                }
+            // Clear existing files array and preview
+            filesArray.length = 0;
+            previewGrid.innerHTML = '';
 
-                filesArray.push(file);
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imageDiv = document.createElement('div');
-                    imageDiv.className = 'relative group bg-gray-50 rounded-lg overflow-hidden';
-                    imageDiv.innerHTML = `
+            if (files.length > 0) {
+                previewArea.classList.remove('hidden');
+
+                files.forEach((file, index) => {
+                    // Validate file type and size
+                    if (!file.type.startsWith('image/')) {
+                        alert('Hanya file gambar yang diperbolehkan');
+                        return;
+                    }
+
+                    if (file.size > 2 * 1024 * 1024) { // 2MB
+                        alert(`File ${file.name} terlalu besar. Maksimal 2MB`);
+                        return;
+                    }
+
+                    filesArray.push(file);
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageDiv = document.createElement('div');
+                        imageDiv.className = 'relative group bg-gray-50 rounded-lg overflow-hidden';
+                        imageDiv.innerHTML = `
                         <img src="${e.target.result}" alt="Preview" class="w-full h-32 object-cover">
                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
                             <button type="button" onclick="removeNewImage(${index}, '${type}')"
@@ -565,35 +576,35 @@
                             </button>
                         </div>
                     `;
-                    previewGrid.appendChild(imageDiv);
-                };
-                reader.readAsDataURL(file);
-            });
-            
-            updateFileInput(type, filesArray);
-        } else {
-            previewArea.classList.add('hidden');
-        }
-    }
+                        previewGrid.appendChild(imageDiv);
+                    };
+                    reader.readAsDataURL(file);
+                });
 
-    // Remove new image from preview
-    function removeNewImage(index, type) {
-        const filesArray = type === 'business' ? businessFiles : menuFiles;
-        const previewArea = document.getElementById(`${type}-preview-area`);
-        const previewGrid = document.getElementById(`${type}-preview-grid`);
-        
-        filesArray.splice(index, 1);
-        
-        // Rebuild preview
-        previewGrid.innerHTML = '';
-        
-        if (filesArray.length > 0) {
-            filesArray.forEach((file, newIndex) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imageDiv = document.createElement('div');
-                    imageDiv.className = 'relative group bg-gray-50 rounded-lg overflow-hidden';
-                    imageDiv.innerHTML = `
+                updateFileInput(type, filesArray);
+            } else {
+                previewArea.classList.add('hidden');
+            }
+        }
+
+        // Remove new image from preview
+        function removeNewImage(index, type) {
+            const filesArray = type === 'business' ? businessFiles : menuFiles;
+            const previewArea = document.getElementById(`${type}-preview-area`);
+            const previewGrid = document.getElementById(`${type}-preview-grid`);
+
+            filesArray.splice(index, 1);
+
+            // Rebuild preview
+            previewGrid.innerHTML = '';
+
+            if (filesArray.length > 0) {
+                filesArray.forEach((file, newIndex) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageDiv = document.createElement('div');
+                        imageDiv.className = 'relative group bg-gray-50 rounded-lg overflow-hidden';
+                        imageDiv.innerHTML = `
                         <img src="${e.target.result}" alt="Preview" class="w-full h-32 object-cover">
                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-200 flex items-center justify-center">
                             <button type="button" onclick="removeNewImage(${newIndex}, '${type}')"
@@ -604,73 +615,75 @@
                             </button>
                         </div>
                     `;
-                    previewGrid.appendChild(imageDiv);
-                };
-                reader.readAsDataURL(file);
-            });
-        } else {
-            previewArea.classList.add('hidden');
-        }
-        
-        updateFileInput(type, filesArray);
-    }
+                        previewGrid.appendChild(imageDiv);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                previewArea.classList.add('hidden');
+            }
 
-    // Remove existing image
-    function removeExistingImage(imageId, type) {
-        if (confirm('Apakah Anda yakin ingin menghapus foto ini?')) {
-            // Add to delete list
-            imagesToDelete.push(imageId);
-            document.getElementById('images-to-delete').value = imagesToDelete.join(',');
-            
-            // Remove from UI
-            event.target.closest('.relative').remove();
-            
-            // Check if no existing images left
-            const existingImagesContainer = document.getElementById(`existing-${type}-images`);
-            if (existingImagesContainer && existingImagesContainer.children.length === 0) {
-                existingImagesContainer.closest('.mb-6').style.display = 'none';
+            updateFileInput(type, filesArray);
+        }
+
+        // Remove existing image
+        function removeExistingImage(imageId, type) {
+            if (confirm('Apakah Anda yakin ingin menghapus foto ini?')) {
+                // Add to delete list
+                imagesToDelete.push(imageId);
+                document.getElementById('images-to-delete').value = imagesToDelete.join(',');
+
+                // Remove from UI
+                event.target.closest('.relative').remove();
+
+                // Check if no existing images left
+                const existingImagesContainer = document.getElementById(`existing-${type}-images`);
+                if (existingImagesContainer && existingImagesContainer.children.length === 0) {
+                    existingImagesContainer.closest('.mb-6').style.display = 'none';
+                }
             }
         }
-    }
 
-    // Update file input
-    function updateFileInput(type, filesArray) {
-        const input = document.getElementById(`${type}_images`);
-        const dt = new DataTransfer();
-        
-        filesArray.forEach(file => {
-            dt.items.add(file);
-        });
-        
-        input.files = dt.files;
-    }
-
-    // Drag and drop functionality
-    ['business-upload-area', 'menu-upload-area'].forEach(areaId => {
-        const area = document.getElementById(areaId);
-        const type = areaId.includes('business') ? 'business' : 'menu';
-        
-        area.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('border-blue-400', 'bg-blue-50');
-        });
-
-        area.addEventListener('dragleave', function(e) {
-            e.preventDefault();
-            this.classList.remove('border-blue-400', 'bg-blue-50');
-        });
-
-        area.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.classList.remove('border-blue-400', 'bg-blue-50');
-            
-            const files = e.dataTransfer.files;
+        // Update file input
+        function updateFileInput(type, filesArray) {
             const input = document.getElementById(`${type}_images`);
-            input.files = files;
-            
-            const event = new Event('change', { bubbles: true });
-            input.dispatchEvent(event);
+            const dt = new DataTransfer();
+
+            filesArray.forEach(file => {
+                dt.items.add(file);
+            });
+
+            input.files = dt.files;
+        }
+
+        // Drag and drop functionality
+        ['business-upload-area', 'menu-upload-area'].forEach(areaId => {
+            const area = document.getElementById(areaId);
+            const type = areaId.includes('business') ? 'business' : 'menu';
+
+            area.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('border-blue-400', 'bg-blue-50');
+            });
+
+            area.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('border-blue-400', 'bg-blue-50');
+            });
+
+            area.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('border-blue-400', 'bg-blue-50');
+
+                const files = e.dataTransfer.files;
+                const input = document.getElementById(`${type}_images`);
+                input.files = files;
+
+                const event = new Event('change', {
+                    bubbles: true
+                });
+                input.dispatchEvent(event);
+            });
         });
-    });
-</script>
+    </script>
 @endpush
