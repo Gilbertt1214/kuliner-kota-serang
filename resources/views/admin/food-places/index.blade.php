@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            {{-- <!-- Active Places Card --> --}}
+            <!-- Active Places Card -->
             <div class="bg-white rounded-lg shadow p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 bg-green-100 rounded-md p-3">
@@ -92,7 +92,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- Search and Filter Section -->
@@ -110,14 +109,14 @@
                     </div>
                     <input type="text" id="searchInput"
                         class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        placeholder="Search food places...">
+                        placeholder="Cari tempat kuliner...">
                 </div>
 
                 <!-- Filters -->
                 <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                     <select name="category" id="categoryFilter"
                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                        <option value="">All Categories</option>
+                        <option value="">Semua Kategori</option>
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}"
                                 {{ request('category') == $category->id ? 'selected' : '' }}>
@@ -128,19 +127,19 @@
 
                     <select name="rating" id="ratingFilter"
                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                        <option value="">All Ratings</option>
-                        <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Stars</option>
-                        <option value="4+" {{ request('rating') == '4+' ? 'selected' : '' }}>4+ Stars</option>
-                        <option value="3+" {{ request('rating') == '3+' ? 'selected' : '' }}>3+ Stars</option>
+                        <option value="">Semua Rating</option>
+                        <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>5 Bintang</option>
+                        <option value="4+" {{ request('rating') == '4+' ? 'selected' : '' }}>4+ Bintang</option>
+                        <option value="3+" {{ request('rating') == '3+' ? 'selected' : '' }}>3+ Bintang</option>
                     </select>
 
                     <select name="status" id="statusFilter"
                         class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                        <option value="">All Statuses</option>
+                        <option value="">Semua Status</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
-                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
-                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Aktif</option>
+                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Tidak Aktif</option>
+                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak</option>
                     </select>
 
                     <button type="button" id="resetFilterBtn"
@@ -359,8 +358,8 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                         </svg>
-                                        <h3 class="text-lg font-medium text-gray-900 mb-2">No food places found</h3>
-                                        <p class="text-gray-500">Get started by adding your first food place.</p>
+                                        <h3 class="text-lg font-medium text-gray-900 mb-2">Tidak ada tempat kuliner ditemukan</h3>
+                                        <p class="text-gray-500">Belum ada tempat kuliner yang terdaftar dalam sistem.</p>
                                     </div>
                                 </td>
                             </tr>
@@ -408,51 +407,19 @@
                         </div>
                     </div>
                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="button" id="confirmDelete"
-                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                            Delete
-                        </button>
+                        <form id="deleteForm" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                Hapus
+                            </button>
+                        </form>
                         <button type="button" id="cancelDelete"
                             class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                            Cancel
+                            Batal
                         </button>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Delete Confirmation Modal -->
-    <div id="deleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div class="mt-3 text-center">
-                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-                    <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                    </svg>
-                </div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-2">
-                    Delete Food Place: <span id="deleteItemName" class="font-semibold"></span>
-                </h3>
-                <div class="mt-2 px-7 py-3">
-                    <p class="text-sm text-gray-500">
-                        Are you sure you want to delete? This action cannot be undone.
-                    </p>
-                </div>
-                <div class="items-center px-4 py-3 flex justify-center space-x-3">
-                    <button id="cancelDelete"
-                        class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24 hover:bg-gray-600 transition-colors">
-                        Cancel
-                    </button>
-                    <form id="deleteForm" method="POST" class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                            class="px-4 py-2 bg-red-600 text-white text-base font-medium rounded-md w-24 hover:bg-red-700 transition-colors">
-                            Delete
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
@@ -483,13 +450,225 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Delete Modal Functionality
+            // Filter elements
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const ratingFilter = document.getElementById('ratingFilter');
+            const statusFilter = document.getElementById('statusFilter');
+            const resetFilterBtn = document.getElementById('resetFilterBtn');
+            const foodPlaceRows = document.querySelectorAll('.food-place-row');
+            
+            // Modal and button elements
             const deleteModal = document.getElementById('deleteModal');
             const deleteForm = document.getElementById('deleteForm');
             const deleteItemName = document.getElementById('deleteItemName');
             const deleteButtons = document.querySelectorAll('.delete-btn');
             const cancelDelete = document.getElementById('cancelDelete');
-
+            const approveButtons = document.querySelectorAll('.approve-btn');
+            const rejectButtons = document.querySelectorAll('.reject-btn');
+            
+            // Search and filter functionality
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                const categoryValue = categoryFilter.value;
+                const ratingValue = ratingFilter.value;
+                const statusValue = statusFilter.value;
+                
+                let visibleCount = 0;
+                
+                foodPlaceRows.forEach(row => {
+                    let showRow = true;
+                    
+                    // Get row data
+                    const nameElement = row.querySelector('.text-sm.font-medium.text-gray-900');
+                    const descriptionElement = row.querySelector('.text-sm.text-gray-500.line-clamp-1');
+                    const ownerElement = row.querySelector('td:nth-child(3)');
+                    const locationElement = row.querySelector('td:nth-child(4) span');
+                    
+                    const name = nameElement ? nameElement.textContent.toLowerCase() : '';
+                    const description = descriptionElement ? descriptionElement.textContent.toLowerCase() : '';
+                    const owner = ownerElement ? ownerElement.textContent.toLowerCase() : '';
+                    const location = locationElement ? locationElement.textContent.toLowerCase() : '';
+                    
+                    const category = row.dataset.category;
+                    const rating = parseFloat(row.dataset.rating) || 0;
+                    const status = row.dataset.status;
+                    
+                    // Search filter
+                    if (searchTerm) {
+                        const searchableText = `${name} ${description} ${owner} ${location}`;
+                        if (!searchableText.includes(searchTerm)) {
+                            showRow = false;
+                        }
+                    }
+                    
+                    // Category filter
+                    if (categoryValue && category !== categoryValue) {
+                        showRow = false;
+                    }
+                    
+                    // Rating filter
+                    if (ratingValue) {
+                        if (ratingValue === '5' && rating < 5) {
+                            showRow = false;
+                        } else if (ratingValue === '4+' && rating < 4) {
+                            showRow = false;
+                        } else if (ratingValue === '3+' && rating < 3) {
+                            showRow = false;
+                        }
+                    }
+                    
+                    // Status filter
+                    if (statusValue && status !== statusValue) {
+                        showRow = false;
+                    }
+                    
+                    // Show/hide row
+                    row.style.display = showRow ? '' : 'none';
+                    if (showRow) visibleCount++;
+                });
+                
+                // Update results info
+                updateResultsInfo(visibleCount);
+            }
+            
+            function updateResultsInfo(visibleCount) {
+                const totalCount = foodPlaceRows.length;
+                const tableHeader = document.querySelector('.bg-white.shadow.rounded-lg .px-6.py-4.border-b h3');
+                
+                if (tableHeader) {
+                    tableHeader.textContent = `Daftar Tempat Kuliner (${visibleCount} dari ${totalCount})`;
+                }
+                
+                // Show/hide no results message
+                showNoResultsMessage(visibleCount);
+            }
+            
+            function showNoResultsMessage(visibleCount) {
+                const tbody = document.querySelector('tbody');
+                let noResultsRow = document.getElementById('no-results-row');
+                
+                if (visibleCount === 0 && foodPlaceRows.length > 0) {
+                    if (!noResultsRow) {
+                        noResultsRow = document.createElement('tr');
+                        noResultsRow.id = 'no-results-row';
+                        noResultsRow.innerHTML = `
+                            <td colspan="7" class="px-6 py-12 text-center">
+                                <div class="flex flex-col items-center">
+                                    <svg class="h-12 w-12 text-gray-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                    <h3 class="text-lg font-medium text-gray-900 mb-2">Tidak ada hasil ditemukan</h3>
+                                    <p class="text-gray-500">Coba ubah filter atau kata kunci pencarian Anda</p>
+                                    <button onclick="resetFilters()" class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                                        <svg class="h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                        </svg>
+                                        Reset Filter
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                        tbody.appendChild(noResultsRow);
+                    }
+                    noResultsRow.style.display = '';
+                } else if (noResultsRow) {
+                    noResultsRow.style.display = 'none';
+                }
+            }
+            
+            // Reset filters function (make it global)
+            window.resetFilters = function() {
+                searchInput.value = '';
+                categoryFilter.value = '';
+                ratingFilter.value = '';
+                statusFilter.value = '';
+                filterTable();
+                
+                // Update URL
+                const url = new URL(window.location);
+                url.search = '';
+                window.history.pushState({}, '', url);
+            }
+            
+            // Debounce function for search input
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+            
+            // Event listeners for filters
+            searchInput.addEventListener('input', debounce(filterTable, 300));
+            categoryFilter.addEventListener('change', filterTable);
+            ratingFilter.addEventListener('change', filterTable);
+            statusFilter.addEventListener('change', filterTable);
+            resetFilterBtn.addEventListener('click', resetFilters);
+            
+            // Initialize filters from URL parameters
+            function initFiltersFromUrl() {
+                const urlParams = new URLSearchParams(window.location.search);
+                
+                if (urlParams.has('search')) {
+                    searchInput.value = urlParams.get('search');
+                }
+                if (urlParams.has('category')) {
+                    categoryFilter.value = urlParams.get('category');
+                }
+                if (urlParams.has('rating')) {
+                    ratingFilter.value = urlParams.get('rating');
+                }
+                if (urlParams.has('status')) {
+                    statusFilter.value = urlParams.get('status');
+                }
+                
+                filterTable();
+            }
+            
+            // Update URL when filters change
+            function updateUrlParams() {
+                const url = new URL(window.location);
+                
+                if (searchInput.value) {
+                    url.searchParams.set('search', searchInput.value);
+                } else {
+                    url.searchParams.delete('search');
+                }
+                
+                if (categoryFilter.value) {
+                    url.searchParams.set('category', categoryFilter.value);
+                } else {
+                    url.searchParams.delete('category');
+                }
+                
+                if (ratingFilter.value) {
+                    url.searchParams.set('rating', ratingFilter.value);
+                } else {
+                    url.searchParams.delete('rating');
+                }
+                
+                if (statusFilter.value) {
+                    url.searchParams.set('status', statusFilter.value);
+                } else {
+                    url.searchParams.delete('status');
+                }
+                
+                window.history.pushState({}, '', url);
+            }
+            
+            // Add URL update to filter events
+            searchInput.addEventListener('input', debounce(updateUrlParams, 500));
+            categoryFilter.addEventListener('change', updateUrlParams);
+            ratingFilter.addEventListener('change', updateUrlParams);
+            statusFilter.addEventListener('change', updateUrlParams);
+            
+            // Delete Modal Functionality
             deleteButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const itemId = this.getAttribute('data-id');
@@ -514,20 +693,16 @@
             });
 
             // Approve/Reject Functionality
-            const approveButtons = document.querySelectorAll('.approve-btn');
-            const rejectButtons = document.querySelectorAll('.reject-btn');
-
             approveButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const itemId = this.getAttribute('data-id');
                     const actionUrl = this.getAttribute('data-action');
 
-                    if (confirm('Are you sure you want to approve this food place?')) {
+                    if (confirm('Apakah Anda yakin ingin menyetujui tempat kuliner ini?')) {
                         fetch(actionUrl, {
                                 method: 'PATCH',
                                 headers: {
-                                    'X-CSRF-TOKEN': document.querySelector(
-                                        'meta[name="csrf-token"]').getAttribute('content'),
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                                     'Content-Type': 'application/json',
                                     'Accept': 'application/json'
                                 },
@@ -535,14 +710,14 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
-                                    showToast('Food place approved successfully!', 'success');
+                                    showToast('Tempat kuliner berhasil disetujui!', 'success');
                                     setTimeout(() => location.reload(), 1500);
                                 } else {
-                                    showToast('Error approving food place.', 'error');
+                                    showToast('Gagal menyetujui tempat kuliner.', 'error');
                                 }
                             })
                             .catch(error => {
-                                showToast('Error approving food place.', 'error');
+                                showToast('Gagal menyetujui tempat kuliner.', 'error');
                             });
                     }
                 });
@@ -553,12 +728,11 @@
                     const itemId = this.getAttribute('data-id');
                     const actionUrl = this.getAttribute('data-action');
 
-                    if (confirm('Are you sure you want to reject this food place?')) {
+                    if (confirm('Apakah Anda yakin ingin menolak tempat kuliner ini?')) {
                         fetch(actionUrl, {
                                 method: 'PATCH',
                                 headers: {
-                                    'X-CSRF-TOKEN': document.querySelector(
-                                        'meta[name="csrf-token"]').getAttribute('content'),
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                                     'Content-Type': 'application/json',
                                     'Accept': 'application/json'
                                 },
@@ -566,14 +740,14 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
-                                    showToast('Food place rejected successfully!', 'success');
+                                    showToast('Tempat kuliner berhasil ditolak!', 'success');
                                     setTimeout(() => location.reload(), 1500);
                                 } else {
-                                    showToast('Error rejecting food place.', 'error');
+                                    showToast('Gagal menolak tempat kuliner.', 'error');
                                 }
                             })
                             .catch(error => {
-                                showToast('Error rejecting food place.', 'error');
+                                showToast('Gagal menolak tempat kuliner.', 'error');
                             });
                     }
                 });
@@ -610,573 +784,9 @@
             document.getElementById('toastClose').addEventListener('click', function() {
                 document.getElementById('toast').classList.add('hidden');
             });
-        });
-
-        // Filter table function
-        function filterTable() {
-            const searchInput = document.getElementById('search');
-            const statusFilter = document.getElementById('statusFilter');
-            const categoryFilter = document.getElementById('categoryFilter');
-            const table = document.querySelector('tbody');
-            const rows = table.querySelectorAll('tr');
-
-            const searchTerm = searchInput.value.toLowerCase();
-            const statusFilter_value = statusFilter.value.toLowerCase();
-            const categoryFilter_value = categoryFilter.value;
-
-            rows.forEach(row => {
-                const title = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                const owner = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-                const status = row.getAttribute('data-status').toLowerCase();
-                const categoryId = row.getAttribute('data-category');
-
-                const matchesSearch = title.includes(searchTerm) || owner.includes(searchTerm);
-                const matchesStatus = !statusFilter_value || status.includes(statusFilter_value);
-                const matchesCategory = !categoryFilter_value || categoryId === categoryFilter_value;
-
-                if (matchesSearch && matchesStatus && matchesCategory) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-    </script>
-@endsection
-
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Modal Elements
-            const openModalBtn = document.getElementById('openModalBtn');
-            const modal = document.getElementById('foodPlaceModal');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const cancelFormBtn = document.getElementById('cancelFormBtn');
-            const form = document.getElementById('foodPlaceForm');
-            const submitBtn = document.getElementById('submitBtn');
-            const submitText = document.getElementById('submitText');
-            const spinner = document.getElementById('spinner');
-            const successNotification = document.getElementById('successNotification');
-            const imageInput = document.getElementById('images');
-            const imagePreview = document.getElementById('imagePreview');
-            const errorAlert = document.getElementById('errorAlert');
-            const errorMessage = document.getElementById('errorMessage');
-
-            // Delete Modal Elements
-            const deleteModal = document.getElementById('deleteModal');
-            const deleteName = document.getElementById('deleteName');
-            const confirmDelete = document.getElementById('confirmDelete');
-            const cancelDelete = document.getElementById('cancelDelete');
-            let deleteFormAction = '';
-
-            // Modal Functions
-            function openModal() {
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal() {
-                modal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-                resetForm();
-            }
-
-            function showErrorAlert(message) {
-                errorMessage.textContent = message;
-                errorAlert.classList.remove('hidden');
-            }
-
-            function hideErrorAlert() {
-                errorAlert.classList.add('hidden');
-            }
-
-            function showSuccessNotification(message) {
-                document.getElementById('successMessage').textContent = message;
-                successNotification.classList.remove('hidden');
-                setTimeout(() => {
-                    successNotification.classList.add('hidden');
-                }, 5000);
-            }
-
-            // Event Listeners
-            openModalBtn.addEventListener('click', openModal);
-            closeModalBtn.addEventListener('click', closeModal);
-            cancelFormBtn.addEventListener('click', closeModal);
-
-            // Close modal when clicking outside
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-
-            // Image Preview Functionality
-            imageInput.addEventListener('change', function(e) {
-                const files = Array.from(e.target.files);
-                imagePreview.innerHTML = '';
-
-                if (files.length > 5) {
-                    showError('images', 'Maximum 5 images allowed');
-                    e.target.value = '';
-                    return;
-                }
-
-                if (files.length > 0) {
-                    imagePreview.classList.remove('hidden');
-                    files.forEach((file, index) => {
-                        if (file.type.startsWith('image/')) {
-                            if (file.size > 2 * 1024 * 1024) { // 2MB limit
-                                showError('images',
-                                    `Image ${file.name} is too large. Maximum size is 2MB.`);
-                                return;
-                            }
-
-                            const reader = new FileReader();
-                            reader.onload = function(e) {
-                                const div = document.createElement('div');
-                                div.className = 'relative group';
-                                div.innerHTML = `
-                            <img src="${e.target.result}" alt="Preview ${index + 1}" class="w-full h-24 object-cover rounded-md border">
-                            <button type="button" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity remove-image" data-index="${index}">
-                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                            <div class="absolute bottom-1 left-1 bg-black bg-opacity-50 text-white text-xs px-1 rounded">${index + 1}</div>
-                        `;
-                                imagePreview.appendChild(div);
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                    });
-                } else {
-                    imagePreview.classList.add('hidden');
-                }
-            });
-
-            // Remove image functionality
-            imagePreview.addEventListener('click', function(e) {
-                if (e.target.closest('.remove-image')) {
-                    const index = parseInt(e.target.closest('.remove-image').dataset.index);
-                    removeImage(index);
-                }
-            });
-
-            function removeImage(index) {
-                const dt = new DataTransfer();
-                const files = Array.from(imageInput.files);
-
-                files.forEach((file, i) => {
-                    if (i !== index) {
-                        dt.items.add(file);
-                    }
-                });
-
-                imageInput.files = dt.files;
-                imageInput.dispatchEvent(new Event('change'));
-            }
-
-            // Form Validation
-            function validateForm() {
-                let isValid = true;
-                hideErrorAlert();
-                clearAllErrors();
-
-                // Required field validation
-                const requiredFields = [{
-                        id: 'title',
-                        name: 'Food place name'
-                    },
-                    {
-                        id: 'food_category_id',
-                        name: 'Category'
-                    },
-                    {
-                        id: 'min_price',
-                        name: 'Minimum price'
-                    },
-                    {
-                        id: 'max_price',
-                        name: 'Maximum price'
-                    },
-                    {
-                        id: 'location',
-                        name: 'Location'
-                    },
-                    {
-                        id: 'description',
-                        name: 'Description'
-                    }
-                ];
-
-                requiredFields.forEach(field => {
-                    const element = document.getElementById(field.id);
-                    if (!element.value.trim()) {
-                        showError(field.id, `${field.name} is required`);
-                        isValid = false;
-                    }
-                });
-
-                // Image validation
-                if (imageInput.files.length === 0) {
-                    showError('images', 'At least one image is required');
-                    isValid = false;
-                }
-
-                // Price validation
-                const minPrice = parseFloat(document.getElementById('min_price').value);
-                const maxPrice = parseFloat(document.getElementById('max_price').value);
-
-                if (minPrice && maxPrice && minPrice >= maxPrice) {
-                    showError('max_price', 'Maximum price must be greater than minimum price');
-                    isValid = false;
-                }
-
-                // URL validation
-                const sourceLocation = document.getElementById('source_location').value;
-                if (sourceLocation && !isValidUrl(sourceLocation)) {
-                    showError('source_location', 'Please enter a valid URL');
-                    isValid = false;
-                }
-
-                return isValid;
-            }
-
-            function isValidUrl(string) {
-                try {
-                    new URL(string);
-                    return true;
-                } catch (_) {
-                    return false;
-                }
-            }
-
-            function showError(fieldId, message) {
-                const errorDiv = document.getElementById(`${fieldId}-error`);
-                const inputElement = document.getElementById(fieldId);
-
-                if (errorDiv) {
-                    errorDiv.textContent = message;
-                    errorDiv.classList.remove('hidden');
-                }
-
-                if (inputElement) {
-                    inputElement.classList.add('border-red-500');
-                    inputElement.classList.remove('border-gray-300');
-                }
-            }
-
-            function hideError(fieldId) {
-                const errorDiv = document.getElementById(`${fieldId}-error`);
-                const inputElement = document.getElementById(fieldId);
-
-                if (errorDiv) {
-                    errorDiv.classList.add('hidden');
-                }
-
-                if (inputElement) {
-                    inputElement.classList.remove('border-red-500');
-                    inputElement.classList.add('border-gray-300');
-                }
-            }
-
-            function clearAllErrors() {
-                document.querySelectorAll('[id$="-error"]').forEach(el => {
-                    el.classList.add('hidden');
-                });
-
-                document.querySelectorAll('input, select, textarea').forEach(el => {
-                    el.classList.remove('border-red-500');
-                    el.classList.add('border-gray-300');
-                });
-            }
-
-            function resetForm() {
-                form.reset();
-                imagePreview.innerHTML = '';
-                imagePreview.classList.add('hidden');
-                clearAllErrors();
-                hideErrorAlert();
-            }
-
-            // Form Submission
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                if (!validateForm()) {
-                    showErrorAlert('Please correct the errors below and try again.');
-                    return;
-                }
-
-                // Show loading state
-                submitBtn.disabled = true;
-                submitText.textContent = 'Saving...';
-                spinner.classList.remove('hidden');
-
-                try {
-                    const formData = new FormData(form);
-
-                    const response = await fetch(form.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .content,
-                            'Accept': 'application/json',
-                        },
-                    });
-
-                    const data = await response.json();
-
-                    if (response.ok && data.success) {
-                        showSuccessNotification(data.message || 'Food place added successfully!');
-                        closeModal();
-
-                        // Reload page after short delay
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1500);
-                    } else {
-                        // Handle validation errors
-                        if (data.errors) {
-                            Object.keys(data.errors).forEach(field => {
-                                showError(field, data.errors[field][0]);
-                            });
-                            showErrorAlert('Please correct the errors below and try again.');
-                        } else {
-                            showErrorAlert(data.message ||
-                                'An error occurred while saving the food place.');
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    showErrorAlert('A network error occurred. Please try again.');
-                } finally {
-                    // Reset loading state
-                    submitBtn.disabled = false;
-                    submitText.textContent = 'Save Food Place';
-                    spinner.classList.add('hidden');
-                }
-            });
-
-            // Delete Functionality
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.delete-btn')) {
-                    const btn = e.target.closest('.delete-btn');
-                    const id = btn.dataset.id;
-                    const name = btn.dataset.name;
-
-                    deleteName.textContent = name;
-                    deleteFormAction = `{{ route('admin.food-places.index') }}/${id}`;
-                    deleteModal.classList.remove('hidden');
-                    document.body.style.overflow = 'hidden';
-                }
-            });
-
-            cancelDelete.addEventListener('click', function() {
-                deleteModal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            });
-
-            confirmDelete.addEventListener('click', async function() {
-                try {
-                    const response = await fetch(deleteFormAction, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                .content,
-                            'Accept': 'application/json',
-                        },
-                    });
-
-                    const data = await response.json();
-
-                    if (response.ok && data.success) {
-                        deleteModal.classList.add('hidden');
-                        document.body.style.overflow = 'auto';
-                        showSuccessNotification(data.message || 'Food place deleted successfully!');
-
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1500);
-                    } else {
-                        alert(data.message || 'An error occurred while deleting the food place.');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('A network error occurred. Please try again.');
-                }
-            });
-
-            // Filter Functionality
-            const searchInput = document.getElementById('searchInput');
-            const categoryFilter = document.getElementById('categoryFilter');
-            const ratingFilter = document.getElementById('ratingFilter');
-            const statusFilter = document.getElementById('statusFilter');
-            const resetFilterBtn = document.getElementById('resetFilterBtn');
-            const foodPlaceRows = document.querySelectorAll('.food-place-row');
-
-            function filterTable() {
-                const searchTerm = searchInput.value.toLowerCase();
-                const categoryValue = categoryFilter.value;
-                const ratingValue = ratingFilter.value;
-                const statusValue = statusFilter.value;
-
-                let visibleCount = 0;
-
-                foodPlaceRows.forEach(row => {
-                    const titleElement = row.querySelector('td:first-child .text-gray-900');
-                    const descriptionElement = row.querySelector('td:first-child .text-gray-500');
-
-                    const title = titleElement ? titleElement.textContent.toLowerCase() : '';
-                    const description = descriptionElement ? descriptionElement.textContent.toLowerCase() :
-                        '';
-                    const category = row.dataset.category;
-                    const rating = parseFloat(row.dataset.rating) || 0;
-                    const status = row.dataset.status;
-
-                    let showRow = true;
-
-                    // Search filter
-                    if (searchTerm && !title.includes(searchTerm) && !description.includes(searchTerm)) {
-                        showRow = false;
-                    }
-
-                    // Category filter
-                    if (categoryValue && category !== categoryValue) {
-                        showRow = false;
-                    }
-
-                    // Rating filter
-                    if (ratingValue) {
-                        if (ratingValue.endsWith('+')) {
-                            const minRating = parseInt(ratingValue);
-                            if (rating < minRating) {
-                                showRow = false;
-                            }
-                        } else {
-                            if (Math.floor(rating) !== parseInt(ratingValue)) {
-                                showRow = false;
-                            }
-                        }
-                    }
-
-                    // Status filter
-                    if (statusValue && status !== statusValue) {
-                        showRow = false;
-                    }
-
-                    row.style.display = showRow ? '' : 'none';
-                    if (showRow) visibleCount++;
-                });
-
-                // Show/hide no results message
-                updateNoResultsMessage(visibleCount);
-            }
-
-            function updateNoResultsMessage(visibleCount) {
-                const tbody = document.querySelector('tbody');
-                let noResultsRow = document.getElementById('no-results-row');
-
-                if (visibleCount === 0 && foodPlaceRows.length > 0) {
-                    if (!noResultsRow) {
-                        noResultsRow = document.createElement('tr');
-                        noResultsRow.id = 'no-results-row';
-                        noResultsRow.innerHTML = `
-                    <td colspan="7" class="px-6 py-12 text-center">
-                        <div class="flex flex-col items-center">
-                            <svg class="h-12 w-12 text-gray-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                            <h3 class="text-lg font-medium text-gray-900 mb-2">No results found</h3>
-                            <p class="text-gray-500">Try adjusting your search or filter criteria.</p>
-                        </div>
-                    </td>
-                `;
-                        tbody.appendChild(noResultsRow);
-                    }
-                    noResultsRow.style.display = '';
-                } else if (noResultsRow) {
-                    noResultsRow.style.display = 'none';
-                }
-            }
-
-            // Filter event listeners
-            searchInput.addEventListener('input', filterTable);
-            categoryFilter.addEventListener('change', filterTable);
-            ratingFilter.addEventListener('change', filterTable);
-            statusFilter.addEventListener('change', filterTable);
-
-            resetFilterBtn.addEventListener('click', function() {
-                searchInput.value = '';
-                categoryFilter.value = '';
-                ratingFilter.value = '';
-                statusFilter.value = '';
-                filterTable();
-
-                // Update URL without page reload
-                const url = new URL(window.location);
-                url.search = '';
-                window.history.pushState({}, '', url);
-            });
-
-            // Initialize filters from URL parameters
-            function initFiltersFromUrl() {
-                const urlParams = new URLSearchParams(window.location.search);
-
-                if (urlParams.has('category')) {
-                    categoryFilter.value = urlParams.get('category');
-                }
-                if (urlParams.has('rating')) {
-                    ratingFilter.value = urlParams.get('rating');
-                }
-                if (urlParams.has('status')) {
-                    statusFilter.value = urlParams.get('status');
-                }
-
-                filterTable();
-            }
-
-            // Real-time validation
-            document.querySelectorAll('input, select, textarea').forEach(element => {
-                element.addEventListener('blur', function() {
-                    if (this.hasAttribute('required') && !this.value.trim()) {
-                        showError(this.id, 'This field is required');
-                    } else {
-                        hideError(this.id);
-                    }
-                });
-
-                element.addEventListener('input', function() {
-                    if (this.value.trim()) {
-                        hideError(this.id);
-                    }
-                });
-            });
-
-            // Price validation
-            document.getElementById('min_price').addEventListener('input', function() {
-                const maxPrice = document.getElementById('max_price').value;
-                if (maxPrice && parseFloat(this.value) >= parseFloat(maxPrice)) {
-                    showError('min_price', 'Minimum price must be less than maximum price');
-                } else {
-                    hideError('min_price');
-                    hideError('max_price');
-                }
-            });
-
-            document.getElementById('max_price').addEventListener('input', function() {
-                const minPrice = document.getElementById('min_price').value;
-                if (minPrice && parseFloat(this.value) <= parseFloat(minPrice)) {
-                    showError('max_price', 'Maximum price must be greater than minimum price');
-                } else {
-                    hideError('min_price');
-                    hideError('max_price');
-                }
-            });
-
+            
             // Initialize
             initFiltersFromUrl();
         });
     </script>
-@endpush
+@endsection
