@@ -1,12 +1,14 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="container ">
         <!-- Header Section -->
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
             <div class="mb-4 md:mb-0">
-                <h1 class="text-2xl font-bold text-gray-900">Food Places Management</h1>
-                <p class="text-gray-600">Monitor and manage all food places in your system</p>
+                <h1 class="text-2xl font-bold text-gray-900">
+                    Manajemen Tempat Kuliner
+                </h1>
+                <p class="text-gray-600">Monitor dan kelola semua tempat kuliner dalam sistem Anda</p>
             </div>
         </div>
 
@@ -23,7 +25,9 @@
                         </svg>
                     </div>
                     <div class="ml-5">
-                        <p class="text-sm font-medium text-gray-500 truncate">Total Places</p>
+                        <p class="text-sm font-medium text-gray-500 truncate">
+                            Total Tempat
+                        </p>
                         <p class="text-2xl font-semibold text-gray-900">{{ $foodPlaces->total() }}</p>
                     </div>
                 </div>
@@ -40,7 +44,9 @@
                         </svg>
                     </div>
                     <div class="ml-5">
-                        <p class="text-sm font-medium text-gray-500 truncate">Active Places</p>
+                        <p class="text-sm font-medium text-gray-500 truncate">
+                            Tempat Aktif
+                        </p>
                         <p class="text-2xl font-semibold text-gray-900">
                             {{ $foodPlaces->where('status', 'active')->count() }}</p>
                     </div>
@@ -58,7 +64,9 @@
                         </svg>
                     </div>
                     <div class="ml-5">
-                        <p class="text-sm font-medium text-gray-500 truncate">Pending Review</p>
+                        <p class="text-sm font-medium text-gray-500 truncate">
+                            Menunggu Persetujuan
+                        </p>
                         <p class="text-2xl font-semibold text-gray-900">
                             {{ $foodPlaces->where('status', 'pending')->count() }}</p>
                     </div>
@@ -76,7 +84,9 @@
                         </svg>
                     </div>
                     <div class="ml-5">
-                        <p class="text-sm font-medium text-gray-500 truncate">Inactive</p>
+                        <p class="text-sm font-medium text-gray-500 truncate">
+                            Tempat Tidak Aktif
+                        </p>
                         <p class="text-2xl font-semibold text-gray-900">
                             {{ $foodPlaces->where('status', 'inactive')->count() }}</p>
                     </div>
@@ -150,26 +160,27 @@
         <!-- Food Places Table -->
         <div class="bg-white shadow rounded-lg overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-200">
-                <h3 class="text-lg font-medium text-gray-900">Food Places List</h3>
+                <h3 class="text-lg font-medium text-gray-900">Daftar Tempat Kuliner</h3>
             </div>
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Category</th>
+                                Kategori</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Owner</th>
+                                Pemilik</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Location</th>
+                                Lokasi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Status</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Rating</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions</th>
+                                Aksi
+                            </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
