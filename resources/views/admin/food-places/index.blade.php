@@ -395,11 +395,13 @@
                                 </svg>
                             </div>
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900">Delete Food Place</h3>
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                    Hapus Tempat Kuliner: <span id="deleteItemName" class="font-semibold"></span>
+                                </h3>
                                 <div class="mt-2">
                                     <p class="text-sm text-gray-500">
-                                        Are you sure you want to delete "<span id="deleteName"
-                                            class="font-medium"></span>"? This action cannot be undone.
+                                        Apakah Anda yakin ingin menghapus tempat kuliner ini? Tindakan ini tidak dapat
+                                        dibatalkan.
                                     </p>
                                 </div>
                             </div>
@@ -430,10 +432,12 @@
                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                     </svg>
                 </div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-2">Delete Food Place</h3>
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-2">
+                    Delete Food Place: <span id="deleteItemName" class="font-semibold"></span>
+                </h3>
                 <div class="mt-2 px-7 py-3">
                     <p class="text-sm text-gray-500">
-                        Are you sure you want to delete "<span id="deleteItemName"></span>"? This action cannot be undone.
+                        Are you sure you want to delete? This action cannot be undone.
                     </p>
                 </div>
                 <div class="items-center px-4 py-3 flex justify-center space-x-3">
