@@ -29,6 +29,7 @@ class DashboardAdmin extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+
         $foodPlaces = FoodPlace::with(['category', 'user', 'reviews'])
             ->withCount('reviews')
             ->orderBy('created_at', 'desc')

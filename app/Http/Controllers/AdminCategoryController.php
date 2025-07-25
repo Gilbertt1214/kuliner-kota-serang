@@ -9,7 +9,7 @@ class AdminCategoryController extends Controller
 {
     public function index()
     {
-        $categories = FoodCategories::with(['foodPlaces'])
+        $categories = FoodCategories::withCount('foodPlaces')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
