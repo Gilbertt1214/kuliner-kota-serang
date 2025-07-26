@@ -56,7 +56,7 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 // ===========================
 // AUTHENTICATED USER ROUTES
 // ===========================
-Route::middleware('auth',)->group(function () {
+Route::middleware('auth')->group(function () {
 
     // Profile Management
     Route::prefix('profile')->group(function () {
@@ -198,3 +198,6 @@ Route::middleware([IsAdmin::class])->prefix('admin')->name('admin.')->group(func
 // AUTHENTICATION ROUTES
 // ===========================
 require __DIR__ . '/auth.php';
+
+// Debug routes (remove in production)
+require __DIR__ . '/debug.php';

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use App\Models\ReviewReport;
 use App\Models\UserWarning;
 use Illuminate\Http\Request;
@@ -62,6 +63,8 @@ class AdminReportController extends Controller
       switch ($request->action) {
         case 'warning':
           $this->issueWarning($report, $reviewUser);
+          // Hide the reported review for warning case
+          $report->review->update(['is_hidden' => true]);
           break;
 
         case 'suspend_3_days':
@@ -80,9 +83,6 @@ class AdminReportController extends Controller
           $this->banUser($report, $reviewUser);
           break;
       }
-
-      // Hide the reported review
-      $report->review->update(['is_hidden' => true]);
     });
 
     return redirect()->route('admin.reports.index')
@@ -139,13 +139,19 @@ class AdminReportController extends Controller
   {
     $user->suspend("Pelanggaran: {$report->reason_label}", $duration);
 
-    // Issue warning as well
+    // Hide the reported review
+    $report->review->update(['is_hidden' => true]);
+
+    // Issue warning as well (without hiding review again)
     $this->issueWarning($report, $user);
   }
 
   private function banUser($report, $user)
   {
     $user->suspend("Pelanggaran berat: {$report->reason_label}");
+
+    // Hide the reported review
+    $report->review->update(['is_hidden' => true]);
 
     // Issue final warning
     UserWarning::create([

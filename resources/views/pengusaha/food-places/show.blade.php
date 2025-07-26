@@ -283,7 +283,7 @@
                 </h2>
                 <div class="space-y-6">
                     @php
-                        $reviews = $foodPlace->reviews->sortByDesc('created_at');
+                        $reviews = $foodPlace->reviews->where('is_hidden', false)->sortByDesc('created_at');
                     @endphp
 
                     @forelse ($reviews as $review)

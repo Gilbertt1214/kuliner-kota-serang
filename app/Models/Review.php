@@ -17,13 +17,15 @@ class Review extends Model
         'ambiance_rating',
         'tags',
         'photos',
-        'is_anonymous'
+        'is_anonymous',
+        'is_hidden'
     ];
 
     protected $casts = [
         'tags' => 'array',
         'photos' => 'array',
         'is_anonymous' => 'boolean',
+        'is_hidden' => 'boolean',
     ];
 
     public function user()

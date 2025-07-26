@@ -60,10 +60,11 @@ class FoodPlaceController extends Controller
         $foodPlace = FoodPlace::with(['category', 'reviews.user', 'images', 'businessImages', 'menuImages'])
             ->findOrFail($id);
 
-        // Check if current user has already reviewed this place
+        // Check if current user has already reviewed this place is hidden false
         $userReview = null;
         if (Auth::check()) {
             $userReview = $foodPlace->reviews()
+                ->where('is_hidden', false)
                 ->where('user_id', Auth::id())
                 ->first();
         }
