@@ -25,6 +25,13 @@ class ReviewController extends Controller
         // Check if current user has already reviewed this place
         $userReview = null;
         if (Auth::check()) {
+            // Check if user is suspended
+            $user = Auth::user();
+            if ($user->isSuspended()) {
+                Auth::logout();
+                return redirect()->route('login')->with('error', 'Akun Anda telah di-suspend dan tidak dapat menulis review.');
+            }
+
             $userReview = $foodPlace->reviews()
                 ->where('user_id', Auth::id())
                 ->first();
@@ -37,6 +44,13 @@ class ReviewController extends Controller
         // Validate user authentication
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu.');
+        }
+
+        // Check if user is suspended
+        $user = Auth::user();
+        if ($user->isSuspended()) {
+            Auth::logout();
+            return redirect()->route('login')->with('error', 'Akun Anda telah di-suspend dan tidak dapat menulis review.');
         }
 
         // Validate food place exists

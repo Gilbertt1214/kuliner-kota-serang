@@ -65,7 +65,7 @@
 
                                 @if ($userReview->tags)
                                     <div class="flex flex-wrap gap-1 mb-2">
-                                        @foreach (json_decode($userReview->tags) as $tag)
+                                        @foreach ($userReview->tags as $tag)
                                             <span
                                                 class="px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded-full">{{ $tag }}</span>
                                         @endforeach

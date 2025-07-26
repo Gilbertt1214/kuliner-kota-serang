@@ -28,17 +28,42 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Cek jika role pengguna redirect ke halaman home jika admin ke
+        $user = $request->user(); // Simpan reference user sebelum logout
 
+        if ($user->isSuspended()) {
+            Auth::logout();
 
-        if (Auth::user()->role === 'admin') {
-             return redirect()->route('admin.food-places.index');
-        } elseif (Auth::user()->role === 'pengusaha') {
-            return redirect()->route('pengusaha.dashboard');
-        } else {
-            return redirect('/');
+            $message = 'Akun Anda telah di-suspend';
+            if ($user->suspended_until) {
+                $message .= ' hingga ' . $user->suspended_until->format('d M Y H:i');
+            } else {
+                $message .= ' secara permanen';
+            }
+
+            if ($user->suspension_reason) {
+                $message .= '. Alasan: ' . $user->suspension_reason;
+            }
+
+            return redirect()->route('login')->withErrors([
+                'email' => $message
+            ]);
         }
 
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->role === 'pengusaha') {
+            return redirect()->route('pengusaha.dashboard');
+        } else {
+            return redirect('/food-places');
+        }
+
+        // if (Auth::user()->role === 'admin') {
+        //     return redirect()->route('admin.food-places.index');
+        // } elseif (Auth::user()->role === 'pengusaha') {
+        //     return redirect()->route('pengusaha.dashboard');
+        // } else {
+        //     return redirect('/');
+        // }
     }
 
     /**

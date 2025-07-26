@@ -35,11 +35,17 @@ class CheckSuspension
       if ($user->isSuspended()) {
         Log::info('CheckSuspension middleware - User is suspended, logging out: ' . $user->name);
         
+        // Force logout
         Auth::logout();
 
-        // Clear all sessions
+        // Clear all sessions and regenerate token
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        
+        // Clear any remember me cookies
+        if ($request->hasCookie(Auth::getRecallerName())) {
+          $request->cookies->remove(Auth::getRecallerName());
+        }
 
         $message = 'Akun Anda telah di-suspend';
         if ($user->suspended_until) {
@@ -50,6 +56,14 @@ class CheckSuspension
 
         if ($user->suspension_reason) {
           $message .= '. Alasan: ' . $user->suspension_reason;
+        }
+
+        // If it's an AJAX request, return JSON response
+        if ($request->expectsJson()) {
+          return response()->json([
+            'message' => $message,
+            'redirect' => '/login'
+          ], 401);
         }
 
         return redirect('/login')->with('error', $message);

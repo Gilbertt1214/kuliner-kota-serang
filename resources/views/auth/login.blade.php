@@ -32,6 +32,17 @@
 
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-6 animate-fade-in-down">LOGIN</h2>
 
+            {{-- Tampilkan error --}}
+            @if ($errors->any())
+                <div class="mb-4 text-red-600 animate-fade-in-up">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="animate-shake">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <!-- Session Status -->
             <x-auth-session-status class="mb-4" :status="session('status')" />
 

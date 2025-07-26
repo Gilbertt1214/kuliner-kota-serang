@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -48,6 +50,27 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
+        dd($user);
+        // Check if user is suspended before allowing login
+        if ($user->isSuspended()) {
+            Auth::logout();
+
+            $message = 'Akun Anda telah di-suspend';
+            if ($user->suspended_until) {
+                $message .= ' hingga ' . $user->suspended_until->format('d M Y H:i');
+            } else {
+                $message .= ' secara permanen';
+            }
+
+            if ($user->suspension_reason) {
+                $message .= '. Alasan: ' . $user->suspension_reason;
+            }
+
+            return redirect()->route('login')->withErrors([
+                'email' => $message
+            ]);
+        }
+
         if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         } elseif ($user->role === 'pengusaha') {
@@ -55,5 +78,57 @@ class LoginController extends Controller
         } else {
             return redirect('/food-places');
         }
+    }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
+
+    /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request)
+    {
+        $credentials = $this->credentials($request);
+
+        // First check if user exists and is suspended before attempting authentication
+        $user = \App\Models\User::where($this->username(), $credentials[$this->username()])->first();
+
+        if ($user && $user->isSuspended()) {
+            $message = 'Akun Anda telah di-suspend';
+            if ($user->suspended_until) {
+                $message .= ' hingga ' . $user->suspended_until->format('d M Y H:i');
+            } else {
+                $message .= ' secara permanen';
+            }
+
+            if ($user->suspension_reason) {
+                $message .= '. Alasan: ' . $user->suspension_reason;
+            }
+
+            throw ValidationException::withMessages([
+                $this->username() => [$message],
+            ]);
+        }
+
+        return $this->guard()->attempt(
+            $credentials,
+            $request->filled('remember')
+        );
     }
 }
