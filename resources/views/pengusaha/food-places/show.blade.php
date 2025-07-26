@@ -451,6 +451,9 @@
                                     </div>
                                 </div>
                             @endif
+
+                            <!-- Report Review Button -->
+                            @include('components.report-review', ['review' => $review])
                         </div>
                     @empty
                         <div class="text-center py-8 text-gray-500 animate-pulse">

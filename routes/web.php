@@ -13,6 +13,8 @@ use App\Http\Controllers\DashboardAdmin;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AdminCategoryController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\AdminReportController;
+use App\Http\Controllers\ReviewReportController;
 use App\Http\Controllers\FoodSearchController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Controllers\HomeController;
@@ -128,6 +130,12 @@ Route::middleware('auth',)->group(function () {
     // Reviews (Auth required)
     Route::post('/food-place/{id}/review', [ReviewController::class, 'store'])
         ->name('review.store');
+    
+    // Review Reports (Auth required)
+    Route::post('/review/{reviewId}/report', [ReviewReportController::class, 'store'])
+        ->name('review.report.store');
+    Route::get('/pengusaha/reports', [ReviewReportController::class, 'index'])
+        ->name('pengusaha.reports.index');
 
     // Verified User Routes
     Route::middleware('verified')->group(function () {
@@ -175,6 +183,14 @@ Route::middleware([IsAdmin::class])->prefix('admin')->name('admin.')->group(func
         Route::get('/{id}/edit', [AdminUserController::class, 'edit'])->name('edit');
         Route::put('/{id}', [AdminUserController::class, 'update'])->name('update');
         Route::delete('/{id}', [AdminUserController::class, 'destroy'])->name('destroy');
+    });
+
+    // Reports Management
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [AdminReportController::class, 'index'])->name('index');
+        Route::get('/{id}', [AdminReportController::class, 'show'])->name('show');
+        Route::post('/{id}/approve', [AdminReportController::class, 'approve'])->name('approve');
+        Route::post('/{id}/reject', [AdminReportController::class, 'reject'])->name('reject');
     });
 });
 

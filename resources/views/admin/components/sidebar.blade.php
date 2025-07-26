@@ -23,6 +23,7 @@
                             ['label' => 'Tempat Kuliner', 'route' => 'admin.food-places.index', 'icon' => 'building'],
                             ['label' => 'Kategori', 'route' => 'admin.categories.index', 'icon' => 'menu'],
                             ['label' => 'Users', 'route' => 'admin.users.index', 'icon' => 'users'],
+                            ['label' => 'Laporan', 'route' => 'admin.reports.index', 'icon' => 'report'],
                         ];
             @endphp
 
@@ -45,6 +46,9 @@
                             @elseif ($item['icon'] == 'users')
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17 20h5v-1a4 4 0 00-4-4h-1m-4 5H3v-1a4 4 0 014-4h1m3-6a4 4 0 100-8 4 4 0 000 8zm6 4a4 4 0 100-8 4 4 0 000 8z" />
+                            @elseif ($item['icon'] == 'report')
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                             @endif
                         </svg>
                         {{ $item['label'] }}
