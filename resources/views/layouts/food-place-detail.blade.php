@@ -521,6 +521,9 @@
                                     </div>
                                 </div>
                             @endif
+
+                            <!-- Report Review Component for Business Owners -->
+                            @include('components.report-review', ['review' => $review])
                         </div>
                     @empty
                         <div class="text-center py-8 text-gray-500 animate-pulse">
@@ -538,47 +541,81 @@
         </div>
     </div>
 
-    <!-- Image Modal -->
-    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 items-center justify-center hidden"
+    <!-- Enhanced Image Modal with Scroll Support -->
+    <div id="imageModal"
+        class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden overflow-y-auto flex items-center justify-center"
         onclick="closeImageModal()">
-        <div class="relative max-w-4xl max-h-[90vh] mx-4" onclick="event.stopPropagation()">
-            <img id="modalImage" src="" alt="Menu Image"
-                class="max-w-full max-h-full object-contain rounded-lg">
-            <button onclick="closeImageModal()"
-                class="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors bg-black bg-opacity-50 rounded-full p-2">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
-                </svg>
-            </button>
+        <div class="flex items-center justify-center min-h-screen w-full px-4 py-8">
+            <div class="relative max-w-4xl w-auto mx-auto" onclick="event.stopPropagation()">
+                <img id="modalImage" src="" alt="Menu Image"
+                    class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl mx-auto">
+
+                <!-- Close Button -->
+                <button onclick="closeImageModal()"
+                    class="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors bg-black bg-opacity-50 rounded-full p-2 z-10">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Image modal functions
+        // Enhanced Image modal functions with scroll support
         function openImageModal(imageSrc) {
             const modal = document.getElementById('imageModal');
             const modalImage = document.getElementById('modalImage');
 
+            // Set image source
             modalImage.src = imageSrc;
+
+            // Show modal with flex display and center alignment
             modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
+
+            // Prevent body scroll but allow modal scroll
             document.body.style.overflow = 'hidden';
-            modal.classList.style.overflow = 'auto'; // Prevent scrolling in
+
+            // Add smooth fade-in animation
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modal.style.transition = 'opacity 0.3s ease-in-out';
+            }, 10);
         }
 
         function closeImageModal() {
             const modal = document.getElementById('imageModal');
 
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            document.body.style.overflow = 'auto';
+            // Add fade-out animation
+            modal.style.opacity = '0';
+            modal.style.transition = 'opacity 0.3s ease-in-out';
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
         }
 
         // Close modal on Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeImageModal();
+            }
+        });
+
+        // Prevent modal close when clicking on image
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalImage = document.getElementById('modalImage');
+            if (modalImage) {
+                modalImage.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
             }
         });
 
@@ -810,15 +847,32 @@
 
         /* Modal styles */
         #imageModal.hidden {
-            display: none;
+            display: none !important;
         }
 
         #imageModal:not(.hidden) {
-            display: flex;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        #imageModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
         }
 
         .modal-transition {
             transition: opacity 0.3s ease-in-out;
+        }
+
+        /* Ensure image is centered */
+        #modalImage {
+            display: block;
+            margin: 0 auto;
         }
     </style>
 @endsection
