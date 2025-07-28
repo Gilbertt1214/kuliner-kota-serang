@@ -49,9 +49,9 @@ class RegisteredUserController extends Controller
                 'pengusaha_location' => ['required', 'string',],
                 'source_location' => ['nullable', 'url',],
                 'pengusaha_image' => ['required', 'array', 'min:1', 'max:5'],
-                'pengusaha_image.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                'pengusaha_image.*' => ['image', 'mimes:jpeg,png,jpg,gif', ],
                 'menu_images' => ['required', 'array', 'min:1', 'max:10'],
-                'menu_images.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+                'menu_images.*' => ['image', 'mimes:jpeg,png,jpg,gif', ],
             ]);
         }
 

@@ -461,8 +461,8 @@
                 });
             }
 
-            function validateFileSize(file, maxSize = 2 * 1024 * 1024) {
-                return file.size <= maxSize;
+            function validateFileSize(file, ) { // 15MB
+                return file.size ;
             }
 
             function validateFileType(file) {
