@@ -160,7 +160,7 @@
                                     <!-- Single menu image -->
                                     <img src="{{ asset('storage/' . $foodPlace->menuImages->first()->image_path) }}"
                                         alt="Menu {{ $foodPlace->title }}"
-                                        class="w-full rounded-lg shadow-sm transition-transform duration-500 hover:scale-[1.02] cursor-pointer"
+                                        class="max-w-60 rounded-lg shadow-sm transition-transform duration-500 hover:scale-[1.02] cursor-pointer"
                                         onclick="openImageModal(this.src)" />
                                 @else
                                     <!-- Multiple menu images - Grid layout -->
@@ -564,6 +564,7 @@
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             document.body.style.overflow = 'hidden';
+            modal.classList.style.overflow = 'auto'; // Prevent scrolling in
         }
 
         function closeImageModal() {
