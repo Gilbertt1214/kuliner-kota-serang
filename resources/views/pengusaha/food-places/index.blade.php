@@ -7,7 +7,7 @@
     @endphp
     <div class="container ">
         <!-- Header Section -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+        <div class="flex flex-col mb-8 md:flex-row md:items-center md:justify-between">
             <div class="mb-4 md:mb-0">
                 <h1 class="text-2xl font-bold text-gray-900">
                     Tempat Kuliner Anda
@@ -17,8 +17,8 @@
 
             <div class="flex space-x-3">
                 <a href="{{ route('pengusaha.food-places.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition-colors">
-                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition-colors bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700">
+                    <svg class="w-5 h-5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -28,12 +28,12 @@
         </div>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-4">
             <!-- Total Places Card -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
                 <div class="flex items-center">
-                    <div class="flex-shrink-0 bg-indigo-100 rounded-md p-3">
-                        <svg class="h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <div class="flex-shrink-0 p-3 bg-indigo-100 rounded-md">
+                        <svg class="w-6 h-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -47,10 +47,10 @@
             </div>
 
             <!-- Active Places Card -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
                 <div class="flex items-center">
-                    <div class="flex-shrink-0 bg-green-100 rounded-md p-3">
-                        <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <div class="flex-shrink-0 p-3 bg-green-100 rounded-md">
+                        <svg class="w-6 h-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -64,10 +64,10 @@
             </div>
 
             <!-- Pending Places Card -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
                 <div class="flex items-center">
-                    <div class="flex-shrink-0 bg-yellow-100 rounded-md p-3">
-                        <svg class="h-6 w-6 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <div class="flex-shrink-0 p-3 bg-yellow-100 rounded-md">
+                        <svg class="w-6 h-6 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -81,10 +81,10 @@
             </div>
 
             <!-- Rejected Places Card -->
-            <div class="bg-white rounded-lg shadow p-6">
+            <div class="p-6 bg-white rounded-lg shadow">
                 <div class="flex items-center">
-                    <div class="flex-shrink-0 bg-red-100 rounded-md p-3">
-                        <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <div class="flex-shrink-0 p-3 bg-red-100 rounded-md">
+                        <svg class="w-6 h-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728" />
@@ -100,10 +100,10 @@
 
         <!-- Quick Info -->
         @if ($stats['pending'] > 0)
-            <div class="bg-yellow-50 border border-yellow-200 rounded-md p-4 mb-6">
+            <div class="p-4 mb-6 border border-yellow-200 rounded-md bg-yellow-50">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                        <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                             fill="currentColor">
                             <path fill-rule="evenodd"
                                 d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
@@ -123,7 +123,7 @@
         @endif
 
         <!-- Food Places Table -->
-        <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="overflow-hidden bg-white rounded-lg shadow">
             <div class="px-6 py-4 border-b border-gray-200">
                 <h3 class="text-lg font-medium text-gray-900">Daftar Tempat Kuliner Anda</h3>
             </div>
@@ -133,19 +133,19 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                     Nama</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                     Kategori</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                     Status</th>
                                 <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                     Rating</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
                                     Tanggal Daftar</th>
                                 <th
-                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase">
                                     Aksi</th>
                             </tr>
                         </thead>
@@ -155,15 +155,15 @@
                                     <!-- Name + Image -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10">
+                                            <div class="flex-shrink-0 w-10 h-10">
                                                 @if ($foodPlace->images->where('type', 'business')->count() > 0)
-                                                    <img class="h-10 w-10 rounded-lg object-cover"
-                                                        src="{{ Storage::url($foodPlace->images->where('type', 'business')->first()->image_path) }}"
+                                                    <img class="object-cover w-10 h-10 rounded-lg"
+                                                        src="{{ $foodPlace->images->where('type', 'business')->first()->image_url }}"
                                                         alt="{{ $foodPlace->title }}">
                                                 @else
                                                     <div
-                                                        class="h-10 w-10 rounded-lg bg-gray-200 flex items-center justify-center">
-                                                        <svg class="h-6 w-6 text-gray-400"
+                                                        class="flex items-center justify-center w-10 h-10 bg-gray-200 rounded-lg">
+                                                        <svg class="w-6 h-6 text-gray-400"
                                                             xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -186,7 +186,7 @@
                                     <!-- Category -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
-                                            class="px-2 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">
+                                            class="px-2 py-1 text-xs font-medium text-indigo-800 bg-indigo-100 rounded-full">
                                             {{ $foodPlace->category->name ?? 'No Category' }}
                                         </span>
                                     </td>
@@ -214,7 +214,7 @@
                                     </td>
 
                                     <!-- Rating -->
-                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <td class="px-6 py-4 text-center whitespace-nowrap">
                                         <div class="flex items-center justify-center">
                                             @php $rating = round($foodPlace->reviews->avg('rating') ?? 0); @endphp
                                             @for ($i = 1; $i <= 5; $i++)
@@ -231,18 +231,18 @@
                                     </td>
 
                                     <!-- Date -->
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                         {{ $foodPlace->created_at->format('d M Y') }}
                                     </td>
 
                                     <!-- Actions -->
-                                    <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <td class="px-6 py-4 text-sm font-medium text-center whitespace-nowrap">
                                         <div class="flex justify-center space-x-2">
                                             <!-- View Button -->
                                             <a href="{{ route('pengusaha.food-places.show', $foodPlace->id) }}"
-                                                class="text-indigo-600 hover:text-indigo-900 transition-colors"
+                                                class="text-indigo-600 transition-colors hover:text-indigo-900"
                                                 title="Lihat Detail">
-                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -254,9 +254,9 @@
                                             {{-- @if ($foodPlace->status !== 'active') --}}
                                             <!-- Edit Button - Only if not active -->
                                             <a href="{{ route('pengusaha.food-places.edit', $foodPlace->id) }}"
-                                                class="text-yellow-600 hover:text-yellow-900 transition-colors"
+                                                class="text-yellow-600 transition-colors hover:text-yellow-900"
                                                 title="Edit">
-                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -266,11 +266,11 @@
 
                                             <!-- Delete Button -->
                                             <button type="button"
-                                                class="text-red-600 hover:text-red-900 transition-colors delete-btn"
+                                                class="text-red-600 transition-colors hover:text-red-900 delete-btn"
                                                 title="Hapus" data-id="{{ $foodPlace->id }}"
                                                 data-name="{{ $foodPlace->title }}"
                                                 data-action="{{ route('pengusaha.food-places.destroy', $foodPlace->id) }}">
-                                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -294,15 +294,15 @@
                 <!-- Empty State -->
                 <div class="px-6 py-12 text-center">
                     <div class="flex flex-col items-center">
-                        <svg class="h-12 w-12 text-gray-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        <svg class="w-12 h-12 mb-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">Belum ada tempat kuliner</h3>
-                        <p class="text-gray-500 mb-4">Mulai dengan mendaftarkan tempat kuliner pertama Anda.</p>
+                        <h3 class="mb-2 text-lg font-medium text-gray-900">Belum ada tempat kuliner</h3>
+                        <p class="mb-4 text-gray-500">Mulai dengan mendaftarkan tempat kuliner pertama Anda.</p>
                         <a href="{{ route('pengusaha.food-places.create') }}"
-                            class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition-colors">
+                            class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition-colors bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700">
                             Daftarkan Tempat Kuliner
                         </a>
                     </div>
@@ -311,33 +311,33 @@
         </div>
 
         <!-- Delete Confirmation Modal -->
-        <div id="deleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
-            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div id="deleteModal" class="fixed inset-0 z-50 hidden w-full h-full overflow-y-auto bg-gray-600 bg-opacity-50">
+            <div class="relative p-5 mx-auto bg-white border rounded-md shadow-lg top-20 w-96">
                 <div class="mt-3 text-center">
-                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-                        <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    <div class="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full">
+                        <svg class="w-6 h-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                         </svg>
                     </div>
-                    <h3 class="text-lg leading-6 font-medium text-gray-900 mt-2">Hapus Tempat Kuliner</h3>
-                    <div class="mt-2 px-7 py-3">
+                    <h3 class="mt-2 text-lg font-medium leading-6 text-gray-900">Hapus Tempat Kuliner</h3>
+                    <div class="py-3 mt-2 px-7">
                         <p class="text-sm text-gray-500">
                             Apakah Anda yakin ingin menghapus "<span id="deleteItemName"></span>"? Tindakan ini tidak dapat
                             dibatalkan.
                         </p>
                     </div>
-                    <div class="items-center px-4 py-3 flex justify-center space-x-3">
+                    <div class="flex items-center justify-center px-4 py-3 space-x-3">
                         <button id="cancelDelete"
-                            class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-24 hover:bg-gray-600 transition-colors">
+                            class="w-24 px-4 py-2 text-base font-medium text-white transition-colors bg-gray-500 rounded-md hover:bg-gray-600">
                             Batal
                         </button>
                         <form id="deleteForm" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                class="px-4 py-2 bg-red-600 text-white text-base font-medium rounded-md w-24 hover:bg-red-700 transition-colors">
+                                class="w-24 px-4 py-2 text-base font-medium text-white transition-colors bg-red-600 rounded-md hover:bg-red-700">
                                 Hapus
                             </button>
                         </form>

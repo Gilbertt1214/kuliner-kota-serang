@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             FoodCategoriesSeeder::class,
             UserSeeder::class,
+            FoodPlaceSeeder::class,
+            FoodPlaceImageSeeder::class,
         ]);
     }
 }

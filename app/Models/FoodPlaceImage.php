@@ -24,10 +24,16 @@ class FoodPlaceImage extends Model
     }
 
     /**
-     * Akses URL gambar dari penyimpanan publik
+     * Akses URL gambar dari penyimpanan publik atau URL external
      */
     public function getImageUrlAttribute()
     {
+        // Jika image_path sudah berupa URL lengkap (http/https)
+        if (filter_var($this->image_path, FILTER_VALIDATE_URL)) {
+            return $this->image_path;
+        }
+        
+        // Jika masih path lokal, gunakan asset
         return asset('storage/' . $this->image_path);
     }
 }
