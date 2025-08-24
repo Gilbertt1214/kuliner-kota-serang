@@ -34,19 +34,52 @@ class FoodPlaceController extends Controller
             $query->where('food_category_id', $request->get('category'));
         }
 
+        // Filter berdasarkan rentang harga - TAMBAHAN BARU
+        if ($request->filled('price_range') && $request->get('price_range') != '') {
+            $priceRange = explode('-', $request->get('price_range'));
+            if (count($priceRange) == 2) {
+                $minPrice = (int) $priceRange[0];
+                $maxPrice = (int) $priceRange[1];
+
+                $query->where(function($q) use ($minPrice, $maxPrice) {
+                    // Cek jika min_price atau max_price berada dalam rentang
+                    $q->whereBetween('min_price', [$minPrice, $maxPrice])
+                      ->orWhereBetween('max_price', [$minPrice, $maxPrice])
+                      // Atau jika rentang harga tempat makan mencakup filter range
+                      ->orWhere(function($subQ) use ($minPrice, $maxPrice) {
+                          $subQ->where('min_price', '<=', $minPrice)
+                               ->where('max_price', '>=', $maxPrice);
+                      });
+                });
+            }
+        }
+
         // Filter berdasarkan lokasi (jika ada)
         if ($request->filled('location')) {
             $location = $request->get('location');
             $query->where('location', 'LIKE', "%{$location}%");
         }
 
+        // Filter berdasarkan rating (jika ada) - TAMBAHAN BARU
+        if ($request->filled('rating') && $request->get('rating') != '') {
+            $rating = (float) $request->get('rating');
+            $query->whereHas('reviews', function($q) use ($rating) {
+                $q->select('food_place_id')
+                  ->groupBy('food_place_id')
+                  ->havingRaw('AVG(rating) >= ?', [$rating]);
+            });
+        }
+
         // Ambil hasil dengan pagination dan status active
         $query->where('status', 'active');
 
-        $foodPlaces = $query->paginate(12)->withQueryString();
+        // Pagination dengan query string preserved
+        $perPage = $request->get('per_page', 12);
+        $foodPlaces = $query->paginate($perPage)->withQueryString();
 
         return view('layouts.food-places', compact('foodPlaces', 'categories'));
     }
+
     /**
      * Display the specified food place.
      *

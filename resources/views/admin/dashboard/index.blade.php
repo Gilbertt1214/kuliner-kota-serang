@@ -51,7 +51,7 @@
                 <div class="p-6">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Restoran</p>
+                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Tempat Kuliner</p>
                             <p class="text-3xl font-bold text-gray-900 mt-2">{{ $foodPlaces->count() }}</p>
                             <p class="text-sm text-gray-600 mt-1">Tempat kuliner terdaftar</p>
                         </div>
@@ -413,11 +413,11 @@
                             <p class="text-sm text-gray-500">Apakah Anda yakin ingin menghapus kategori ini? Tindakan ini tidak dapat dibatalkan.</p>
                         </div>
                         <div class="flex justify-center space-x-4 mt-6">
-                            <button onclick="closeDeleteModal()" 
+                            <button onclick="closeDeleteModal()"
                                 class="px-4 py-2 bg-gray-300 text-gray-800 text-sm font-medium rounded-lg hover:bg-gray-400 transition-colors">
                                 Batal
                             </button>
-                            <button onclick="proceedDelete(${categoryId})" 
+                            <button onclick="proceedDelete(${categoryId})"
                                 class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors">
                                 Hapus
                             </button>

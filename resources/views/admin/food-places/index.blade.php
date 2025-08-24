@@ -298,7 +298,7 @@
                                         </a>
 
                                         <!-- Edit Button -->
-                                        <a href="{{ route('admin.food-places.edit', $foodPlace->id) }}"
+                                        {{-- <a href="{{ route('admin.food-places.edit', $foodPlace->id) }}"
                                             class="p-1 text-yellow-600 transition-colors hover:text-yellow-900"
                                             title="Edit">
                                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -306,7 +306,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
-                                        </a>
+                                        </a> --}}
 
                                         @if ($foodPlace->status === 'pending')
                                             <!-- Approve Button -->
@@ -457,7 +457,7 @@
             const statusFilter = document.getElementById('statusFilter');
             const resetFilterBtn = document.getElementById('resetFilterBtn');
             const foodPlaceRows = document.querySelectorAll('.food-place-row');
-            
+
             // Modal and button elements
             const deleteModal = document.getElementById('deleteModal');
             const deleteForm = document.getElementById('deleteForm');
@@ -466,34 +466,34 @@
             const cancelDelete = document.getElementById('cancelDelete');
             const approveButtons = document.querySelectorAll('.approve-btn');
             const rejectButtons = document.querySelectorAll('.reject-btn');
-            
+
             // Search and filter functionality
             function filterTable() {
                 const searchTerm = searchInput.value.toLowerCase().trim();
                 const categoryValue = categoryFilter.value;
                 const ratingValue = ratingFilter.value;
                 const statusValue = statusFilter.value;
-                
+
                 let visibleCount = 0;
-                
+
                 foodPlaceRows.forEach(row => {
                     let showRow = true;
-                    
+
                     // Get row data
                     const nameElement = row.querySelector('.text-sm.font-medium.text-gray-900');
                     const descriptionElement = row.querySelector('.text-sm.text-gray-500.line-clamp-1');
                     const ownerElement = row.querySelector('td:nth-child(3)');
                     const locationElement = row.querySelector('td:nth-child(4) span');
-                    
+
                     const name = nameElement ? nameElement.textContent.toLowerCase() : '';
                     const description = descriptionElement ? descriptionElement.textContent.toLowerCase() : '';
                     const owner = ownerElement ? ownerElement.textContent.toLowerCase() : '';
                     const location = locationElement ? locationElement.textContent.toLowerCase() : '';
-                    
+
                     const category = row.dataset.category;
                     const rating = parseFloat(row.dataset.rating) || 0;
                     const status = row.dataset.status;
-                    
+
                     // Search filter
                     if (searchTerm) {
                         const searchableText = `${name} ${description} ${owner} ${location}`;
@@ -501,12 +501,12 @@
                             showRow = false;
                         }
                     }
-                    
+
                     // Category filter
                     if (categoryValue && category !== categoryValue) {
                         showRow = false;
                     }
-                    
+
                     // Rating filter
                     if (ratingValue) {
                         if (ratingValue === '5' && rating < 5) {
@@ -517,37 +517,37 @@
                             showRow = false;
                         }
                     }
-                    
+
                     // Status filter
                     if (statusValue && status !== statusValue) {
                         showRow = false;
                     }
-                    
+
                     // Show/hide row
                     row.style.display = showRow ? '' : 'none';
                     if (showRow) visibleCount++;
                 });
-                
+
                 // Update results info
                 updateResultsInfo(visibleCount);
             }
-            
+
             function updateResultsInfo(visibleCount) {
                 const totalCount = foodPlaceRows.length;
                 const tableHeader = document.querySelector('.bg-white.shadow.rounded-lg .px-6.py-4.border-b h3');
-                
+
                 if (tableHeader) {
                     tableHeader.textContent = `Daftar Tempat Kuliner (${visibleCount} dari ${totalCount})`;
                 }
-                
+
                 // Show/hide no results message
                 showNoResultsMessage(visibleCount);
             }
-            
+
             function showNoResultsMessage(visibleCount) {
                 const tbody = document.querySelector('tbody');
                 let noResultsRow = document.getElementById('no-results-row');
-                
+
                 if (visibleCount === 0 && foodPlaceRows.length > 0) {
                     if (!noResultsRow) {
                         noResultsRow = document.createElement('tr');
@@ -576,7 +576,7 @@
                     noResultsRow.style.display = 'none';
                 }
             }
-            
+
             // Reset filters function (make it global)
             window.resetFilters = function() {
                 searchInput.value = '';
@@ -584,13 +584,13 @@
                 ratingFilter.value = '';
                 statusFilter.value = '';
                 filterTable();
-                
+
                 // Update URL
                 const url = new URL(window.location);
                 url.search = '';
                 window.history.pushState({}, '', url);
             }
-            
+
             // Debounce function for search input
             function debounce(func, wait) {
                 let timeout;
@@ -603,18 +603,18 @@
                     timeout = setTimeout(later, wait);
                 };
             }
-            
+
             // Event listeners for filters
             searchInput.addEventListener('input', debounce(filterTable, 300));
             categoryFilter.addEventListener('change', filterTable);
             ratingFilter.addEventListener('change', filterTable);
             statusFilter.addEventListener('change', filterTable);
             resetFilterBtn.addEventListener('click', resetFilters);
-            
+
             // Initialize filters from URL parameters
             function initFiltersFromUrl() {
                 const urlParams = new URLSearchParams(window.location.search);
-                
+
                 if (urlParams.has('search')) {
                     searchInput.value = urlParams.get('search');
                 }
@@ -627,47 +627,47 @@
                 if (urlParams.has('status')) {
                     statusFilter.value = urlParams.get('status');
                 }
-                
+
                 filterTable();
             }
-            
+
             // Update URL when filters change
             function updateUrlParams() {
                 const url = new URL(window.location);
-                
+
                 if (searchInput.value) {
                     url.searchParams.set('search', searchInput.value);
                 } else {
                     url.searchParams.delete('search');
                 }
-                
+
                 if (categoryFilter.value) {
                     url.searchParams.set('category', categoryFilter.value);
                 } else {
                     url.searchParams.delete('category');
                 }
-                
+
                 if (ratingFilter.value) {
                     url.searchParams.set('rating', ratingFilter.value);
                 } else {
                     url.searchParams.delete('rating');
                 }
-                
+
                 if (statusFilter.value) {
                     url.searchParams.set('status', statusFilter.value);
                 } else {
                     url.searchParams.delete('status');
                 }
-                
+
                 window.history.pushState({}, '', url);
             }
-            
+
             // Add URL update to filter events
             searchInput.addEventListener('input', debounce(updateUrlParams, 500));
             categoryFilter.addEventListener('change', updateUrlParams);
             ratingFilter.addEventListener('change', updateUrlParams);
             statusFilter.addEventListener('change', updateUrlParams);
-            
+
             // Delete Modal Functionality
             deleteButtons.forEach(button => {
                 button.addEventListener('click', function() {
@@ -784,7 +784,7 @@
             document.getElementById('toastClose').addEventListener('click', function() {
                 document.getElementById('toast').classList.add('hidden');
             });
-            
+
             // Initialize
             initFiltersFromUrl();
         });
