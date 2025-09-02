@@ -246,13 +246,25 @@
                         <!-- Review Action Button -->
                         @auth
                             @if ($userReview)
-                                <div class="flex items-center text-green-600 text-sm">
-                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    Anda sudah memberikan ulasan
+                                <div class="flex items-center space-x-3">
+                                    <div class="flex items-center text-green-600 text-sm">
+                                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Anda sudah memberikan ulasan
+                                    </div>
+
+                                    <!-- Delete Review Button -->
+                                    <button onclick="confirmDeleteReview({{ $userReview->id }})"
+                                        class="inline-flex items-center px-3 py-2 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600 transition-colors duration-200">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                        Hapus
+                                    </button>
                                 </div>
                             @else
                                 @if (auth()->user()->role !== 'admin')
@@ -307,12 +319,38 @@
                                         <div>
                                             <h4 class="font-semibold text-gray-900">
                                                 {{ $review->is_anonymous ? 'Pengguna Anonim' : $review->user->name ?? 'Anonymous' }}
+                                                @auth
+                                                    @if ($review->user_id == auth()->id())
+                                                        <span class="text-xs text-orange-600 font-normal">(Ulasan Anda)</span>
+                                                    @endif
+                                                @endauth
                                             </h4>
                                         </div>
                                     </div>
 
-                                    <!-- Date -->
-                                    <span class="text-sm text-gray-500">{{ $review->created_at->diffForHumans() }}</span>
+                                    <div class="flex items-center space-x-3">
+                                        <!-- Date -->
+                                        <span
+                                            class="text-sm text-gray-500">{{ $review->created_at->diffForHumans() }}</span>
+
+                                        <!-- Action Buttons for Review Owner -->
+                                        @auth
+                                            @if ($review->user_id == auth()->id())
+                                                <div class="flex items-center space-x-2">
+                                                    <button onclick="confirmDeleteReview({{ $review->id }})"
+                                                        class="text-red-600 hover:text-red-800 transition-colors duration-200"
+                                                        title="Hapus ulasan">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            @endif
+                                        @endauth
+                                    </div>
                                 </div>
 
                                 <!-- Review Comment -->
@@ -408,7 +446,11 @@
                                 @endif
 
                                 <!-- Report Review Component -->
-                                @include('components.report-review', ['review' => $review])
+                                @auth
+                                    @if ($review->user_id != auth()->id())
+                                        @include('components.report-review', ['review' => $review])
+                                    @endif
+                                @endauth
                             </div>
                         @empty
                             <div class="text-center py-12">
@@ -441,7 +483,69 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50"
+        onclick="closeDeleteModal()">
+        <div class="bg-white rounded-2xl p-6 mx-4 max-w-md w-full" onclick="event.stopPropagation()">
+            <div class="flex items-center mb-4">
+                <div
+                    class="flex-shrink-0 w-10 h-10 mx-auto bg-red-100 rounded-full flex items-center justify-center sm:mx-0 sm:h-10 sm:w-10">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-lg font-medium text-gray-900">Hapus Ulasan</h3>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-sm text-gray-500">
+                    Apakah Anda yakin ingin menghapus ulasan ini? Tindakan ini tidak dapat dibatalkan.
+                </p>
+            </div>
+
+            <div
+                class="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-3 space-y-3 space-y-reverse sm:space-y-0">
+                <button type="button" onclick="closeDeleteModal()"
+                    class="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 sm:text-sm">
+                    Batal
+                </button>
+                <form id="deleteReviewForm" method="POST" class="inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:text-sm">
+                        Hapus Ulasan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Fungsi untuk konfirmasi delete ulasan
+        function confirmDeleteReview(reviewId) {
+            const modal = document.getElementById('deleteModal');
+            const form = document.getElementById('deleteReviewForm');
+
+            // Set action URL untuk form delete - sesuaikan dengan route yang ada
+            form.action = `/foodplace/{{ $foodPlace->id }}/review/${reviewId}`;
+
+            // Tampilkan modal
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('deleteModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
         // Image Modal Functions
         function openImageModal(imageSrc) {
             const modal = document.getElementById('imageModal');
@@ -557,6 +661,7 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeImageModal();
+                closeDeleteModal();
             }
         });
     </script>
@@ -572,6 +677,10 @@
 
         /* Modal styles */
         #imageModal.hidden {
+            display: none !important;
+        }
+
+        #deleteModal.hidden {
             display: none !important;
         }
 

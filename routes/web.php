@@ -130,7 +130,8 @@ Route::middleware('auth')->group(function () {
     // Reviews (Auth required)
     Route::post('/food-place/{id}/review', [ReviewController::class, 'store'])
         ->name('review.store');
-    
+         Route::delete('/foodplace/{id}/review/{review}', [ReviewController::class, 'destroy'])->name('review.destroy');
+
     // Review Reports (Auth required)
     Route::post('/review/{reviewId}/report', [ReviewReportController::class, 'store'])
         ->name('review.report.store');
