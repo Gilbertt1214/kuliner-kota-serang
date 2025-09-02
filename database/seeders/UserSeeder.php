@@ -21,16 +21,68 @@ class UserSeeder extends Seeder
             'role' => 'admin',
         ]);
         User::create([
-            'name' => 'Pengusaha',
-            'email' => 'pengusaha@santara.com',
-            'password' => Hash::make('pengusaha123'),
-            'role' => 'pengusaha',
-        ]);
-        User::create([
             'name' => 'User',
             'email' => 'user@santara.com',
             'password' => Hash::make('user123'),
             'role' => 'user',
         ]);
+
+        
+        // Create multiple pengusaha users
+        $pengusahaData = [
+            [
+                'name' => 'Pak Yono',
+                'email' => 'yono@pengusaha.com',
+                'password' => Hash::make('pengusaha123'),
+                'role' => 'pengusaha',
+            ],
+            [
+                'name' => 'Ibu Djum',
+                'email' => 'djum@pengusaha.com',
+                'password' => Hash::make('pengusaha123'),
+                'role' => 'pengusaha',
+            ],
+            [
+                'name' => 'Pak Darmo',
+                'email' => 'darmo@pengusaha.com',
+                'password' => Hash::make('pengusaha123'),
+                'role' => 'pengusaha',
+            ],
+            [
+                'name' => 'Bu Imas',
+                'email' => 'imas@pengusaha.com',
+                'password' => Hash::make('pengusaha123'),
+                'role' => 'pengusaha',
+            ],
+            [
+                'name' => 'Pak Kumis',
+                'email' => 'kumis@pengusaha.com',
+                'password' => Hash::make('pengusaha123'),
+                'role' => 'pengusaha',
+            ],
+            [
+                'name' => 'Bu Tini',
+                'email' => 'tini@pengusaha.com',
+                'password' => Hash::make('pengusaha123'),
+                'role' => 'pengusaha',
+            ],
+            [
+                'name' => 'Pak Hasan',
+                'email' => 'hasan@pengusaha.com',
+                'password' => Hash::make('pengusaha123'),
+                'role' => 'pengusaha',
+            ],
+            [
+                'name' => 'Bu Tinah',
+                'email' => 'tinah@pengusaha.com',
+                'password' => Hash::make('pengusaha123'),
+                'role' => 'pengusaha',
+            ]
+        ];
+
+
+        foreach($pengusahaData as $pengusaha) {
+            User::create($pengusaha);
+        }
     }
 }

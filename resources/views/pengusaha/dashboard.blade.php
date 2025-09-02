@@ -6,10 +6,10 @@
     @endphp
     <div class="">
         <!-- Enhanced Header Section -->
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+        <div class="flex flex-col mb-8 md:flex-row md:items-center md:justify-between">
             <div class="mb-4 md:mb-0">
                 <h1 class="text-3xl font-bold text-gray-900">Dashboard Pengusaha</h1>
-                <p class="text-gray-600 mt-2">
+                <p class="mt-2 text-gray-600">
                     Kelola dan pantau bisnis kuliner Anda dengan mudah
                 </p>
                 <div class="flex items-center mt-3 text-sm text-gray-500">
@@ -21,12 +21,12 @@
                 </div>
             </div>
             <div class="flex items-center space-x-4">
-                <div class="text-right text-sm text-gray-500">
+                <div class="text-sm text-right text-gray-500">
                     <p>Last updated</p>
                     <p class="font-medium">{{ now()->format('d M Y, H:i') }}</p>
                 </div>
                 <a href="{{ route('pengusaha.food-places.create') }}"
-                    class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 border border-transparent rounded-lg font-semibold text-sm text-white uppercase tracking-widest hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-lg hover:shadow-xl">
+                    class="inline-flex items-center px-4 py-2 text-sm font-semibold tracking-widest text-white uppercase transition-all duration-200 border border-transparent rounded-lg shadow-lg bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:shadow-xl">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
@@ -36,21 +36,21 @@
         </div>
 
         <!-- Enhanced Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-4">
             <!-- Total Places Card -->
             <div
-                class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+                class="transition-all duration-300 bg-white border border-gray-100 shadow-lg rounded-xl hover:shadow-xl group">
                 <div class="p-6">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Tempat</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2 group-hover:text-indigo-600 transition-colors">
+                            <p class="text-sm font-medium tracking-wide text-gray-500 uppercase">Total Tempat</p>
+                            <p class="mt-2 text-3xl font-bold text-gray-900 transition-colors group-hover:text-indigo-600">
                                 {{ $stats['total'] }}</p>
-                            <p class="text-sm text-gray-600 mt-1">Tempat kuliner terdaftar</p>
+                            <p class="mt-1 text-sm text-gray-600">Tempat kuliner terdaftar</p>
                         </div>
                         <div class="flex-shrink-0">
                             <div
-                                class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                class="flex items-center justify-center w-12 h-12 transition-transform rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 group-hover:scale-110">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
@@ -64,18 +64,18 @@
 
             <!-- Active Places Card -->
             <div
-                class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+                class="transition-all duration-300 bg-white border border-gray-100 shadow-lg rounded-xl hover:shadow-xl group">
                 <div class="p-6">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Aktif</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2 group-hover:text-green-600 transition-colors">
+                            <p class="text-sm font-medium tracking-wide text-gray-500 uppercase">Aktif</p>
+                            <p class="mt-2 text-3xl font-bold text-gray-900 transition-colors group-hover:text-green-600">
                                 {{ $stats['active'] }}</p>
-                            <p class="text-sm text-gray-600 mt-1">Tempat yang beroperasi</p>
+                            <p class="mt-1 text-sm text-gray-600">Tempat yang beroperasi</p>
                         </div>
                         <div class="flex-shrink-0">
                             <div
-                                class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                class="flex items-center justify-center w-12 h-12 transition-transform rounded-lg bg-gradient-to-br from-green-500 to-green-600 group-hover:scale-110">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -88,18 +88,18 @@
 
             <!-- Pending Places Card -->
             <div
-                class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+                class="transition-all duration-300 bg-white border border-gray-100 shadow-lg rounded-xl hover:shadow-xl group">
                 <div class="p-6">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Menunggu Review</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2 group-hover:text-yellow-600 transition-colors">
+                            <p class="text-sm font-medium tracking-wide text-gray-500 uppercase">Menunggu Review</p>
+                            <p class="mt-2 text-3xl font-bold text-gray-900 transition-colors group-hover:text-yellow-600">
                                 {{ $stats['pending'] }}</p>
-                            <p class="text-sm text-gray-600 mt-1">Dalam proses verifikasi</p>
+                            <p class="mt-1 text-sm text-gray-600">Dalam proses verifikasi</p>
                         </div>
                         <div class="flex-shrink-0">
                             <div
-                                class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                class="flex items-center justify-center w-12 h-12 transition-transform rounded-lg bg-gradient-to-br from-yellow-500 to-yellow-600 group-hover:scale-110">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -112,18 +112,18 @@
 
             <!-- Rejected Places Card -->
             <div
-                class="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 group">
+                class="transition-all duration-300 bg-white border border-gray-100 shadow-lg rounded-xl hover:shadow-xl group">
                 <div class="p-6">
                     <div class="flex items-center justify-between">
                         <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Ditolak</p>
-                            <p class="text-3xl font-bold text-gray-900 mt-2 group-hover:text-red-600 transition-colors">
+                            <p class="text-sm font-medium tracking-wide text-gray-500 uppercase">Ditolak</p>
+                            <p class="mt-2 text-3xl font-bold text-gray-900 transition-colors group-hover:text-red-600">
                                 {{ $stats['rejected'] }}</p>
-                            <p class="text-sm text-gray-600 mt-1">Perlu perbaikan</p>
+                            <p class="mt-1 text-sm text-gray-600">Perlu perbaikan</p>
                         </div>
                         <div class="flex-shrink-0">
                             <div
-                                class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                class="flex items-center justify-center w-12 h-12 transition-transform rounded-lg bg-gradient-to-br from-red-500 to-red-600 group-hover:scale-110">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M6 18L18 6M6 6l12 12"></path>
@@ -138,17 +138,17 @@
         <!-- Enhanced Alert Section -->
         @if ($stats['pending'] > 0)
             <div
-                class="bg-gradient-to-r from-yellow-50 to-yellow-100 border-l-4 border-yellow-400 rounded-lg p-6 mb-8 shadow-sm">
+                class="p-6 mb-8 border-l-4 border-yellow-400 rounded-lg shadow-sm bg-gradient-to-r from-yellow-50 to-yellow-100">
                 <div class="flex items-start">
                     <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
-                            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div class="flex items-center justify-center w-10 h-10 bg-yellow-400 rounded-full">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
                     </div>
-                    <div class="ml-4 flex-1">
+                    <div class="flex-1 ml-4">
                         <h3 class="text-lg font-semibold text-yellow-800">
                             {{ $stats['pending'] }} tempat kuliner menunggu persetujuan admin
                         </h3>
@@ -158,9 +158,9 @@
                         </div>
                         <div class="mt-4">
                             <a href="{{ route('pengusaha.food-places.index') }}"
-                                class="inline-flex items-center px-3 py-2 border border-yellow-600 text-sm font-medium rounded-md text-yellow-800 bg-yellow-200 hover:bg-yellow-300 transition-colors">
+                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-yellow-800 transition-colors bg-yellow-200 border border-yellow-600 rounded-md hover:bg-yellow-300">
                                 Lihat Detail
-                                <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5l7 7-7 7"></path>
                                 </svg>
@@ -172,10 +172,10 @@
         @endif
 
         <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
             <!-- Food Places List -->
             <div class="lg:col-span-2">
-                <div class="bg-white rounded-xl shadow-lg border border-gray-100">
+                <div class="bg-white border border-gray-100 shadow-lg rounded-xl">
                     <div class="px-6 py-4 border-b border-gray-200">
                         <div class="flex items-center justify-between">
                             <div>
@@ -183,7 +183,7 @@
                                 <p class="text-sm text-gray-600">Kelola dan pantau status tempat kuliner</p>
                             </div>
                             <a href="{{ route('pengusaha.food-places.index') }}"
-                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 transition-colors rounded-lg bg-blue-50 hover:bg-blue-100">
                                 Lihat Semua
                                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -196,7 +196,7 @@
                     @if ($recentFoodPlaces->count() > 0)
                         <div class="divide-y divide-gray-200">
                             @foreach ($recentFoodPlaces as $place)
-                                <div class="p-6 hover:bg-gray-50 transition-colors">
+                                <div class="p-6 transition-colors hover:bg-gray-50">
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-start space-x-4">
                                             <!-- Place Image -->
@@ -204,29 +204,16 @@
                                                 @php
                                                     $primaryImage = $place->images->where('type', 'business')->first();
                                                 @endphp
-                                                @if ($primaryImage)
-                                                    <img class="h-16 w-16 rounded-lg object-cover border border-gray-200"
-                                                        src="{{ Storage::url($primaryImage->image_path) }}"
+                                                    <img class="object-cover w-16 h-16 border border-gray-200 rounded-lg"
+                                                        src="{{  $place->images->first()->image_url }}"
                                                         alt="{{ $place->name }}">
-                                                @else
-                                                    <div
-                                                        class="h-16 w-16 rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                                                        <svg class="h-8 w-8 text-gray-500" fill="none"
-                                                            stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                                            </path>
-                                                        </svg>
-                                                    </div>
-                                                @endif
                                             </div>
 
                                             <!-- Place Info -->
                                             <div class="flex-1 min-w-0">
                                                 <h4 class="text-lg font-semibold text-gray-900 truncate">
                                                     {{ $place->title }}</h4>
-                                                <p class="text-sm text-gray-600 mt-1">
+                                                <p class="mt-1 text-sm text-gray-600">
                                                     {{ $place->category->name ?? 'Kategori tidak diketahui' }}</p>
                                                 <div class="flex items-center mt-2 space-x-4">
                                                     <span class="text-sm text-gray-500">
@@ -295,7 +282,7 @@
                                             <!-- Action Buttons -->
                                             <div class="flex space-x-1">
                                                 <a href="{{ route('pengusaha.food-places.show', $place->id) }}"
-                                                    class="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors"
+                                                    class="p-2 text-blue-600 transition-colors rounded-lg hover:text-blue-800 hover:bg-blue-50"
                                                     title="Lihat Detail">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
@@ -308,7 +295,7 @@
                                                     </svg>
                                                 </a>
                                                 <a href="{{ route('pengusaha.food-places.edit', $place->id) }}"
-                                                    class="p-2 text-green-600 hover:text-green-800 hover:bg-green-50 rounded-lg transition-colors"
+                                                    class="p-2 text-green-600 transition-colors rounded-lg hover:text-green-800 hover:bg-green-50"
                                                     title="Edit">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
@@ -328,7 +315,7 @@
                         <!-- Empty State -->
                         <div class="px-6 py-12 text-center">
                             <div class="flex flex-col items-center">
-                                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                <div class="flex items-center justify-center w-16 h-16 mb-4 bg-gray-100 rounded-full">
                                     <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -336,10 +323,10 @@
                                         </path>
                                     </svg>
                                 </div>
-                                <h3 class="text-lg font-medium text-gray-900 mb-2">Belum Ada Tempat Kuliner</h3>
-                                <p class="text-gray-500 mb-6">Mulai dengan mendaftarkan tempat kuliner pertama Anda</p>
+                                <h3 class="mb-2 text-lg font-medium text-gray-900">Belum Ada Tempat Kuliner</h3>
+                                <p class="mb-6 text-gray-500">Mulai dengan mendaftarkan tempat kuliner pertama Anda</p>
                                 <a href="{{ route('pengusaha.food-places.create') }}"
-                                    class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition-colors">
+                                    class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition-colors bg-blue-600 border border-transparent rounded-md hover:bg-blue-700">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 4v16m8-8H4"></path>
@@ -354,10 +341,10 @@
 
 
             <!-- Sidebar - Quick Actions & Business Insights -->
-            <div class="lg:col-span-1 space-y-6">
+            <div class="space-y-6 lg:col-span-1">
 
                 <!-- Business Insights -->
-                <div class="bg-white rounded-xl shadow-lg border border-gray-100">
+                <div class="bg-white border border-gray-100 shadow-lg rounded-xl">
                     <div class="px-6 py-4 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-900">Business Insights</h3>
                         <p class="text-sm text-gray-600">Informasi bisnis Anda</p>
@@ -365,9 +352,9 @@
                     <div class="p-6">
                         <div class="space-y-4">
                             <!-- Total Reviews -->
-                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50">
                                 <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                                    <div class="flex items-center justify-center w-8 h-8 bg-yellow-500 rounded-full">
                                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -383,9 +370,9 @@
                             </div>
 
                             <!-- Average Rating -->
-                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50">
                                 <div class="flex items-center">
-                                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                    <div class="flex items-center justify-center w-8 h-8 bg-green-500 rounded-full">
                                         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor"
                                             viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -400,7 +387,7 @@
                             </div>
 
                             <!-- Tips Section -->
-                            <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <div class="p-4 mt-6 border border-blue-200 rounded-lg bg-blue-50">
                                 <div class="flex items-start">
                                     <svg class="w-5 h-5 text-blue-500 mt-0.5" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
@@ -409,7 +396,7 @@
                                     </svg>
                                     <div class="ml-3">
                                         <h4 class="text-sm font-medium text-blue-900">Tips Bisnis</h4>
-                                        <p class="text-xs text-blue-700 mt-1" data-tip>
+                                        <p class="mt-1 text-xs text-blue-700" data-tip>
                                             {{ collect([
                                                 'Pastikan foto tempat kuliner berkualitas tinggi',
                                                 'Update menu dan harga secara berkala',
@@ -426,7 +413,7 @@
                 </div>
 
                 <!-- Recent Activity -->
-                <div class="bg-white rounded-xl shadow-lg border border-gray-100">
+                <div class="bg-white border border-gray-100 shadow-lg rounded-xl">
                     <div class="px-6 py-4 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h3>
                         <p class="text-sm text-gray-600">Update terkini</p>
@@ -436,7 +423,7 @@
                             @if ($stats['total'] > 0)
                                 <div class="flex items-start space-x-3">
                                     <div class="flex-shrink-0">
-                                        <div class="w-2 h-2 bg-green-400 rounded-full mt-2"></div>
+                                        <div class="w-2 h-2 mt-2 bg-green-400 rounded-full"></div>
                                     </div>
                                     <div class="flex-1">
                                         <p class="text-sm text-gray-900">
@@ -451,7 +438,7 @@
                             @if ($stats['active'] > 0)
                                 <div class="flex items-start space-x-3">
                                     <div class="flex-shrink-0">
-                                        <div class="w-2 h-2 bg-blue-400 rounded-full mt-2"></div>
+                                        <div class="w-2 h-2 mt-2 bg-blue-400 rounded-full"></div>
                                     </div>
                                     <div class="flex-1">
                                         <p class="text-sm text-gray-900">
@@ -465,7 +452,7 @@
 
                             <div class="flex items-start space-x-3">
                                 <div class="flex-shrink-0">
-                                    <div class="w-2 h-2 bg-gray-400 rounded-full mt-2"></div>
+                                    <div class="w-2 h-2 mt-2 bg-gray-400 rounded-full"></div>
                                 </div>
                                 <div class="flex-1">
                                     <p class="text-sm text-gray-900">
@@ -546,7 +533,7 @@
                                 button.addEventListener('click', function() {
                                     this.style.opacity = '0.7';
                                     this.innerHTML = this.innerHTML.replace(/^/,
-                                        '<svg class="animate-spin w-4 h-4 mr-2 inline" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>'
+                                        '<svg class="inline w-4 h-4 mr-2 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>'
                                     );
                                 });
                             });
